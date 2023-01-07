@@ -1,3 +1,25 @@
-str | str -param
+ls|echo -n>out1>out2>out3 |"ls -la "|tr 'x' 'd' | grep "ls -a | cat"
 
-tok 1i 
+tokens : >|<
+
+tok 1 = |
+tok 2 = >
+tok 3 = >
+tok 4 = >
+
+faire token:
+	ls
+	echo -n
+	out1
+	out2
+	out3
+	"ls -la"
+	tr 'x' 'd'	
+	"ls
+	cat"
+
+si quote ouverte et pas fermé:
+	si meme quote (' ou ") est pas fermé dans un autre token
+		alors le token courant = concatenation jusqu'a la prochaine quote
+	else la quote est ascii
+	

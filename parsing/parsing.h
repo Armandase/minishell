@@ -6,7 +6,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct ;
+typedef struct cmd_s{
+	char	**cmd;
+}cmd_t;
 
 void	parsing(char *line, char **envp);
 

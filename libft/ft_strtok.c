@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:25:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/07 10:09:36 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:52:45 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,10 @@ int	check_delim(char c, const char *delim)
 
 char	*ft_strtok(char *str, const char *delim)
 {
-	int			i;
 	int			len;
 	static char	*cpy = NULL;
 	char		*token;
 
-	i = 0;
 	len = 0;
 	if (str != NULL)
 	{
