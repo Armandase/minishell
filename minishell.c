@@ -7,10 +7,10 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	(void)envp;
 	while (1)
 	{
 		line = readline("Minishell$ ");
+		parsing(line, envp);
 		if (line && *line)
 			add_history(line);
 		free(line);

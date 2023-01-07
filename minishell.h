@@ -6,5 +6,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+void	parsing(char *line, char **envp);
 
 #endif
