@@ -17,7 +17,7 @@ SRCS	= ft_isalpha.c ft_memchr.c ft_putchar_fd.c \
 		  ft_lstadd_back.c ft_fprint_addr.c ft_printf.c \
 		  ft_putfchar.c ft_putfstr.c ft_putfnbr.c \
 		  ft_putfnbr_base.c get_next_line.c get_next_line_utils.c \
-		  ft_strcpy.c ft_strncpy.c ft_strtok.c
+		  ft_strcpy.c ft_strncpy.c ft_strtok.c ft_strcmp.c
 
 CC = clang
 

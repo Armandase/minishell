@@ -1,6 +1,7 @@
 NAME		= minishell
 SRCS		= main.c\
-			  builtins/env.c\
+			  builtins/env.c builtins/pwd.c builtins/export.c builtins/var_env.c\
+			  builtins/unset.c\
 
 CC			= clang
 LIBS        = -Llibft -lft -lreadline

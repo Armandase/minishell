@@ -1,13 +1,10 @@
 # include "builtins.h"
 
-void	main_env(char *env[])
+void	main_env(t_env_list *list_var)
 {
-	int	i;
-
-	i = 0;
-	while (env[i])
+	while (list_var->next)
 	{
-		ft_printf("%s\n", env[i]);
-		i++;
+		ft_printf("%s=%s\n", list_var->name, list_var->value);
+		list_var = list_var->next;
 	}
 }
