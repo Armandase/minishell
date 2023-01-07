@@ -1,5 +1,7 @@
 NAME		= minishell
-SRCS		= *.c */*.c
+SRCS		= main.c\
+			  builtins/env.c\
+
 CC			= clang
 LIBS        = -Llibft -lft -lreadline
 CFLAGS		= -Wall -Werror -Wextra -g
@@ -7,12 +9,12 @@ OBJS		= ${SRCS:.c=.o}
 
 all: ${NAME}
 
+.c.o:
+	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+
 $(NAME): ${OBJS}
 	make -C ./libft
 	${CC} ${CFLAGS} -o ${NAME} ${SRCS} ${LIBS}
-
-.c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 clean:
 	make clean -C ./libft

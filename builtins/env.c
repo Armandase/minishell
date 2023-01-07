@@ -7,7 +7,7 @@ void	main_env(char *env[])
 	i = 0;
 	while (env[i])
 	{
-		ft_printf("%s", env[i]);
+		ft_printf("%s\n", env[i]);
 		i++;
 	}
 }
