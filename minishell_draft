@@ -1,0 +1,17 @@
+EXECUTION:
+While (1)
+{
+	exec
+} terminé par des signaux (ou le builtin exit) avec une fonction qui exit() et free tout le programme
+
+• Prompt -> pwd avec remplacement du user et ce qu'il y avant par ~
+• History -> utilisation de readline ? (man a lire)
+• Search and launch the executable (tableau de pointeurs sur fonction des builtins), le reste est a voir dans la partie parsing
+• 
+
+
+PARSING:
+
+
+BUILTINS:
+
