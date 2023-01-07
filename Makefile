@@ -1,7 +1,7 @@
 NAME		= minishell
 SRCS		= *.c 
-CC			= clang
-LIBS        = -Llibft -lft
+CC			= gcc
+LIBS        = -Llibft -lft -lreadline
 CFLAGS		= -Wall -Werror -Wextra -g
 OBJS		= ${SRCS:.c=.o}
 
