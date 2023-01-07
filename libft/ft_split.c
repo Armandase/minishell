@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/28 16:46:28 by adamiens          #+#    #+#             */
-/*   Updated: 2022/10/03 17:51:46 by adamiens         ###   ########.fr       */
+/*   Created: 2022/10/01 15:08:50 by ulayus            #+#    #+#             */
+/*   Updated: 2022/10/03 17:48:05 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_totalen(char const *s, char c)
+static size_t	count_word(char const *s, char c)
 {
-	int	i;
-	int	counter;
+	size_t	i;
+	size_t	count;
 
-	counter = 1;
 	i = 0;
+	count = 1;
 	while (s[i] == c && s[i])
 		i++;
-	if (i == (int)ft_strlen(s) || i + 1 == (int)ft_strlen(s))
+	if (i + 1 == ft_strlen(s) || i == ft_strlen(s))
 		return (0);
 	while (s[i])
 	{
@@ -29,60 +29,70 @@ static int	ft_totalen(char const *s, char c)
 		{
 			while (s[i] == c)
 				i++;
-			if (s[i] == '\0')
-				return (counter);
-			counter++;
+			if (!s[i])
+				return (count);
+			count++;
 		}
 		i++;
 	}
-	return (counter);
+	return (count);
 }
 
-static int	ft_wordlen(const char *str, char c, int i)
+static size_t	count_char(char const *s, char c, size_t i)
 {
-	int	counter;
+	size_t	count;
 
-	counter = 0;
-	while (str[counter + i] != c && str[counter + i])
-		counter++;
-	return (counter);
+	count = 0;
+	while (s[i] == c && s[i])
+		i++;
+	while (s[i] && s[i] != c)
+	{
+		count++;
+		i++;
+	}
+	return (count);
 }
 
-static int	ft_skip(const char *s, char c, int i)
+static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 {
-	int	ret;
+	size_t	i;
 
-	ret = 0;
-	while (s[i + ret] == c)
-		ret++;
-	return (ret);
+	i = 0;
+	while (s[j] == c && s[j])
+		j++;
+	while (s[j] && s[j] != c)
+	{
+		str[i] = s[j];
+		i++;
+		j++;
+	}
+	str[i] = 0;
+	while (s[j] == c && s[j])
+		j++;
+	return (j);
 }
 
 char	**ft_split(char const *s, char c)
 {
+	size_t	i;
+	size_t	j;
 	char	**strs;
-	int		ijk[3];
 
 	if (!s)
-		return (NULL);
-	strs = malloc(sizeof(char *) * (ft_totalen(s, c) + 1));
-	if (!strs)
-		return (NULL);
-	ijk[0] = 0;
-	ijk[2] = 0;
-	while (s[ijk[0]])
+		return (0);
+	strs = malloc(sizeof(char *) * (count_word(s, c) + 1));
+	if (strs == NULL)
+		return (0);
+	i = 0;
+	j = 0;
+	while (s[i] && (j < count_word(s, c) + 1 && count_word(s, c)))
 	{
-		ijk[1] = 0;
-		ijk[0] += ft_skip(s, c, ijk[0]);
-		if (s[ijk[0]] == '\0')
-			break ;
-		strs[ijk[2]] = malloc(ft_wordlen(s, c, ijk[0]) + 1);
-		if (!strs[ijk[2]])
-			return (NULL);
-		while (s[ijk[0]] != c && s[ijk[0]])
-			strs[ijk[2]][ijk[1]++] = s[ijk[0]++];
-		strs[ijk[2]++][ijk[1]] = '\0';
+		strs[j] = malloc(count_char(s, c, i) + 1);
+		if (!strs[j])
+			return (0);
+		i = ft_strccpy(s, strs[j], c, i);
+		j++;
 	}
-	strs[ijk[2]] = NULL;
+	strs[j] = 0;
 	return (strs);
 }
