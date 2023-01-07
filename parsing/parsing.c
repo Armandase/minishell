@@ -2,5 +2,5 @@
 
 void	parsing(char *line, char **envp)
 {
-
+	
 }
