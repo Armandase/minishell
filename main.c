@@ -2,10 +2,11 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*line;
+	//char	*line;
 
 	(void)ac;
 	(void)av;
+	/*
 	while (1)
 	{
 		line = readline("Minishell$ ");
@@ -14,5 +15,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(line);
 		free(line);
 	}
+	*/
+	main_env(envp);
 	return (0);
 }
