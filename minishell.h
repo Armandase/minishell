@@ -6,6 +6,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct	
+
 void	parsing(char *line, char **envp);
 
 #endif
