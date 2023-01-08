@@ -11,9 +11,8 @@ faire token:
 	out2
 	out3
 	"ls -la"
-	tr 'x' 'd'	
-	"ls
-	cat"
+	tr 'x' 'd'-> split avec les espace pour execve	
+	"ls -a | cat" -> si quote alors pas split avec les espaces
 
 si quote ouverte et pas fermé:
 	si meme quote (' ou ") est pas fermé dans un autre token
@@ -31,3 +30,5 @@ heredoc " --with-filename
 grep
 pipex heredoc
 --with-filename
+
+end"ok"oui

@@ -11,5 +11,8 @@ typedef struct cmd_s{
 }cmd_t;
 
 void	parsing(char *line, char **envp);
+char	*strtok_unquote(char *str, const char *delim);
+void	free_cmd(cmd_t *cmd);
+char	**split_token(char const *s, char c);
 
 #endif

@@ -1,61 +1,67 @@
 #include "parsing.h"
-#include <stdlib.h>
 
-int	number_cmd(char *line)
+void	get_cmd(cmd_t *cmd, char *line)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	//recupere le premier token
+	tmp = strtok_unquote(line, ">|<");
+	//coupe le token en param : 1=cmd 2=arg_cmd 3=arg_cmd etc.. dernier=NULL
+	cmd[i].cmd = split_token(tmp, ' ');
+	i++;
+	while (tmp != NULL)
+	{
+		free(tmp);
+		tmp = strtok_unquote(NULL, ">|<");
+		if (!tmp)
+			break ;
+		cmd[i].cmd = split_token(tmp, ' ');
+		i++;
+	}
+	cmd[i].cmd = NULL;
+}
+
+int	number_token(char *line)
 {
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	tmp = ft_strtok(line, ">|<");
+	tmp = strtok_unquote(line, ">|<");
 	i++;
 	while (tmp != NULL)
 	{
 		free(tmp);
-		tmp = ft_strtok(NULL, ">|<");
+		tmp = strtok_unquote(NULL, ">|<");
 		i++;
 	}
 	return (i);
 }
 
-char	**token_in_line(cmd_t *cmd, char *line)
-{
-	int		i;
-	char	*tmp;
-	char	**strs;
-
-	i = 0;
-	strs = malloc(sizeof(char *) * number_cmd(line));
-	tmp = ft_strtok(line, ">|<");
-	strs[i] = ft_strdup(tmp);
-	i++;
-	while (tmp != NULL)
-	{
-		free(tmp);
-		tmp = ft_strtok(NULL, ">|<");
-		i++;
-		strs[i] = ft_strdup(tmp);
-	}
-	strs[i] = NULL;
-	return (strs);
-}
-
-void	get_cmd(cmd_t *cmd, char *line)
-{
-	char	**strs;
-
-	strs = token_in_line(cmd, line);
-	find_quote_in_token(strs);
-}
-
 
 void	parsing(char *line, char **envp)
 {
-	int		nb_cmd;
+	int		nb_token;
 	cmd_t	*cmd;
-	int		i;
 
-	nb_cmd = number_cmd(line);
-	cmd = malloc (sizeof(cmd_t) * nb_cmd);
+	nb_token = number_token(line);
+	cmd = malloc (sizeof(cmd_t) * (nb_token + 1));
 	get_cmd(cmd, line);
+	int	i = 0;
+	int	j = 0;
+	while (cmd[i].cmd != NULL)
+	{
+		j = 0;
+		printf("command %d:\n", i);
+		while(cmd[i].cmd[j] != NULL)
+		{
+			printf("\t->arg %d: %s\n", j, cmd[i].cmd[j]);
+			j++;
+		}
+		i++;
+	}
+	//free_cmd(cmd);
+	(void)envp;
 }
