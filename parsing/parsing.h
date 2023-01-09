@@ -6,13 +6,20 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct cmd_s{
+typedef struct s_cmd{
 	char	**cmd;
-}cmd_t;
+	int		token;
+}	t_cmd;
+
+typedef struct s_token{
+	char	*line;
+	int		id;
+}	t_token;
 
 void	parsing(char *line, char **envp);
 char	*strtok_unquote(char *str, const char *delim);
-void	free_cmd(cmd_t *cmd);
+void	free_cmd(t_cmd *cmd);
 char	**split_token(char const *s, char c);
+t_token	*str_get_token(char *str, const char *delim);
 
 #endif

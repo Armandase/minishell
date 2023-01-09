@@ -1,27 +1,5 @@
 #include "parsing.h"
-
-void	get_cmd(cmd_t *cmd, char *line)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	//recupere le premier token
-	tmp = strtok_unquote(line, ">|<");
-	//coupe le token en param : 1=cmd 2=arg_cmd 3=arg_cmd etc.. dernier=NULL
-	cmd[i].cmd = split_token(tmp, ' ');
-	i++;
-	while (tmp != NULL)
-	{
-		free(tmp);
-		tmp = strtok_unquote(NULL, ">|<");
-		if (!tmp)
-			break ;
-		cmd[i].cmd = split_token(tmp, ' ');
-		i++;
-	}
-	cmd[i].cmd = NULL;
-}
+#include <stdlib.h>
 
 int	number_token(char *line)
 {
@@ -40,21 +18,45 @@ int	number_token(char *line)
 	return (i);
 }
 
+void	get_cmd(t_cmd *cmd, char *line)
+{
+	int		i;
+	t_token	*token;
+
+	i = 0;
+	token = str_get_token(line, ">|<");
+	cmd[i].cmd = split_token(token->line, ' ');
+	cmd[i].token = token->id;
+	i++;
+	while (token->line != NULL)
+	{
+		free(token->line);
+		free(token);
+		token = str_get_token(NULL, ">|<");
+		if (token->line == NULL)
+			break ;
+		cmd[i].cmd = split_token(token->line, ' ');
+		cmd[i].token = token->id;
+		i++;
+	}
+	free(token);
+	cmd[i].cmd = NULL;
+}
 
 void	parsing(char *line, char **envp)
 {
 	int		nb_token;
-	cmd_t	*cmd;
+	t_cmd	*cmd;
 
 	nb_token = number_token(line);
-	cmd = malloc (sizeof(cmd_t) * (nb_token + 1));
+	cmd = malloc (sizeof(t_cmd) * (nb_token + 1));
 	get_cmd(cmd, line);
 	int	i = 0;
 	int	j = 0;
 	while (cmd[i].cmd != NULL)
 	{
 		j = 0;
-		printf("command %d:\n", i);
+		printf("command %d, token: %d\n", i, cmd[i].token);
 		while(cmd[i].cmd[j] != NULL)
 		{
 			printf("\t->arg %d: %s\n", j, cmd[i].cmd[j]);

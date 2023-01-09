@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-void	free_cmd(cmd_t *cmd)
+void	free_cmd(t_cmd *cmd)
 {
 	int	i;
 	int	j;

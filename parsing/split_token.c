@@ -7,10 +7,9 @@ static int	find_next_quote(const char *str, char c)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		ft_printf("%c", str[i]);
+		i++;
 		if (str[i] == c)
 			return (i);
-		i++;
 	}
 	return (-1);
 }
@@ -34,16 +33,12 @@ static size_t	count_word(char const *s, char c)
 		{
 			i++;
 			tmp = find_next_quote(&s[i], '\'');
-			if (tmp == -1){ft_printf("in dev\n", i);}
-			//chercher dans autres token
 			i += tmp;
 		}	
 		if (s[i] == '\"')
 		{
 			i++;
 			tmp = find_next_quote(&s[i], '\"');
-			if (tmp == -1){ft_printf("in dev");}
-			//chercher dans autres token
 			i += tmp;
 		}	
 		if (s[i] == c)
@@ -73,13 +68,11 @@ static size_t	count_char(char const *s, char c, size_t i)
 		if (s[i] == '\'')
 		{
 			tmp = find_next_quote(&s[i], '\'');
-			if (tmp == -1){ft_printf("in dev");}
 			count += tmp;
 		}
 		if (s[i] == '\"')
 		{
 			tmp = find_next_quote(&s[i], '\"');
-			if (tmp == -1){ft_printf("in dev");}
 			count += tmp;
 		}
 		if (s[i] == c)
@@ -158,7 +151,7 @@ char	**split_token(char const *s, char c)
 		return (0);
 	i = 0;
 	j = 0;
-	while (s[i] && (j < count_word(s, c) + 1 && count_word(s, c)))
+	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
 		strs[j] = malloc(count_char(s, c, i) + 1);
 		if (!strs[j])
