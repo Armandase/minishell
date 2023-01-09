@@ -15,7 +15,7 @@ static int	find_next_quote(char *str, char c)
 	return (-1);
 }
 
-static int	len_token(char *str, const char *delim)
+static int	len_token(char *str, const char *delim, t_token *token)
 {
 	int	i;
 	int	j;
@@ -42,7 +42,19 @@ static int	len_token(char *str, const char *delim)
 		while (delim[j])
 		{
 			if (str[i] == delim[j])
+			{
+				if (delim[j] == '|')
+					token->id = PIPE;
+				else if (delim[j] == '<' && str[i + 1] && str[i + 1] == '<')
+					token->id = HEREDOC;
+				else if (delim[j] == '>' && str[i + 1] && str[i + 1] == '>')
+					token->id = APPEND;
+				else if (delim[j] == '<')
+					token->id = IN;
+				else if (delim[j] == '>')
+					token->id = OUT;
 				return (i);
+			}
 			j++;
 		}
 		i++;
@@ -73,13 +85,14 @@ t_token	*str_get_token(char *str, const char *delim)
 
 	len = 0;
 	token = malloc(sizeof(t_token));
+	token->id = 0; 
 	if (str != NULL)
 	{
 		cpy = str;
 		if (!cpy)
 			return (NULL);
 	}
-	len = len_token(cpy, delim);
+	len = len_token(cpy, delim, token);
 	if (len == 0)
 	{
 		token->line = NULL;
@@ -93,6 +106,5 @@ t_token	*str_get_token(char *str, const char *delim)
 		cpy++;
 	token->line = ft_strdup(tmp);
 	free(tmp);
-	token->id = 1; 
 	return (token);
 }

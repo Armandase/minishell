@@ -6,6 +6,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define IN 1
+# define OUT 2
+# define APPEND 3
+# define HEREDOC 4
+# define PIPE 5
+
 typedef struct s_cmd{
 	char	**cmd;
 	int		token;

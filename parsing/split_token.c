@@ -3,8 +3,10 @@
 static int	find_next_quote(const char *str, char c)
 {
 	int	i;
-	
+
 	i = 0;
+	if (str[i] == c)
+		return (i + 1);
 	while (str[i] != '\0')
 	{
 		i++;
@@ -67,13 +69,17 @@ static size_t	count_char(char const *s, char c, size_t i)
 	{
 		if (s[i] == '\'')
 		{
+			i++;
 			tmp = find_next_quote(&s[i], '\'');
 			count += tmp;
+			i+= tmp;
 		}
 		if (s[i] == '\"')
 		{
+			i++;
 			tmp = find_next_quote(&s[i], '\"');
 			count += tmp;
+			i += tmp;
 		}
 		if (s[i] == c)
 			break ;
@@ -97,6 +103,8 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 		if (s[j] == '\'')
 		{
 			j++;
+			if (s[j] == '\'')
+				j++;
 			while (s[j])
 			{
 				str[i] = s[j];
@@ -154,6 +162,7 @@ char	**split_token(char const *s, char c)
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
 		strs[j] = malloc(count_char(s, c, i) + 1);
+		ft_printf("str : %s, len : %d\n", &s[i], count_char(s, c, i) + 1);
 		if (!strs[j])
 			return (0);
 		i = ft_strccpy(s, strs[j], c, i);
