@@ -14,7 +14,6 @@ void	free_cmd(t_cmd *cmd)
 			free(cmd[i].cmd[j]);
 			j++;
 		}
-		ft_printf("free %dx", i);
 		free(cmd[i].cmd);
 		i++;
 	}

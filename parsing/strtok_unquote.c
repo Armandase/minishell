@@ -26,15 +26,21 @@ int	len_token(char *str, const char *delim)
 		if (str[i] == '\'')
 		{
 			tmp = find_next_quote(&str[i], '\'');
-			if (tmp == -1){}
-				//dire que quote n'est pas ferme dans la ligne
+			if (tmp == -1)
+			{
+				ft_putstr_fd("Missing a closing quote.\n", 2);
+				return (0);
+			}
 			i += tmp;
 		}
 		else if (str[i] == '\"')
 		{
 			tmp = find_next_quote(&str[i], '\"');
-			if (tmp == -1){}
-				//dire que quote n'est pas ferme dans la ligne
+			if (tmp == -1)
+			{
+				ft_putstr_fd("Missing a closing quote.\n", 2);
+				return (0);
+			}
 			i += tmp;
 		}
 		j = 0;

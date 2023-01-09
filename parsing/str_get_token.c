@@ -27,15 +27,15 @@ static int	len_token(char *str, const char *delim, t_token *token)
 		if (str[i] == '\'')
 		{
 			tmp = find_next_quote(&str[i], '\'');
-			if (tmp == -1){}
-				//dire que quote n'est pas ferme dans la ligne
+			if (tmp == -1)
+				return (0);
 			i += tmp;
 		}
 		else if (str[i] == '\"')
 		{
 			tmp = find_next_quote(&str[i], '\"');
-			if (tmp == -1){}
-				//dire que quote n'est pas ferme dans la ligne
+			if (tmp == -1)
+				return (0);
 			i += tmp;
 		}
 		j = 0;
@@ -76,35 +76,35 @@ static int	check_delim(char c, const char *delim)
 	return (0);
 }
 
+/****************************************/
+/*Strtok be like sauf que :				*/
+/*	separe en fonction des delimiteurs	*/
+/*	sauf si entre quotes				*/
+/*	return str coupé par le delimiteur	*/
+/*	et le delimiteur qui l'a cut		*/
+/****************************************/
 t_token	*str_get_token(char *str, const char *delim)
 {
 	int			len;
 	static char	*cpy = NULL;
-	char		*tmp;
 	t_token		*token;
 
 	len = 0;
 	token = malloc(sizeof(t_token));
-	token->id = 0; 
+	token->id = 0;
 	if (str != NULL)
-	{
 		cpy = str;
-		if (!cpy)
-			return (NULL);
-	}
 	len = len_token(cpy, delim, token);
 	if (len == 0)
 	{
 		token->line = NULL;
 		return (token);
 	}
-	tmp = malloc(len + 1);
-	tmp = ft_strncpy(tmp, cpy, len);
-	tmp[len] = '\0';
+	token->line = malloc(len + 1);
+	token->line = ft_strncpy(token->line, cpy, len);
+	token->line[len] = '\0';
 	cpy += len;
 	while (cpy && check_delim(*cpy, delim))
 		cpy++;
-	token->line = ft_strdup(tmp);
-	free(tmp);
 	return (token);
 }

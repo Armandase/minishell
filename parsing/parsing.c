@@ -1,6 +1,11 @@
 #include "parsing.h"
 #include <stdlib.h>
 
+/********************************************/
+/*	Compte le nombre de delimiteur			*/
+/*	sauf ceux entre quote					*/
+/********************************************/
+
 int	number_token(char *line)
 {
 	char	*tmp;
@@ -17,6 +22,13 @@ int	number_token(char *line)
 	}
 	return (i);
 }
+
+/********************************************************/
+/*À appliquer sur toutes les lignes:					*/
+/*	separe la ligne par delimiteurs (>, >>, |, <<, <)	*/	
+/*	devient des tokens, stocker dans tab de cmd			*/		
+/*	assigne le delim qui a cut le token a cmd id		*/
+/********************************************************/
 
 void	get_cmd(t_cmd *cmd, char *line)
 {
@@ -43,6 +55,11 @@ void	get_cmd(t_cmd *cmd, char *line)
 	cmd[i].cmd = NULL;
 }
 
+/********************************************************/
+/*	Parsing:											*/
+/*	  separe la ligne avec delimiteurs(become tokens)	*/
+/*	  split ces tokens par les espaces (cmd & arg)		*/
+/********************************************************/
 void	parsing(char *line, char **envp)
 {
 	int		nb_token;

@@ -10,7 +10,7 @@ static int	find_next_quote(const char *str, char c)
 	while (str[i] != '\0')
 	{
 		i++;
-		if (str[i] == c)
+		if (str[i] && str[i] == c)
 			return (i);
 	}
 	return (-1);
@@ -86,6 +86,7 @@ static size_t	count_char(char const *s, char c, size_t i)
 			tmp = find_next_quote(&s[i], '\"');
 			count += tmp;
 			i += tmp;
+			printf("reste : %s", &s[i]);
 		}
 		if (!s[i])
 			break ;
@@ -173,11 +174,10 @@ char	**split_token(char const *s, char c)
 		return (0);
 	i = 0;
 	j = 0;
-	ft_printf("nb word %d\n", count_word(s, c));
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
+		printf("len str :%ld\n", count_char(s, c, i));
 		strs[j] = malloc(count_char(s, c, i) + 1);
-		//ft_printf("str : %s, len : %d\n", &s[i], count_char(s, c, i) + 1);
 		if (!strs[j])
 			return (0);
 		i = ft_strccpy(s, strs[j], c, i);
