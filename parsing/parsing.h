@@ -14,6 +14,8 @@ typedef struct s_cmd{
 	int		token;
 	int		*quote;
 	int		*exit;
+	int		fd_in;
+	int		fd_out;
 }	t_cmd;
 
 typedef struct s_token{

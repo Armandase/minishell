@@ -1,12 +1,14 @@
 #include "execution.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	apply_execution(t_cmd *cmd, int i, char **envp)
 {
 	int	pid;
 	int	status;
 
-	//if (i != 0 && cmd[i - 1])
+	if (i != 0 && cmd[i - 1].token == PIPE)
+		dup2(cmd[i - 1].fd_out, 0);
 	pid = fork();
 	status = 0;
 	if (pid == -1)
