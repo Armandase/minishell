@@ -21,7 +21,7 @@ SRCS	= ft_isalpha.c ft_memchr.c ft_putchar_fd.c \
 
 CC = clang
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 OBJS = ${SRCS:.c=.o}
 

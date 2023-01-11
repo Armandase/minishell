@@ -4,7 +4,8 @@ SRCS		= main.c\
 			  builtins/unset.c\
 			  parsing/parsing.c parsing/strtok_unquote.c \
 			  parsing/parsing_utils.c parsing/split_token.c \
-			  parsing/str_get_token.c
+			  parsing/str_get_token.c \
+			  execution/exec_cmd.c execution/execution.c execution/find_path.c
 
 CC			= gcc
 LIBS        = -Llibft -lft -lreadline

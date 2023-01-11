@@ -12,6 +12,8 @@
 typedef struct s_cmd{
 	char	**cmd;
 	int		token;
+	int		*quote;
+	int		*exit;
 }	t_cmd;
 
 typedef struct s_token{
@@ -19,10 +21,10 @@ typedef struct s_token{
 	int		id;
 }	t_token;
 
-t_cmd	*parsing(char *line, char **envp);
+t_cmd	*parsing(char *line);
 char	*strtok_unquote(char *str, const char *delim);
 void	free_cmd(t_cmd *cmd);
-char	**split_token(char const *s, char c);
+char	**split_token(char const *s, char c, t_cmd *cmd);
 t_token	*str_get_token(char *str, const char *delim);
 
 #endif

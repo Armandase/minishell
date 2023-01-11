@@ -60,7 +60,7 @@ static size_t	count_word(char const *s, char c)
 	return (count);
 }
 
-static size_t	count_char(char const *s, char c, size_t i)
+static size_t	count_char(char const *s, char c, size_t i, int *quote)
 {
 	size_t	count;
 	int		tmp;
@@ -97,6 +97,7 @@ static size_t	count_char(char const *s, char c, size_t i)
 			}
 			else
 			{
+				*quote = 1;
 				count += tmp;
 				i += tmp;
 			}
@@ -175,7 +176,7 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 	return (j);
 }
 
-char	**split_token(char const *s, char c)
+char	**split_token(char const *s, char c, t_cmd *cmd)
 {
 	size_t	i;
 	size_t	j;
@@ -184,15 +185,14 @@ char	**split_token(char const *s, char c)
 	if (!s)
 		return (0);
 	strs = malloc(sizeof(char *) * (count_word(s, c) + 1));
+	cmd->quote = malloc(sizeof(int) * count_word(s, c) + 1);
 	if (strs == NULL)
 		return (0);
 	i = 0;
 	j = 0;
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
-		//printf("len str :%ld\n", count_char(s, c, i));
-		//len a modifier si pas la flemme (ronpich)
-		strs[j] = malloc(count_char(s, c, i) + 1);
+		strs[j] = malloc(count_char(s, c, i, &cmd->quote[j]) + 1);
 		if (!strs[j])
 			return (0);
 		i = ft_strccpy(s, strs[j], c, i);

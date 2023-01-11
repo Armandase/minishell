@@ -23,6 +23,20 @@ int	number_token(char *line)
 	return (i);
 }
 
+void	add_exit_addr(t_cmd *cmd)
+{
+	int	i;
+	int	*exit;
+
+	i = 0;
+	exit = ft_calloc(1, sizeof(int));
+	while (cmd[i].cmd != NULL)
+	{
+		cmd[i].exit = exit;
+		i++;
+	}
+}
+
 /********************************************************/
 /*À appliquer sur toutes les lignes:					*/
 /*	separe la ligne par delimiteurs (>, >>, |, <<, <)	*/	
@@ -37,7 +51,7 @@ void	get_cmd(t_cmd *cmd, char *line)
 
 	i = 0;
 	token = str_get_token(line, ">|<");
-	cmd[i].cmd = split_token(token->line, ' ');
+	cmd[i].cmd = split_token(token->line, ' ', &cmd[i]);
 	cmd[i].token = token->id;
 	i++;
 	while (token->line != NULL)
@@ -47,12 +61,13 @@ void	get_cmd(t_cmd *cmd, char *line)
 		token = str_get_token(NULL, ">|<");
 		if (token->line == NULL)
 			break ;
-		cmd[i].cmd = split_token(token->line, ' ');
+		cmd[i].cmd = split_token(token->line, ' ', &cmd[i]);
 		cmd[i].token = token->id;
 		i++;
 	}
 	free(token);
 	cmd[i].cmd = NULL;
+	add_exit_addr(cmd);
 }
 
 /********************************************************/
@@ -60,7 +75,7 @@ void	get_cmd(t_cmd *cmd, char *line)
 /*	  separe la ligne avec delimiteurs(become tokens)	*/
 /*	  split ces tokens par les espaces (cmd & arg)		*/
 /********************************************************/
-t_cmd	*parsing(char *line, char **envp)
+t_cmd	*parsing(char *line)
 {
 	int		nb_token;
 	t_cmd	*cmd;
@@ -68,18 +83,5 @@ t_cmd	*parsing(char *line, char **envp)
 	nb_token = number_token(line);
 	cmd = malloc (sizeof(t_cmd) * (nb_token + 1));
 	get_cmd(cmd, line);
-	int	i = 0;
-	int	j = 0;
-	while (cmd[i].cmd != NULL)
-	{
-		j = 0;
-		ft_printf("command %d, token: %d\n", i, cmd[i].token);
-		while(cmd[i].cmd[j] != NULL)
-		{
-			ft_printf("\t->arg %d: %s\n", j, cmd[i].cmd[j]);
-			j++;
-		}
-		i++;
-	}
 	return (cmd);
 }

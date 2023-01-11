@@ -1,6 +1,6 @@
 #include "execution.h"
 
-void	execution(t_cmd *cmd)
+void	execution(t_cmd *cmd, char **envp)
 {
 	int	i;
 
@@ -8,8 +8,7 @@ void	execution(t_cmd *cmd)
 	while (cmd[i].cmd != NULL)
 	{
 		if (cmd[i].token == PIPE || cmd[i].token == 0)
-			exec_cmd(cmd, i);
-
+			exec_cmd(cmd, i, envp);
 		i++;
 	}
 }

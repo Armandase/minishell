@@ -12,8 +12,8 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		line = readline("Minishell$ ");
-		cmd = parsing(line, envp);
-		execution(cmd);
+		cmd = parsing(line);
+		execution(cmd, envp);
 		if (line && *line)
 			add_history(line);
 		free(line);
