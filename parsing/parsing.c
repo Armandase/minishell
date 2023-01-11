@@ -60,7 +60,7 @@ void	get_cmd(t_cmd *cmd, char *line)
 /*	  separe la ligne avec delimiteurs(become tokens)	*/
 /*	  split ces tokens par les espaces (cmd & arg)		*/
 /********************************************************/
-void	parsing(char *line, char **envp)
+t_cmd	*parsing(char *line, char **envp)
 {
 	int		nb_token;
 	t_cmd	*cmd;
@@ -73,14 +73,13 @@ void	parsing(char *line, char **envp)
 	while (cmd[i].cmd != NULL)
 	{
 		j = 0;
-		printf("command %d, token: %d\n", i, cmd[i].token);
+		ft_printf("command %d, token: %d\n", i, cmd[i].token);
 		while(cmd[i].cmd[j] != NULL)
 		{
-			printf("\t->arg %d: %s\n", j, cmd[i].cmd[j]);
+			ft_printf("\t->arg %d: %s\n", j, cmd[i].cmd[j]);
 			j++;
 		}
 		i++;
 	}
-	//free_cmd(cmd);
-	(void)envp;
+	return (cmd);
 }

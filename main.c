@@ -4,14 +4,16 @@ int	main(int ac, char **av, char **envp)
 {
 	//t_env_list	*list_var;
 	char	*line;
+	t_cmd	*cmd;
 
 	(void)ac;
 	(void)av;
-	
+	cmd = NULL;
 	while (1)
 	{
 		line = readline("Minishell$ ");
-		parsing(line, envp);
+		cmd = parsing(line, envp);
+		execution(cmd);
 		if (line && *line)
 			add_history(line);
 		free(line);

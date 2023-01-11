@@ -2,9 +2,6 @@
 # define PARSING_H
 
 # include "../libft/libft.h"
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 
 # define IN 1
 # define OUT 2
@@ -22,7 +19,7 @@ typedef struct s_token{
 	int		id;
 }	t_token;
 
-void	parsing(char *line, char **envp);
+t_cmd	*parsing(char *line, char **envp);
 char	*strtok_unquote(char *str, const char *delim);
 void	free_cmd(t_cmd *cmd);
 char	**split_token(char const *s, char c);

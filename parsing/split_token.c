@@ -11,7 +11,7 @@ static int	find_next_quote(const char *str, char c)
 	{
 		i++;
 		if (str[i] && str[i] == c)
-			return (i);
+			return (i - 1);
 	}
 	return (-1);
 }
@@ -75,8 +75,15 @@ static size_t	count_char(char const *s, char c, size_t i)
 		{
 			i++;
 			tmp = find_next_quote(&s[i], '\'');
-			count += tmp;
-			i+= tmp;
+			if (tmp == 0)
+			{
+				i += tmp + 1;
+			}
+			else
+			{
+				count += tmp;
+				i += tmp;
+			}
 		}
 		if (!s[i])
 			break ;
@@ -84,9 +91,15 @@ static size_t	count_char(char const *s, char c, size_t i)
 		{
 			i++;
 			tmp = find_next_quote(&s[i], '\"');
-			count += tmp;
-			i += tmp;
-			printf("reste : %s", &s[i]);
+			if (tmp == 0)
+			{
+				i += tmp + 1;
+			}
+			else
+			{
+				count += tmp;
+				i += tmp;
+			}
 		}
 		if (!s[i])
 			break ;
@@ -114,7 +127,7 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 			j++;
 			if (!s[j])
 				break ;
-			if (s[j] == '\'')
+			while (s[j] && s[j] == '\'')
 				j++;
 			while (s[j])
 			{
@@ -135,17 +148,18 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 			j++;
 			if (!s[j])
 				break ;
-			if (s[j] == '\"')
+			while (s[j] && s[j] == '\"')
 				j++;
 			while (s[j])
 			{
 				str[i] = s[j];
 				i++;
 				j++;
-				if (s[j] == '\"')
+				while (s[j] && s[j] == '\"')
 				{
 					j++;
-					break ;
+					if (!s[j] || s[j] != '\"')
+						break ;
 				}
 			}
 		}
@@ -176,7 +190,8 @@ char	**split_token(char const *s, char c)
 	j = 0;
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
-		printf("len str :%ld\n", count_char(s, c, i));
+		//printf("len str :%ld\n", count_char(s, c, i));
+		//len a modifier si pas la flemme (ronpich)
 		strs[j] = malloc(count_char(s, c, i) + 1);
 		if (!strs[j])
 			return (0);

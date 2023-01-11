@@ -32,3 +32,8 @@ pipex heredoc
 --with-filename
 
 end"ok"oui
+ GERER SI UN DELIM AU DEBUT (> ls ou < ou >> okkofsdkfds)
+ 
+
+
+
