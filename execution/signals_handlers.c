@@ -1,6 +1,6 @@
 #include "execution.h"
 
-void	exit_shell(int signum)
+void	exit_signals(int signum)
 {
 	if (signum == SIGINT)
 		ft_printf("SIGSTOP\n");

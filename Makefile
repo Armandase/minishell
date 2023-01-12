@@ -5,7 +5,8 @@ SRCS		= main.c\
 			  parsing/parsing_utils.c parsing/split_token.c \
 			  parsing/str_get_token.c \
 			  execution/exec_cmd.c execution/execution.c execution/find_path.c \
-			  execution/exec_utils.c execution/signals_handlers.c
+			  execution/exec_utils.c execution/signals_handlers.c\
+			  execution/exit.c\
 
 CC			= gcc
 LIBS        = -Llibft -lft -lreadline
@@ -34,6 +35,6 @@ norm:
 	norminette *.c && norminette *.h
 
 vg:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=.vsupp --trace-children=yes ./${NAME}
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=.vsupp --trace-children=yes ./minishell
 
-.PHONY: all clean fclean re norm 
+.PHONY: all clean fclean re norm vg
