@@ -92,6 +92,8 @@ t_token	*str_get_token(char *str, const char *delim)
 	len = 0;
 	token = malloc(sizeof(t_token));
 	token->id = 0;
+	if (str != && ft_strlen(str) == 0)
+		return (NULL);
 	if (str != NULL)
 		cpy = str;
 	len = len_token(cpy, delim, token);
