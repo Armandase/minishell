@@ -6,6 +6,7 @@ void	waiting_end(t_exec	*exec)
 	int	wstatus;
 	int	id;
 
+	exec->nb_fork--;
 	while (exec->nb_fork >= 0)
 	{
 		id = 0;
@@ -15,7 +16,11 @@ void	waiting_end(t_exec	*exec)
 			perror("Wait pid error");
 			exit(1);
 		}
-		exec->nb_fork++;
+		if (WIFEXITED(wstatus))
+			*exec->cmd->exit = WEXITSTATUS(wstatus);
+		else if (WIFSIGNALED(wstatus))
+			*exec->cmd->exit = WTERMSIG(wstatus);
+		exec->nb_fork--;
 	}
 }
 
@@ -48,6 +53,7 @@ void	execution(t_cmd *cmd, char **envp, t_env_list *list_var)
 	i = 0;
 	exec.nb_fork = 0;
 	exec.i = 0;
+	exec.cmd = cmd;
 	exec.tab_pid = ft_calloc(sizeof(int), tab_pid_len(cmd));
 	while (cmd[i].cmd != NULL)
 	{
