@@ -35,7 +35,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline(prompt);
 		free(prompt);
 		if (line == NULL)
-			exit(1);	
+			exit_shell(list_var);	
 		cmd = parsing(line);
 		execution(cmd, envp, list_var);
 		if (line && *line)
