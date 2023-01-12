@@ -5,7 +5,7 @@ SRCS		= main.c\
 			  parsing/parsing_utils.c parsing/split_token.c \
 			  parsing/str_get_token.c \
 			  execution/exec_cmd.c execution/execution.c execution/find_path.c \
-			  execution/exec_utils.c
+			  execution/exec_utils.c execution/signals_handlers.c
 
 CC			= gcc
 LIBS        = -Llibft -lft -lreadline

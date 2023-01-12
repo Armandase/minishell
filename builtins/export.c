@@ -23,6 +23,7 @@ char	*export_name(char *str)
 			break ;
 		i++;
 	}
+	name[i] = '\0';
 	return (name);
 }
 
@@ -53,6 +54,7 @@ char	*export_value(char *str)
 		j++;
 		i++;
 	}
+	value[i] = '\0';
 	return (value);
 }
 
