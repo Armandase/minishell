@@ -40,12 +40,12 @@ void	inside_fork(t_cmd *cmd, int i, char **envp, int tab_pipe[2])
 
 void	apply_execution(t_exec *exec, int i, char **envp)
 {
-	int	status;
 	int	tab_pipe[2];
 
 	pipe(tab_pipe);
+	//pipe(tab_pipe[1]);
+	//if (cmd[i].token ==)
 	exec->tab_pid[exec->nb_fork] = fork();
-	status = 0;
 	if (exec->tab_pid[exec->nb_fork] == -1)
 		print_error("Fork error", 127, exec->cmd);
 	else if (exec->tab_pid[exec->nb_fork] == 0)
@@ -54,10 +54,6 @@ void	apply_execution(t_exec *exec, int i, char **envp)
 		dup2(tab_pipe[1], 1);
 	if (exec->cmd[i].token == PIPE)
 		exec->cmd[i].fd_out = tab_pipe[0];
-	if (WIFEXITED(status))
-		*exec->cmd[i].exit = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		*exec->cmd[i].exit = WTERMSIG(status);
 }
 
 void	exec_cmd(t_exec *exec, int i, char **envp, t_env_list *list_var)
