@@ -14,6 +14,7 @@ void	main_env(char **args, t_env_list *list_var)
 			ft_putstr_fd("': No such file or directory\n", 2);
 			return ;
 		}
+		i++;
 	}
 	while (list_var->next)
 	{
