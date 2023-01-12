@@ -7,7 +7,7 @@ void	main_env(char **args, t_env_list *list_var)
 	i = 0;
 	while (args[i] != NULL)
 	{
-		if (ft_strcmp(args[i]))
+		if (ft_strcmp(args[i], "env"))
 		{
 			ft_putstr_fd("env: '", 2);
 			write(2, &args[i], ft_strlen(args[i]));
