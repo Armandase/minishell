@@ -21,6 +21,8 @@ int	len_token(char *str, const char *delim)
 	int	tmp;
 
 	i = 0;
+	if (ft_strlen(str) == 0)
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '\'')
