@@ -4,6 +4,7 @@
 # include "../minishell.h"
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 typedef struct s_exec{
 	t_cmd	*cmd;
@@ -17,5 +18,6 @@ void	exec_cmd(t_exec *exec, int i, char **envp, t_env_list *list_var);
 void	get_cmd_path(char **cmd, char **envp);
 void	print_error(char *error, int exit_code, t_cmd *cmd);
 void	builtins_selection(t_cmd *cmd, t_env_list *list_var);
+void	exit_shell(int signum);
 
 #endif
