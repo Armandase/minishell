@@ -193,6 +193,7 @@ char	**split_token(char const *s, char c, t_cmd *cmd)
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
 		strs[j] = malloc(count_char(s, c, i, &cmd->quote[j]) + 1);
+	//	printf("len du %ld mot :%lu\n", j, count_char(s, c, i, cmd->quote));
 		if (!strs[j])
 			return (0);
 		i = ft_strccpy(s, strs[j], c, i);
