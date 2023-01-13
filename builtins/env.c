@@ -16,7 +16,7 @@ void	main_env(char **args, t_env_list *list_var)
 		}
 		i++;
 	}
-	while (list_var->next)
+	while (list_var)
 	{
 		ft_printf("%s=%s\n", list_var->name, list_var->value);
 		list_var = list_var->next;
