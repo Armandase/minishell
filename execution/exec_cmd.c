@@ -52,13 +52,13 @@ void	apply_execution(t_exec *exec, char **envp, int tab_pipe[2][2])
 
 void	exec_cmd(t_exec *exec, char **envp, t_env_list *list_var, int tab_pipe[2][2])
 {
-	if (ft_strncmp(exec->cmd[exec->i].cmd[0], "echo", 4) == 0
-		|| ft_strncmp(exec->cmd[exec->i].cmd[0], "cd", 2) == 0
-		|| ft_strncmp(exec->cmd[exec->i].cmd[0], "pwd", 3) == 0
-		|| ft_strncmp(exec->cmd[exec->i].cmd[0], "export", 6) == 0
-		|| ft_strncmp(exec->cmd[exec->i].cmd[0], "unset", 5) == 0
-		|| ft_strncmp(exec->cmd[exec->i].cmd[0], "env", 3) == 0
-		|| ft_strncmp(exec->cmd[exec->i].cmd[0], "exit", 4) == 0)
+	if (ft_strcmp(exec->cmd[exec->i].cmd[0], "echo") == 0
+		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "cd") == 0
+		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "pwd") == 0
+		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "export") == 0
+		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "unset") == 0
+		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "env") == 0
+		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "exit") == 0)
 		builtins_selection(&exec->cmd[exec->i], list_var);
 	else
 	{
