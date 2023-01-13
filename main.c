@@ -1,21 +1,5 @@
 #include "minishell.h"
 
-char	*create_prompt(void)
-{
-	int		i;
-	char	*prompt;
-
-	prompt = ft_calloc(1024, 1);
-	if (prompt == NULL)
-		return (NULL);
-	getcwd(prompt, 1024);
-	i = 0;
-	while (prompt[i])
-		i++;
-	prompt[i] = ' ';
-	return (prompt);
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	t_env_list	*list_var;
@@ -28,7 +12,7 @@ int	main(int ac, char **av, char **envp)
 	cmd = NULL;
 	list_var = NULL;
 	list_var = create_env_list(envp);
-	//signal(SIGQUIT, exit_shell);
+	signal(SIGINT, exit_signals);
 	while (1)
 	{
 		prompt = create_prompt();
