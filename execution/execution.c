@@ -4,27 +4,16 @@
 void	waiting_end(t_exec	*exec)
 {
 	int	wstatus;
-	int	i;
 
-	i = 0;
-	while (i < exec->nb_fork)
+	while (exec->nb_fork >= 0)
 	{ 
-		dprintf(2, "fork : %d, value : %d\n", i, exec->tab_pid[3]);
-		waitpid(exec->tab_pid[i], &wstatus, 0);
-		//dprintf(2, "%d done\n", i);
-		/*if (id == -1)
-		{
-			perror("Wait pid error");
-			exit(1);
-		}*/
+		waitpid(exec->tab_pid[exec->nb_fork], &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			*exec->cmd->exit = WEXITSTATUS(wstatus);
 		else if (WIFSIGNALED(wstatus))
 			*exec->cmd->exit = WTERMSIG(wstatus);
-		dprintf(2, "value exit : %d\n", *exec->cmd->exit);
-		i++;
+		exec->nb_fork--;
 	}
-	dprintf(2, "out of waitpid\n");
 }
 
 int	tab_pid_len(t_cmd	*cmd)

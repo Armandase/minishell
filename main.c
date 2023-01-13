@@ -19,9 +19,12 @@ int	main(int ac, char **av, char **envp)
 		line = readline(prompt);
 		free(prompt);
 		if (line == NULL)
-			exit_shell(list_var);	
-		cmd = parsing(line);
-		execution(cmd, envp, list_var);
+			exit_shell(list_var);
+		if (ft_strlen(line) != 0)
+		{
+			cmd = parsing(line);
+			execution(cmd, envp, list_var);
+		}
 		if (line && *line)
 			add_history(line);
 		free(line);
