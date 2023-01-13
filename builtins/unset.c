@@ -1,19 +1,27 @@
 #include "builtins.h"
 
-t_env_list	*main_unset(char *arg_name, t_env_list *list_var)
+void	*main_unset(char **args, t_env_list *list_var)
 {
 	t_env_list	*tmp;
+	int			i;
 
+	i = 1;
 	tmp = list_var;
-	while (tmp->next)
+	while (args[i] != NULL)
 	{
-		if (tmp->next && !ft_strcmp(tmp->next->name, arg_name))
+		while (tmp)
 		{
-			free(tmp->next);
-			if (tmp->next->next)
-				tmp = tmp->next->next;
+			if (tmp->next && !ft_strcmp(tmp->next->name, args[i]))
+			{
+				if (tmp->next->next)
+					tmp = tmp->next->next;
+				free(tmp->next->name);
+				free(tmp->next->value);
+				free(tmp->next);
+			}
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
+		i++;
 	}
 	return (list_var);
 }

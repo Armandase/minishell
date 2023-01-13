@@ -8,7 +8,7 @@ t_env_list	*add_var(t_env_list *list_var, char *name, char *value)
 	tmp = list_var;
 	new_var = ft_calloc(1, sizeof(t_env_list));
 	if (new_var == NULL)
-		return (NULL); //A faire plus propre avec un ft_exit_error
+		return (NULL);
 	new_var->name = name;
 	new_var->value = value;
 	new_var->next = NULL;
@@ -82,7 +82,7 @@ t_env_list	*create_env_list(char **envp)
 		name = extract_name(envp[i]);
 		value = extract_value(envp[i]);
 		if (name == NULL || value == NULL)
-			return (NULL); //A faire plus propre avec un ft_exit_error
+			return (NULL);
 		list_var = add_var(list_var, name, value);
 		i++;
 	}

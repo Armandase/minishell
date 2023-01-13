@@ -8,7 +8,7 @@ char	*export_name(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '=' && str[i + 1] != ' ') 
+		if (str[i] == '=' && str[i + 1] != ' ')
 			break ;
 		i++;
 	}
@@ -47,6 +47,7 @@ char	*export_value(char *str)
 	value = ft_calloc(i + 1, 1);
 	if (value == NULL)
 		return (NULL);
+	j++;
 	i = 0;
 	while (str[j])
 	{
@@ -76,7 +77,7 @@ void	*main_export(char **args, t_env_list *list_var)
 			value = export_value(args[i]);
 			new_var = ft_calloc(1, sizeof(t_env_list));
 			if (new_var == NULL)
-				return (NULL); //A faire plus propre avec un ft_exit_error
+				return (NULL);
 			new_var->name = name;
 			new_var->value = value;
 			new_var->next = NULL;
