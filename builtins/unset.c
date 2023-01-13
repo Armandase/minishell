@@ -2,6 +2,7 @@
 
 void	*main_unset(char **args, t_env_list *list_var)
 {
+	t_env_list	*to_free;
 	t_env_list	*tmp;
 	int			i;
 
@@ -13,11 +14,14 @@ void	*main_unset(char **args, t_env_list *list_var)
 		{
 			if (tmp->next && !ft_strcmp(tmp->next->name, args[i]))
 			{
+				to_free = tmp->next;
 				if (tmp->next->next)
 					tmp = tmp->next->next;
-				free(tmp->next->name);
-				free(tmp->next->value);
-				free(tmp->next);
+				else
+					tmp->next = NULL;
+				free(to_free->name);
+				free(to_free->next->value);
+				free(to_free->next);
 			}
 			tmp = tmp->next;
 		}
