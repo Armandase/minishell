@@ -23,3 +23,18 @@ void	builtins_selection(t_cmd *cmd, t_env_list *list_var)
 	else if (ft_strncmp(cmd->cmd[0], "exit", 4) == 0)
 		ft_printf("in progress");
 }
+
+void	open_pipe(int tab_pipe[2][2], int i)
+{
+	close(tab_pipe[i % 2][1]);
+	close(tab_pipe[i % 2][0]);
+	pipe(tab_pipe[i % 2]);
+}
+
+void	close_pipe(int tab_pipe[2][2])
+{
+	close(tab_pipe[1][1]);
+	close(tab_pipe[1][0]);
+	close(tab_pipe[0][1]);
+	close(tab_pipe[0][0]);
+}

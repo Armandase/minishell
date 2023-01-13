@@ -26,24 +26,9 @@ void	exec_free(t_cmd *cmd)
 	exit(127);
 }
 
-void	open_pipe(int tab_pipe[2][2], int i)
-{
-	close(tab_pipe[i % 2][1]);
-	close(tab_pipe[i % 2][0]);
-	pipe(tab_pipe[i % 2]);
-}
-
-void	close_pipe(int tab_pipe[2][2])
-{
-	close(tab_pipe[1][1]);
-	close(tab_pipe[1][0]);
-	close(tab_pipe[0][1]);
-	close(tab_pipe[0][0]);
-}
-
 void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])
 {
-	int	 ret;
+	int	ret;
 
 	if (exec->i != 0 && exec->cmd[exec->i - 1].token == PIPE)
 		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
@@ -63,7 +48,6 @@ void	apply_execution(t_exec *exec, char **envp, int tab_pipe[2][2])
 		print_error("Fork error", 127, exec->cmd);
 	else if (exec->tab_pid[exec->nb_fork] == 0)
 		inside_fork(exec, envp, tab_pipe);
-
 }
 
 void	exec_cmd(t_exec *exec, char **envp, t_env_list *list_var, int tab_pipe[2][2])

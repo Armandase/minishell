@@ -5,6 +5,7 @@ void	waiting_end(t_exec	*exec)
 {
 	int	wstatus;
 
+	exec->nb_fork--;
 	while (exec->nb_fork >= 0)
 	{ 
 		waitpid(exec->tab_pid[exec->nb_fork], &wstatus, 0);
@@ -57,5 +58,6 @@ void	execution(t_cmd *cmd, char **envp, t_env_list *list_var)
 			exec_cmd(&exec, envp, list_var, tab_pipe);
 		i++;
 	}
+	close_pipe(tab_pipe);
 	waiting_end(&exec);
 }
