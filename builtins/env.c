@@ -2,7 +2,8 @@
 
 void	main_env(char **args, t_env_list *list_var)
 {
-	int	i;
+	t_env_list	*tmp;
+	int			i;
 
 	i = 0;
 	while (args[i] != NULL)
@@ -16,9 +17,10 @@ void	main_env(char **args, t_env_list *list_var)
 		}
 		i++;
 	}
-	while (list_var)
+	tmp = list_var;
+	while (tmp)
 	{
-		ft_printf("%s=%s\n", list_var->name, list_var->value);
-		list_var = list_var->next;
+		ft_printf("%s=%s\n", tmp->name, tmp->value);
+		tmp = tmp->next;
 	}
 }

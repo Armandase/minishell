@@ -55,12 +55,13 @@ char	*export_value(char *str)
 		j++;
 		i++;
 	}
-	value[i] = '\0';
+	value[i] = str[j];
 	return (value);
 }
 
 void	*main_export(char **args, t_env_list *list_var)
 {
+	t_env_list	*tmp;
 	t_env_list	*new_var;
 	char		*name;
 	char		*value;
@@ -83,9 +84,10 @@ void	*main_export(char **args, t_env_list *list_var)
 			new_var->next = NULL;
 			if (list_var == NULL)
 				list_var = new_var;
-			while (list_var->next)
-				list_var = list_var->next;
-			list_var->next = new_var;
+			tmp = list_var;
+			while (tmp->next)
+				tmp = tmp->next;
+			tmp->next = new_var;
 		}
 		i++;
 	}
