@@ -21,5 +21,7 @@ void	builtins_selection(t_cmd *cmd, t_env_list *list_var);
 void	exit_shell(t_env_list *list_var);
 char	*create_prompt(void);
 void	exit_signals(int signum);
+void	open_pipe(int tab_pipe[2][2], int i);
+void	close_pipe(int tab_pipe[2][2]);
 
 #endif
