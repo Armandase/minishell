@@ -4,13 +4,13 @@ void	exit_shell(t_env_list **list_var)
 {
 	t_env_list	*tmp;
 
-	tmp = *list_var;
-	while (tmp != NULL)
+	while (*list_var != NULL)
 	{
-		tmp = tmp->next;
+		tmp = *list_var;
 		free(tmp->name);
 		free(tmp->value);
 		free(tmp);
+		*list_var = (*list_var)->next;
 	}
 	exit(1);
 }

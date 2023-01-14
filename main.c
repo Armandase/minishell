@@ -45,7 +45,8 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (line && *line)
 			add_history(line);
-		free(line);
+		if (line)
+			free(line);
 	}
 	return (0);
 }

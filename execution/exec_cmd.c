@@ -17,7 +17,7 @@ void	open_file(t_exec *exec)
 					O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			if (fd == -1)
 			{
-				print_error("Open file error", 1, exec->cmd);
+				print_error("Error", 1, exec->cmd);
 				fail = 1;
 			}
 			else if (exec->cmd[exec->i].token == OUT)
@@ -25,7 +25,14 @@ void	open_file(t_exec *exec)
 		}
 		exec->i++;
 	}
-	exec->fd_out = fd;
+	if (fail == 0)
+		exec->fd_out = fd;
+	else
+	{
+		exec->fd_out = -1;
+		free(exec->tab_pid);
+		exec_free(exec->cmd);
+	}
 }
 
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2])

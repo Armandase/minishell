@@ -7,7 +7,7 @@ void	exec_free(t_cmd *cmd)
 
 	print_error("Execve error", 127, cmd);
 	i = 0;
-	if (cmd && cmd[i].cmd)
+	if (cmd)
 	{
 		while (cmd[i].cmd != NULL)
 		{
@@ -15,10 +15,14 @@ void	exec_free(t_cmd *cmd)
 			while (cmd[i].cmd[j] != NULL)
 			{
 				free(cmd[i].cmd[j]);
-				if (cmd[i].quote)
+				if (cmd[i].quote != NULL)
+				{
 					free(cmd[i].quote);
+					cmd[i].quote = NULL;
+				}
 				j++;
 			}
+			free(cmd[i].cmd);
 			i++;
 		}
 		free(cmd->exit);

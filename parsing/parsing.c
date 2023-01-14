@@ -90,5 +90,6 @@ t_cmd	*parsing(char *line)
 	nb_token = number_token(current_line);
 	cmd = malloc (sizeof(t_cmd) * (nb_token + 1));
 	get_cmd(cmd, current_line);
+	free(current_line);
 	return (cmd);
 }
