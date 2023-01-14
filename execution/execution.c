@@ -38,7 +38,7 @@ int	tab_pid_len(t_cmd	*cmd)
 	return (ret);
 }
 
-void	execution(t_cmd *cmd, char **envp, t_env_list *list_var)
+void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 {
 	t_exec	exec;
 	int		tab_pipe[2][2];

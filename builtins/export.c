@@ -59,7 +59,7 @@ char	*export_value(char *str)
 	return (value);
 }
 
-void	*main_export(char **args, t_env_list *list_var)
+void	*main_export(char **args, t_env_list **list_var)
 {
 	t_env_list	*tmp;
 	t_env_list	*new_var;
@@ -83,8 +83,8 @@ void	*main_export(char **args, t_env_list *list_var)
 			new_var->value = value;
 			new_var->next = NULL;
 			if (list_var == NULL)
-				list_var = new_var;
-			tmp = list_var;
+				list_var = &new_var;
+			tmp = *list_var;
 			while (tmp->next)
 				tmp = tmp->next;
 			tmp->next = new_var;

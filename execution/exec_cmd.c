@@ -66,7 +66,7 @@ void	apply_execution(t_exec *exec, char **envp, int tab_pipe[2][2])
 		inside_fork(exec, envp, tab_pipe);
 }
 
-void	exec_cmd(t_exec *exec, char **envp, t_env_list *list_var, int tab_pipe[2][2])
+void	exec_cmd(t_exec *exec, char **envp, t_env_list **list_var, int tab_pipe[2][2])
 {
 	if (ft_strcmp(exec->cmd[exec->i].cmd[0], "echo") == 0
 		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "cd") == 0

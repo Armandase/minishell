@@ -1,13 +1,13 @@
 #include "builtins.h"
 
-void	*main_unset(char **args, t_env_list *list_var)
+void	*main_unset(char **args, t_env_list **list_var)
 {
 	t_env_list	*to_free;
 	t_env_list	*tmp;
 	int			i;
 
 	i = 1;
-	tmp = list_var;
+	tmp = *list_var;
 	while (args[i] != NULL)
 	{
 		while (tmp)
