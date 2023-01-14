@@ -1,42 +1,57 @@
 #include "execution.h"
-#include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 
 void	open_file(t_exec *exec)
 {
+	int	fail;
 	int	fd;
+
 	exec->i++;
-	while(exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i].token == OUT)
+	fail = 0;
+	while (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i - 1].token == OUT)
 	{
-		fd = open(exec->cmd[exec->i].cmd[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (fd == -1)
+		if (fail == 0)
 		{
-			print_error("Open file error", 1, exec->cmd);
-			//si fail, continue de parcourrir mais cree pas les files
+			fd = open(exec->cmd[exec->i].cmd[0],
+					O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (fd == -1)
+			{
+				print_error("Open file error", 1, exec->cmd);
+				fail = 1;
+			}
+			else if (exec->cmd[exec->i].token == OUT)
+				close(fd);
 		}
 		exec->i++;
 	}
+	exec->fd_out = fd;
 }
 
-void	dup2_manager(t_exec *exec)
+void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
 {
-	if (exec->cmd[exec->i].token == OUT
+	if (exec->i != 0 && exec->cmd[exec->i - 1].token == PIPE)
+		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
+	if (exec->cmd[exec->i].token == PIPE)
+		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
+	if ((exec->cmd[exec->i].token == OUT
 		&& (exec->i == 0 ||  exec->cmd[exec->i - 1].token == PIPE))
+		|| exec->cmd[exec->i - 1].token == OUT)
 	{
 		open_file(exec);
+		dup2(exec->fd_out, 1);
 	}
 }
 
 void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])
 {
 	int	ret;
+	int	i;
 
-	if (exec->i != 0 && exec->cmd[exec->i - 1].token == PIPE)
-		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
-	if (exec->cmd[exec->i].token == PIPE)
-		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
+	i = exec->i;
+	dup2_manager(exec, tab_pipe);
 	close_pipe(tab_pipe);
-	ret = execve(exec->cmd[exec->i].cmd[0], exec->cmd[exec->i].cmd, envp);
+	ret = execve(exec->cmd[i].cmd[0], exec->cmd[i].cmd, envp);
 	if (ret == -1)
 		exec_free(exec->cmd);
 }
@@ -74,5 +89,6 @@ void	exec_cmd(t_exec *exec, char **envp, t_env_list *list_var, int tab_pipe[2][2
 		}
 		apply_execution(exec, envp, tab_pipe);
 		exec->nb_fork++;
+		//incrementer le compter meme si redirection
 	}
 }

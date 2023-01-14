@@ -65,3 +65,16 @@ void	close_pipe(int tab_pipe[2][2])
 	close(tab_pipe[0][1]);
 	close(tab_pipe[0][0]);
 }
+
+void	redirection_offset(t_exec *exec)
+{
+	if ((exec->cmd[exec->i].token == OUT
+		&& (exec->i == 0 ||  exec->cmd[exec->i - 1].token == PIPE))
+		|| exec->cmd[exec->i - 1].token == OUT)
+	{
+		while (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i - 1].token == OUT)
+		{
+			exec->i++;
+		}
+	}
+}
