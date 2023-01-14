@@ -20,8 +20,8 @@ void	*main_unset(char **args, t_env_list **list_var)
 				else
 					tmp->next = NULL;
 				free(to_free->name);
-				free(to_free->next->value);
-				free(to_free->next);
+				free(to_free->value);
+				free(to_free);
 			}
 			tmp = tmp->next;
 		}
