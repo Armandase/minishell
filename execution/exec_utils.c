@@ -68,13 +68,14 @@ void	close_pipe(int tab_pipe[2][2])
 
 void	redirection_offset(t_exec *exec)
 {
-	if ((exec->cmd[exec->i].token == OUT
-		&& (exec->i == 0 ||  exec->cmd[exec->i - 1].token == PIPE))
-		|| exec->cmd[exec->i - 1].token == OUT)
+	if (exec->cmd[exec->i].cmd != NULL)
 	{
-		while (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i - 1].token == OUT)
+		if ((exec->cmd[exec->i].token == OUT
+			&& (exec->i == 0 ||  exec->cmd[exec->i - 1].token == PIPE))
+			|| exec->cmd[exec->i - 1].token == OUT)
 		{
-			exec->i++;
+			while (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i - 1].token == OUT)
+				exec->i++;
 		}
 	}
 }

@@ -36,7 +36,7 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
 		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
 	if ((exec->cmd[exec->i].token == OUT
 		&& (exec->i == 0 ||  exec->cmd[exec->i - 1].token == PIPE))
-		|| exec->cmd[exec->i - 1].token == OUT)
+		|| (exec->i != 0 && exec->cmd[exec->i - 1].token == OUT))
 	{
 		open_file(exec);
 		dup2(exec->fd_out, 1);
