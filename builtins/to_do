@@ -1,5 +1,3 @@
-pas gerer export 1=str car export de bash gere pas de digit en premiere place dans le nom 
-
 export tout seul doit afficher les agrs dans l'ordre ascii
 et mettre les valeurs des variables entre double quote
 
