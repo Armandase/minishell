@@ -1,5 +1,32 @@
 #include "execution.h"
 
+void	exec_free(t_cmd *cmd)
+{
+	int	i;
+	int	j;
+
+	print_error("Execve error", 127, cmd);
+	i = 0;
+	if (cmd && cmd[i].cmd)
+	{
+		while (cmd[i].cmd != NULL)
+		{
+			j = 0;
+			while (cmd[i].cmd[j] != NULL)
+			{
+				free(cmd[i].cmd[j]);
+				if (cmd[i].quote)
+					free(cmd[i].quote);
+				j++;
+			}
+			i++;
+		}
+		free(cmd->exit);
+	}
+	free(cmd);
+	exit(127);
+}
+
 void	print_error(char *error, int exit_code, t_cmd *cmd)
 {
 	perror(error);

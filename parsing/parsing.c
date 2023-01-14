@@ -79,9 +79,16 @@ t_cmd	*parsing(char *line)
 {
 	int		nb_token;
 	t_cmd	*cmd;
+	char	*current_line;
 
-	nb_token = number_token(line);
+	current_line = ft_strtrim(line, " ");
+	if (ft_strlen(current_line) == 0)
+	{
+		free(current_line);
+		return (NULL);
+	}
+	nb_token = number_token(current_line);
 	cmd = malloc (sizeof(t_cmd) * (nb_token + 1));
-	get_cmd(cmd, line);
+	get_cmd(cmd, current_line);
 	return (cmd);
 }

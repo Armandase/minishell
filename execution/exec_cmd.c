@@ -2,28 +2,29 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	exec_free(t_cmd *cmd)
+void	open_file(t_exec *exec)
 {
-	int	i;
-	int	j;
-
-	print_error("Execve error", 127, cmd);
-	i = 0;
-	while (cmd[i].cmd != NULL)
+	int	fd;
+	exec->i++;
+	while(exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i].token == OUT)
 	{
-		j = 0;
-		while (cmd[i].cmd[j] != NULL)
+		fd = open(exec->cmd[exec->i].cmd[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (fd == -1)
 		{
-			free(cmd[i].cmd[j]);
-			free(cmd[i].quote);
-			j++;
+			print_error("Open file error", 1, exec->cmd);
+			//si fail, continue de parcourrir mais cree pas les files
 		}
-		free(&cmd[i]);
-		i++;
+		exec->i++;
 	}
-	free(cmd->exit);
-	free(cmd);
-	exit(127);
+}
+
+void	dup2_manager(t_exec *exec)
+{
+	if (exec->cmd[exec->i].token == OUT
+		&& (exec->i == 0 ||  exec->cmd[exec->i - 1].token == PIPE))
+	{
+		open_file(exec);
+	}
 }
 
 void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])

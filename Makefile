@@ -11,7 +11,7 @@ SRCS		= main.c\
 
 CC			= gcc
 LIBS        = -Llibft -lft -lreadline
-CFLAGS		= -Wall -Werror -Wextra -g
+CFLAGS		= -Wall -Werror -Wextra -g -gdwarf-4
 OBJS		= ${SRCS:.c=.o}
 
 all: ${NAME}

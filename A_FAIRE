@@ -1,3 +1,2 @@
-leak : echo -n test | tr 't' 'D'
 gerer si > ou < au debut
-gerer sig si que des espaces
+leak si juste . dans le promt, besoin variable global pour le fix
