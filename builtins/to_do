@@ -1,1 +1,2 @@
 export tout seul peut faire apparaitre des variables d'environnement qui ont ete export sans valeurs avant
+seg fault si : unset PATH puis env
