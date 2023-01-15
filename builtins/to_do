@@ -1,4 +1,1 @@
-export tout seul doit afficher les agrs dans l'ordre ascii
-et mettre les valeurs des variables entre double quote
-
-exemple : declare -x A="1"
+export tout seul peut faire apparaitre des variables d'environnement qui ont ete export sans valeurs avant
