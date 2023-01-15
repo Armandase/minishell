@@ -101,6 +101,5 @@ void	exec_cmd(t_exec *exec, char **envp, t_env_list **list_var, int tab_pipe[2][
 		}
 		apply_execution(exec, envp, tab_pipe);
 		exec->nb_fork++;
-		//incrementer le compter meme si redirection
 	}
 }
