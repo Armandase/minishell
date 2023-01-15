@@ -75,7 +75,15 @@ void	cpy_path(char **cmd, char **directory)
 void	get_cmd_path(char **cmd, char **envp)
 {
 	char	**directories;
+	int		i;
 
 	directories = get_path(envp);
 	cpy_path(cmd, directories);
+	i = 0;
+	while (directories[i] != NULL)
+	{
+		free(directories[i]);
+		i++;
+	}
+	free(directories);
 }

@@ -25,7 +25,7 @@ char	*create_prompt(void);
 void	exit_signals(int signum);
 void	open_pipe(int tab_pipe[2][2], int i);
 void	close_pipe(int tab_pipe[2][2]);
-void	exec_free(t_cmd *cmd);
+void	exec_free(t_exec *exec);
 void	redirection_offset(t_exec *exec);
 
 #endif

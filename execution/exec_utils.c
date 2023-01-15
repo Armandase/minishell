@@ -1,40 +1,41 @@
 #include "execution.h"
 
-void	exec_free(t_cmd *cmd)
+void	exec_free(t_exec *exec)
 {
 	int	i;
 	int	j;
 
-	print_error("Execve error", 127, cmd);
+	print_error("Error", 1, NULL);
 	i = 0;
-	if (cmd)
+	if (exec->cmd)
 	{
-		while (cmd[i].cmd != NULL)
+		while (exec->cmd[i].cmd != NULL)
 		{
 			j = 0;
-			while (cmd[i].cmd[j] != NULL)
+			while (exec->cmd[i].cmd[j] != NULL)
 			{
-				free(cmd[i].cmd[j]);
-				if (cmd[i].quote != NULL)
+				free(exec->cmd[i].cmd[j]);
+				if (exec->cmd[i].quote != NULL)
 				{
-					free(cmd[i].quote);
-					cmd[i].quote = NULL;
+					free(exec->cmd[i].quote);
+					exec->cmd[i].quote = NULL;
 				}
 				j++;
 			}
-			free(cmd[i].cmd);
+			free(exec->cmd[i].cmd);
 			i++;
 		}
-		free(cmd->exit);
+		free(exec->cmd->exit);
 	}
-	free(cmd);
+	free(exec->cmd);
 	exit(127);
 }
 
 void	print_error(char *error, int exit_code, t_cmd *cmd)
 {
 	perror(error);
-	*(cmd->exit) = exit_code;
+	if (cmd)
+		*(cmd->exit) = exit_code;
 }
 
 void	builtins_selection(t_cmd *cmd, t_env_list **list_var)

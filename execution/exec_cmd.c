@@ -1,4 +1,5 @@
 #include "execution.h"
+#include <stdio.h>
 
 void	open_file(t_exec *exec)
 {
@@ -20,10 +21,7 @@ void	open_file(t_exec *exec)
 				fd = open(exec->cmd[exec->i].cmd[0],
 						O_WRONLY | O_APPEND | O_CREAT, 0644);
 			if (fd == -1)
-			{
-				print_error("Error", 1, exec->cmd);
 				fail = 1;
-			}
 			else if (exec->cmd[exec->i].token == OUT)
 				close(fd);
 		}
@@ -35,7 +33,7 @@ void	open_file(t_exec *exec)
 	{
 		exec->fd_out = -1;
 		free(exec->tab_pid);
-		exec_free(exec->cmd);
+		exec_free(exec);
 	}
 }
 
@@ -67,7 +65,7 @@ void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])
 	close_pipe(tab_pipe);
 	ret = execve(exec->cmd[i].cmd[0], exec->cmd[i].cmd, envp);
 	if (ret == -1)
-		exec_free(exec->cmd);
+		exec_free(exec);
 }
 
 void	apply_execution(t_exec *exec, char **envp, int tab_pipe[2][2])
