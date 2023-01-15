@@ -32,7 +32,6 @@ void	print_args_ascii(char **env_var, size_t size)
 {
 	int	i;
 
-	//ft_sort_env_var(env_var, size);
 	i = 0;
 	ft_sort_env_var(env_var, size);
 	while (i < (int)size)

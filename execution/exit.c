@@ -17,5 +17,6 @@ void	exit_shell(t_env_list **list_var)
 		}
 		head = head->next;
 	}
+	ft_printf("exit\n");
 	exit(1);
 }

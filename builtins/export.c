@@ -59,7 +59,6 @@ char	*export_value(char *str)
 	return (value);
 }
 
-
 void	*env_export(t_env_list *list_var)
 {
 	t_env_list	*tmp;
@@ -97,7 +96,8 @@ void	*main_export(char **args, t_env_list **list_var)
 	char		*value;
 	int			i;
 
-	if (ft_strlen_2d((const char **)args) == 1 && ft_strcmp(args[0], "export") == 0)
+	if (ft_strlen_2d((const char **)args) == 1
+		&& ft_strcmp(args[0], "export") == 0)
 	{
 		if (env_export(*list_var))
 			return (list_var);
