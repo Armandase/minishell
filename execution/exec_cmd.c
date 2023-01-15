@@ -1,6 +1,4 @@
 #include "execution.h"
-#include <stdio.h>
-#include <unistd.h>
 
 void	open_file(t_exec *exec)
 {
@@ -9,12 +7,18 @@ void	open_file(t_exec *exec)
 
 	exec->i++;
 	fail = 0;
-	while (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i - 1].token == OUT)
+	while (exec->cmd[exec->i].cmd != NULL
+		&& (exec->cmd[exec->i - 1].token == OUT
+			|| exec->cmd[exec->i - 1].token == APPEND))
 	{
 		if (fail == 0)
 		{
-			fd = open(exec->cmd[exec->i].cmd[0],
-					O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (exec->cmd[exec->i - 1].token == OUT)
+				fd = open(exec->cmd[exec->i].cmd[0],
+						O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			else if (exec->cmd[exec->i - 1].token == APPEND)
+				fd = open(exec->cmd[exec->i].cmd[0],
+						O_WRONLY | O_APPEND | O_CREAT, 0644);
 			if (fd == -1)
 			{
 				print_error("Error", 1, exec->cmd);
@@ -41,9 +45,12 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
 		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
 	if (exec->cmd[exec->i].token == PIPE)
 		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
-	if ((exec->cmd[exec->i].token == OUT
-		&& (exec->i == 0 ||  exec->cmd[exec->i - 1].token == PIPE))
-		|| (exec->i != 0 && exec->cmd[exec->i - 1].token == OUT))
+	if (((exec->cmd[exec->i].token == OUT
+				&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
+			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == OUT))
+		|| ((exec->cmd[exec->i].token == APPEND
+				&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
+			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == APPEND)))
 	{
 		open_file(exec);
 		dup2(exec->fd_out, 1);
