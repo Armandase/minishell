@@ -2,15 +2,20 @@
 
 void	exit_shell(t_env_list **list_var)
 {
+	t_env_list	*head;
 	t_env_list	*tmp;
 
-	while (*list_var != NULL)
+	head = *list_var;
+	while (head != NULL)
 	{
-		tmp = *list_var;
-		free(tmp->name);
-		free(tmp->value);
-		free(tmp);
-		*list_var = (*list_var)->next;
+		tmp = head;
+		if (tmp)
+		{
+			free(tmp->name);
+			free(tmp->value);
+			free(tmp);
+		}
+		head = head->next;
 	}
 	exit(1);
 }
