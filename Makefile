@@ -2,6 +2,7 @@ NAME		= minishell
 SRCS		= main.c\
 			  builtins/env.c builtins/pwd.c builtins/export.c builtins/var_env.c\
 			  builtins/unset.c builtins/utils.c builtins/print_args.c builtins/cd.c\
+			  builtins/echo.c\
 			  parsing/parsing.c parsing/strtok_unquote.c \
 			  parsing/parsing_utils.c parsing/split_token.c \
 			  parsing/str_get_token.c \

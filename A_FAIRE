@@ -1,3 +1,4 @@
 gerer si > ou < au debut
 leak si juste . dans le promt, besoin variable global pour le fix
 tab pid leak si un file est pas ouvert
+echo "-n"nn test a changer dans le parsing
