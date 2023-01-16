@@ -12,6 +12,7 @@ typedef struct s_exec{
 	int		*tab_pid;
 	int		nb_fork;
 	int		fd_out;
+	int		fd_in;
 }t_exec;
 
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var);

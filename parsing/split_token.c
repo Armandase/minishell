@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include <stdio.h>
 
 static int	find_next_quote(const char *str, char c)
 {
@@ -156,10 +157,9 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 				str[i] = s[j];
 				i++;
 				j++;
-				while (s[j] && s[j] == '\"')
+				if (s[j] == '\"')
 				{
 					j++;
-					if (!s[j] || s[j] != '\"')
 						break ;
 				}
 			}
@@ -175,6 +175,7 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 		j++;
 	return (j);
 }
+
 
 char	**split_token(char const *s, char c, t_cmd *cmd)
 {
@@ -193,10 +194,11 @@ char	**split_token(char const *s, char c, t_cmd *cmd)
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
 		strs[j] = malloc(count_char(s, c, i, &cmd->quote[j]) + 1);
-	//	printf("len du %ld mot :%lu\n", j, count_char(s, c, i, cmd->quote));
+		printf("len du %ld mot :%lu\n", j, count_char(s, c, i, cmd->quote));
 		if (!strs[j])
 			return (0);
 		i = ft_strccpy(s, strs[j], c, i);
+		printf("value du mot : %s\n\n", strs[j]);
 		j++;
 	}
 	strs[j] = 0;

@@ -31,11 +31,8 @@ char	**env_export(t_env_list *list_var)
 	tmp = list_var;
 	while (tmp != NULL)
 	{
-		line = ft_strjoin(tmp->name, "=\"");
+		line = ft_strjoin(tmp->name, "=");
 		env_var[i] = ft_strjoin(line, tmp->value);
-		free(line);
-		line = env_var[i];
-		env_var[i] = ft_strjoin(line, "\"");
 		free(line);
 		tmp = tmp->next;
 		i++;

@@ -1,12 +1,14 @@
 #include "execution.h"
 #include <stdio.h>
 
-void	open_file(t_exec *exec)
+void	open_output_file(t_exec *exec)
 {
 	int	fail;
 	int	fd;
+	int	i;
 
 	exec->i++;
+	i = exec->i;
 	fail = 0;
 	while (exec->cmd[exec->i].cmd != NULL
 		&& (exec->cmd[exec->i - 1].token == OUT
@@ -35,6 +37,19 @@ void	open_file(t_exec *exec)
 		free(exec->tab_pid);
 		exec_free(exec);
 	}
+	dup2(exec->fd_out, 1);
+	if (i == exec->i)
+		exec_free(exec);
+}
+
+void	open_input_file(t_exec *exec)
+{
+	int fd;
+
+	//while ()
+	(void)fd;
+	(void)exec;
+
 }
 
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
@@ -43,16 +58,18 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
 		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
 	if (exec->cmd[exec->i].token == PIPE)
 		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
+	if (exec->cmd[exec->i].token == HEREDOC || exec->cmd[exec->i].token == IN)
+	{
+		open_input_file(exec);
+		dup2(exec->fd_in, 0);
+	}
 	if (((exec->cmd[exec->i].token == OUT
 				&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
 			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == OUT))
 		|| ((exec->cmd[exec->i].token == APPEND
 				&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
 			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == APPEND)))
-	{
-		open_file(exec);
-		dup2(exec->fd_out, 1);
-	}
+		open_output_file(exec);
 }
 
 void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])

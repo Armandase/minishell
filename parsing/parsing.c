@@ -91,5 +91,19 @@ t_cmd	*parsing(char *line)
 	cmd = malloc (sizeof(t_cmd) * (nb_token + 1));
 	get_cmd(cmd, current_line);
 	free(current_line);
+/*	int i;
+	int j;
+	i=0;
+	while (cmd[i].cmd != NULL)
+	{
+		j=0;
+		while (cmd[i].cmd[j] != NULL)
+		{
+			ft_printf("str : %s\n", cmd[i].cmd[j]);
+			j++;
+		}
+		i++;
+	}
+*/
 	return (cmd);
 }

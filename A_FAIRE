@@ -1,3 +1,5 @@
 gerer si > ou < au debut
 leak si juste . dans le promt, besoin variable global pour le fix
 tab pid leak si un file est pas ouvert
+gerer les erreurs pour les redirections type ls > out ok dois print erreur sur ok
+redireciton avec builtins

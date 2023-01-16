@@ -49,10 +49,10 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 	exec.i = 0;
 	exec.cmd = cmd;
 	exec.fd_out = -1;
+	exec.fd_in = -1;
 	exec.tab_pid = ft_calloc(sizeof(int), tab_pid_len(cmd));
 	while (cmd[exec.i].cmd != NULL)
 	{
-		//if (cmd[i].token == PIPE || cmd[i].token == 0)
 		exec_cmd(&exec, envp, list_var, tab_pipe);
 		exec.i++;
 		redirection_offset(&exec);
