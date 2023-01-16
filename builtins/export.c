@@ -59,33 +59,20 @@ char	*export_value(char *str)
 	return (value);
 }
 
-void	*env_export(t_env_list *list_var)
+void	*export_only(t_env_list *list_var)
 {
-	t_env_list	*tmp;
-	size_t		len;
-	char		**env_var;
-	char		*line;
-	int			i;
+	char	**strs;
+	size_t	len;
 
 	len = env_list_size(list_var);
-	env_var = ft_calloc(sizeof(char *), len + 1);
-	if (env_var == NULL)
-		return (NULL);
-	i = 0;
-	tmp = list_var;
-	while (tmp != NULL)
+	strs = env_export(list_var);
+	if (strs != NULL)
 	{
-		line = ft_strjoin(tmp->name, "=\"");
-		env_var[i] = ft_strjoin(line, tmp->value);
-		free(line);
-		line = env_var[i];
-		env_var[i] = ft_strjoin(line, "\"");
-		free(line);
-		tmp = tmp->next;
-		i++;
+		print_args_ascii(strs, len);
+		return (list_var);
 	}
-	print_args_ascii(env_var, len);
-	return (list_var);
+	else
+		return (NULL);
 }
 
 void	*main_export(char **args, t_env_list **list_var)
@@ -99,7 +86,7 @@ void	*main_export(char **args, t_env_list **list_var)
 	if (ft_strlen_2d((const char **)args) == 1
 		&& ft_strcmp(args[0], "export") == 0)
 	{
-		if (env_export(*list_var))
+		if (export_only(*list_var) != NULL)
 			return (list_var);
 		else
 			return (NULL);

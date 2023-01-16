@@ -39,6 +39,7 @@ int	main(int ac, char **av, char **envp)
 			exit_shell(&list_var);
 		if (ft_strlen(line) != 0)
 		{
+			envp = env_export(list_var);
 			cmd = parsing(line);
 			if (cmd != NULL)
 				execution(cmd, envp, &list_var);
