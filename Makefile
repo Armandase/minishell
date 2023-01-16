@@ -2,7 +2,7 @@ NAME		= minishell
 SRCS		= main.c\
 			  builtins/env.c builtins/pwd.c builtins/export.c builtins/var_env.c\
 			  builtins/unset.c builtins/utils.c builtins/print_args.c builtins/cd.c\
-			  builtins/echo.c\
+			  builtins/echo.c builtins/exit.c\
 			  parsing/parsing.c parsing/strtok_unquote.c \
 			  parsing/parsing_utils.c parsing/split_token.c \
 			  parsing/str_get_token.c \
@@ -26,10 +26,10 @@ $(NAME): ${OBJS}
 	@printf '\x1b[38;2;0;0;255m███▄ ▄███▓ ██▓ ███▄    █  ██▓  ██████  ██░ ██ ▓█████  ██▓     ██▓   \n▓██▒▀█▀ ██▒▓██▒ ██ ▀█   █ ▓██▒▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██▒    ▓██▒    \n▓██    ▓██░▒██▒▓██  ▀█ ██▒▒██▒░ ▓██▄   ▒██▀▀██░▒███   ▒██░    ▒██░    \n▒██    ▒██ ░██░▓██▒  ▐▌██▒░██░  ▒   ██▒░▓█ ░██ ▒▓█  ▄ ▒██░    ▒██░    \n▒██▒   ░██▒░██░▒██░   ▓██░░██░▒██████▒▒░▓█▒░██▓░▒████▒░██████▒░██████▒\n░ ▒░   ░  ░░▓  ░ ▒░   ▒ ▒ ░▓  ▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒░░ ▒░ ░░ ▒░▓  ░░ ▒░▓  ░\n░  ░      ░ ▒ ░░ ░░   ░ ▒░ ▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░\n░      ░    ▒ ░   ░   ░ ░  ▒ ░░  ░  ░   ░  ░░ ░   ░     ░ ░     ░ ░   \n       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░\x1b[0m\n'
 
 clean:
-	rm -f ${OBJS}
+	@rm -f ${OBJS}
 
 fclean : clean
-	rm -f ${NAME}
+	@rm -f ${NAME}
 
 re: fclean all
 

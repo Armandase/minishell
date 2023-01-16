@@ -53,7 +53,7 @@ void	builtins_selection(t_cmd *cmd, t_env_list **list_var)
 	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
 		main_env(cmd->cmd, *list_var);
 	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
-		ft_printf("in progress");
+		main_exit(cmd->cmd, list_var);
 }
 
 void	open_pipe(int tab_pipe[2][2], int i)

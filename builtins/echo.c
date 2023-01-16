@@ -23,12 +23,6 @@ void	main_echo(char **args)
 	int		i;
 	bool	no_newline;		
 
-	int j = 0;
-	while (args[j])
-	{
-		ft_printf("cmd%d = %s\n", j, args[j]);
-			j++;
-	}
 	no_newline = false;
 	if (ft_strlen_2d((const char **)args) == 1)
 	{
