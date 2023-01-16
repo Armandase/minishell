@@ -34,12 +34,13 @@ int	main(int ac, char **av, char **envp)
 	{
 		prompt = create_prompt();
 		line = readline(prompt);
+		if (line)
+			envp = env_export(list_var);
 		free(prompt);
 		if (line == NULL)
-			exit_shell(&list_var);
+			exit_shell(&list_var, envp);
 		if (ft_strlen(line) != 0)
 		{
-			envp = env_export(list_var);
 			cmd = parsing(line);
 			if (cmd != NULL)
 				execution(cmd, envp, &list_var);
