@@ -45,11 +45,37 @@ void	open_output_file(t_exec *exec)
 void	open_input_file(t_exec *exec)
 {
 	int fd;
+	int	fail;
+	int	i;
 
-	//while ()
-	(void)fd;
-	(void)exec;
-
+	fail = 0;
+	exec->i++;
+	i = exec->i;
+	while (exec->cmd[exec->i].cmd != NULL
+		&& (exec->cmd[exec->i - 1].token == IN))
+	{
+		if (fail == 0)
+		{
+			if (exec->cmd[exec->i - 1].token == IN)
+				fd = open(exec->cmd[exec->i].cmd[0], O_RDONLY);
+			if (fd == -1)
+				fail = 1;
+			else if (exec->cmd[exec->i].token == IN)
+				close(fd);
+		}
+		exec->i++;
+	}
+	if (fail == 0)
+		exec->fd_in = fd;
+	else
+	{
+		exec->fd_in = -1;
+		free(exec->tab_pid);
+		exec_free(exec);
+	}
+	dup2(exec->fd_in, 0);
+	if (i == exec->i)
+		exec_free(exec);
 }
 
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
@@ -59,10 +85,7 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
 	if (exec->cmd[exec->i].token == PIPE)
 		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
 	if (exec->cmd[exec->i].token == HEREDOC || exec->cmd[exec->i].token == IN)
-	{
 		open_input_file(exec);
-		dup2(exec->fd_in, 0);
-	}
 	if (((exec->cmd[exec->i].token == OUT
 				&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
 			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == OUT))

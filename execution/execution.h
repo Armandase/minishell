@@ -21,7 +21,7 @@ void	exec_cmd(t_exec *exec,
 void	get_cmd_path(char **cmd, char **envp);
 void	print_error(char *error, int exit_code, t_cmd *cmd);
 void	builtins_selection(t_cmd *cmd, t_env_list **list_var);
-void	exit_shell(t_env_list **list_var);
+void	exit_shell(t_env_list **list_var, char **envp);
 char	*create_prompt(void);
 void	exit_signals(int signum);
 void	open_pipe(int tab_pipe[2][2], int i);

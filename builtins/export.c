@@ -75,6 +75,20 @@ void	*export_only(t_env_list *list_var)
 		return (NULL);
 }
 
+int	check_name(char *name)
+{
+	int	i;
+
+	i = 0;
+	while (name[i])
+	{
+		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	*main_export(char **args, t_env_list **list_var)
 {
 	t_env_list	*tmp;
@@ -98,7 +112,7 @@ void	*main_export(char **args, t_env_list **list_var)
 		{
 			name = NULL;
 			name = export_name(args[i]);
-			if (ft_isdigit(name[0]))
+			if (ft_isdigit(name[0]) || !check_name(name) || name[0] == '-')
 			{
 				ft_putstr_fd("bash: export: `", 2);
 				write(2, args[i], ft_strlen(args[i]));
