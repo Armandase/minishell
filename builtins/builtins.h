@@ -3,8 +3,9 @@
 
 # include "../libft/libft.h"
 # include "struct.h"
-# include <stdbool.h>
 # include <unistd.h>
+# define PWD 0
+# define OLDPWD 1
 
 t_env_list	*create_env_list(char **envp);
 void		main_env(char **args, t_env_list *list_var);

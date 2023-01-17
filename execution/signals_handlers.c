@@ -18,13 +18,18 @@ char	*create_prompt(void)
 
 void	exit_signals(int signum)
 {
-	//const char	reset = 127;
+	char	*prompt;
 
+	prompt = create_prompt();
 	if (signum == SIGINT)
 	{
+		ft_printf("\n%s", prompt);
+		rl_replace_line("", 0);
+		free(prompt);
+		/*
 		rl_replace_line("", 0);
 		ft_printf("\n");
 		rl_on_new_line();
-		//write(0, &reset, 1);
+		*/
 	}
 }

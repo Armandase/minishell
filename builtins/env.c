@@ -20,7 +20,8 @@ void	main_env(char **args, t_env_list *list_var)
 	tmp = list_var;
 	while (tmp)
 	{
-		ft_printf("%s=%s\n", tmp->name, tmp->value);
+		if (tmp->export_only == false)
+			ft_printf("%s=%s\n", tmp->name, tmp->value);
 		tmp = tmp->next;
 	}
 }

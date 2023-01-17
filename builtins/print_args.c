@@ -28,7 +28,6 @@ void	ft_sort_env_var(char **env_var, size_t size)
 	}
 }
 
-
 char	**env_export_create(t_env_list *list_var)
 {
 	t_env_list	*tmp;
@@ -45,14 +44,23 @@ char	**env_export_create(t_env_list *list_var)
 	tmp = list_var;
 	while (tmp != NULL)
 	{
-		line = ft_strjoin(tmp->name, "=\"");
-		env_var[i] = ft_strjoin(line, tmp->value);
-		free(line);
-		line = env_var[i]; 
-		env_var[i] = ft_strjoin(env_var[i], "\"");
-		free(line);
-		tmp = tmp->next;
-		i++;
+		if (tmp->export_only == true)
+		{
+			env_var[i] = ft_strdup(tmp->name);
+			i++;
+			tmp = tmp->next;
+		}
+		else
+		{
+			line = ft_strjoin(tmp->name, "=\"");
+			env_var[i] = ft_strjoin(line, tmp->value);
+			free(line);
+			line = env_var[i];
+			env_var[i] = ft_strjoin(env_var[i], "\"");
+			free(line);
+			tmp = tmp->next;
+			i++;
+		}
 	}
 	return (env_var);
 }

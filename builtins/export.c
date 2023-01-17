@@ -83,11 +83,14 @@ void	*main_export(char **args, t_env_list **list_var)
 
 	if (ft_strlen_2d((const char **)args) == 1
 		&& ft_strcmp(args[0], "export") == 0)
+	{
 		print_args_ascii(*list_var, env_list_size(*list_var));
+		return (list_var);
+	}
 	i = 0;
 	while (args[i])
 	{
-		if (ft_strchr(args[i], '='))
+		if (ft_strcmp(args[i], "export"))
 		{
 			name = NULL;
 			name = export_name(args[i]);
@@ -103,17 +106,21 @@ void	*main_export(char **args, t_env_list **list_var)
 			new_var = ft_calloc(1, sizeof(t_env_list));
 			if (new_var == NULL)
 				return (NULL);
+			if (ft_strchr(args[i], '=') == false)
+				new_var->export_only = true;
+			else
+				new_var->export_only = false;
 			new_var->name = name;
 			new_var->value = value;
 			new_var->next = NULL;
 			tmp = *list_var;
 			while (tmp->next)
 			{
-				if (ft_strcmp(name, tmp->name) == 0)
+				if (ft_strcmp(name, tmp->name) == false)
 					break ;
 				tmp = tmp->next;
 			}
-			if (ft_strcmp(name, tmp->name) == 0)
+			if (ft_strcmp(name, tmp->name) == false)
 			{
 				free(tmp->value);
 				tmp->value = value;
