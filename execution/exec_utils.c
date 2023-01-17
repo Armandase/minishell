@@ -80,11 +80,15 @@ void	redirection_offset(t_exec *exec)
 				|| (exec->i != 0 && exec->cmd[exec->i - 1].token == OUT))
 			|| ((exec->cmd[exec->i].token == APPEND
 					&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
-				|| (exec->i != 0 && exec->cmd[exec->i - 1].token == APPEND)))
+				|| (exec->i != 0 && exec->cmd[exec->i - 1].token == APPEND))
+			|| exec->cmd[exec->i - 1].token == HEREDOC
+			|| exec->cmd[exec->i - 1].token == IN)
 		{
 			while (exec->cmd[exec->i].cmd != NULL
 				&& (exec->cmd[exec->i - 1].token == OUT
-					|| exec->cmd[exec->i - 1].token == APPEND))
+					|| exec->cmd[exec->i - 1].token == APPEND
+					||exec->cmd[exec->i - 1].token == HEREDOC
+					|| exec->cmd[exec->i - 1].token == IN))
 				exec->i++;
 		}
 	}
