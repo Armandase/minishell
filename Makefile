@@ -8,9 +8,9 @@ SRCS		= main.c\
 			  parsing/str_get_token.c \
 			  execution/exec_cmd.c execution/execution.c execution/find_path.c \
 			  execution/exec_utils.c execution/signals_handlers.c\
-			  execution/exit.c\
+			  execution/exit.c execution/heredoc.c\
 
-CC			= gcc
+CC			= clang
 LIBS        = -Llibft -lft -lreadline
 CFLAGS		= -Wall -Werror -Wextra -g -gdwarf-4
 OBJS		= ${SRCS:.c=.o}

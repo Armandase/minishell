@@ -17,6 +17,36 @@ void	waiting_end(t_exec	*exec)
 	}
 }
 
+void	free_struct(t_exec *exec)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	if (exec->cmd)
+	{
+		while (exec->cmd[i].cmd != NULL)
+		{
+			j = 0;
+			while (exec->cmd[i].cmd[j] != NULL)
+			{
+				if (exec->cmd[i].cmd[j])
+					free(exec->cmd[i].cmd[j]);
+				if (exec->cmd[i].quote != NULL)
+				{
+					free(exec->cmd[i].quote);
+					exec->cmd[i].quote = NULL;
+				}
+				j++;
+			}
+			if (exec->cmd[i].cmd)
+				free(exec->cmd[i].cmd);
+			i++;
+		}
+		free(exec->cmd);
+	}
+}
+
 int	tab_pid_len(t_cmd	*cmd)
 {
 	int	i;
@@ -59,4 +89,5 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 	}
 	close_pipe(tab_pipe);
 	waiting_end(&exec);
+	free_struct(&exec);
 }

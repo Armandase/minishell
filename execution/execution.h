@@ -28,5 +28,6 @@ void	open_pipe(int tab_pipe[2][2], int i);
 void	close_pipe(int tab_pipe[2][2]);
 void	exec_free(t_exec *exec);
 void	redirection_offset(t_exec *exec);
+int		heredoc(t_exec *exec);
 
 #endif

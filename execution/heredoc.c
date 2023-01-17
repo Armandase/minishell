@@ -1,4 +1,5 @@
 #include "execution.h"
+#include <stdio.h>
 
 char	*cpy_without_nl(char *buffer)
 {
@@ -19,18 +20,22 @@ char	*cpy_without_nl(char *buffer)
 	return (ret);
 }
 
-void	heredoc(t_exec *exec)
+int	heredoc(t_exec *exec)
 {
 	char	*buf;
 	char	*str;
 	int		fd_buf[2];
+	int		len;
 
 	if (pipe(fd_buf) == -1)
 		perror("Error");
+	ft_printf("> ");
 	buf = get_next_line(0);
 	str = cpy_without_nl(buf);
-	while (ft_strcmp(exec->cmd[exec->i].cmd[0], buf) != 0)
+	len = ft_strlen(exec->cmd[exec->i].cmd[0]) + 1;
+	while (ft_strncmp(exec->cmd[exec->i].cmd[0], str, len) != 0)
 	{
+		ft_printf("> ");
 		ft_putstr_fd(buf, fd_buf[1]);
 		free(buf);
 		buf = get_next_line(0);
@@ -41,4 +46,5 @@ void	heredoc(t_exec *exec)
 	exec->fd_in = fd_buf[0];
 	close(fd_buf[1]);
 	free(buf);
+	return (fd_buf[0]);
 }
