@@ -52,12 +52,15 @@ void	open_input_file(t_exec *exec)
 	exec->i++;
 	i = exec->i;
 	while (exec->cmd[exec->i].cmd != NULL
-		&& (exec->cmd[exec->i - 1].token == IN))
+		&& (exec->cmd[exec->i - 1].token == IN
+			|| exec->cmd[exec->i - 1].token == HEREDOC))
 	{
 		if (fail == 0)
 		{
 			if (exec->cmd[exec->i - 1].token == IN)
 				fd = open(exec->cmd[exec->i].cmd[0], O_RDONLY);
+			if (exec->cmd[exec->i - 1].token == HEREDOC)
+				fd = heredoc(exec);
 			if (fd == -1)
 				fail = 1;
 			else if (exec->cmd[exec->i].token == IN)
