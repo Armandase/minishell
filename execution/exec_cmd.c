@@ -88,14 +88,23 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2])
 	if (exec->cmd[exec->i].token == PIPE)
 		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
 	if (exec->cmd[exec->i].token == HEREDOC || exec->cmd[exec->i].token == IN)
+	{
 		open_input_file(exec);
-	if (((exec->cmd[exec->i].token == OUT
+		dup2(tab_pipe[(exec->nb_fork - 1) % 2][1], exec->fd_in);
+		//dup2(exec->fd_in, 0);
+	}
+	if (exec->cmd[exec->i].token == OUT || exec->cmd[exec->i].token == APPEND)
+/*	if (((exec->cmd[exec->i].token == OUT
 				&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
 			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == OUT))
 		|| ((exec->cmd[exec->i].token == APPEND
 				&& (exec->i == 0 || exec->cmd[exec->i - 1].token == PIPE))
-			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == APPEND)))
+			|| (exec->i != 0 && exec->cmd[exec->i - 1].token == APPEND)))*/
+	{
 		open_output_file(exec);
+		if (exec->i != 0 && exec->cmd[exec->i - 1].token == PIPE)
+			dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], exec->fd_out);
+	}
 }
 
 void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])
