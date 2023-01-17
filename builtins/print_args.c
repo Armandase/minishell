@@ -28,11 +28,42 @@ void	ft_sort_env_var(char **env_var, size_t size)
 	}
 }
 
-void	print_args_ascii(char **env_var, size_t size)
+
+char	**env_export_create(t_env_list *list_var)
 {
-	int	i;
+	t_env_list	*tmp;
+	size_t		len;
+	char		**env_var;
+	char		*line;
+	int			i;
+
+	len = env_list_size(list_var);
+	env_var = ft_calloc(sizeof(char *), len + 1);
+	if (env_var == NULL)
+		return (NULL);
+	i = 0;
+	tmp = list_var;
+	while (tmp != NULL)
+	{
+		line = ft_strjoin(tmp->name, "=\"");
+		env_var[i] = ft_strjoin(line, tmp->value);
+		free(line);
+		line = env_var[i]; 
+		env_var[i] = ft_strjoin(env_var[i], "\"");
+		free(line);
+		tmp = tmp->next;
+		i++;
+	}
+	return (env_var);
+}
+
+void	print_args_ascii(t_env_list *list_var, size_t size)
+{
+	char	**env_var;
+	int		i;
 
 	i = 0;
+	env_var = env_export_create(list_var);
 	ft_sort_env_var(env_var, size);
 	while (i < (int)size)
 	{
@@ -41,6 +72,5 @@ void	print_args_ascii(char **env_var, size_t size)
 		free(env_var[i]);
 		i++;
 	}
-	free(env_var[i]);
 	free(env_var);
 }

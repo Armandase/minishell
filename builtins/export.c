@@ -59,22 +59,6 @@ char	*export_value(char *str)
 	return (value);
 }
 
-void	*export_only(t_env_list *list_var)
-{
-	char	**strs;
-	size_t	len;
-
-	len = env_list_size(list_var);
-	strs = env_export(list_var);
-	if (strs != NULL)
-	{
-		print_args_ascii(strs, len);
-		return (list_var);
-	}
-	else
-		return (NULL);
-}
-
 int	check_name(char *name)
 {
 	int	i;
@@ -99,12 +83,7 @@ void	*main_export(char **args, t_env_list **list_var)
 
 	if (ft_strlen_2d((const char **)args) == 1
 		&& ft_strcmp(args[0], "export") == 0)
-	{
-		if (export_only(*list_var) != NULL)
-			return (list_var);
-		else
-			return (NULL);
-	}
+		print_args_ascii(*list_var, env_list_size(*list_var));
 	i = 0;
 	while (args[i])
 	{

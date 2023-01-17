@@ -34,8 +34,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		prompt = create_prompt();
 		line = readline(prompt);
-		if (line)
-			envp = env_export(list_var);
+		envp = env_export(list_var);
 		free(prompt);
 		if (line == NULL)
 			exit_shell(&list_var, envp);
@@ -49,6 +48,8 @@ int	main(int ac, char **av, char **envp)
 			add_history(line);
 		if (line)
 			free(line);
+		if (envp)
+			ft_free_strs(envp);
 	}
 	return (0);
 }

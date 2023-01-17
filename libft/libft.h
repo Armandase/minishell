@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:42:11 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/14 19:28:42 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/17 11:12:50 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ void	ft_putfstr(char *s, size_t *ret);
 char	*ft_strcpy(char *str);
 char	*ft_strncpy(char *dest, const char *src, unsigned int n);
 char	*ft_strtok(char *str, const char *delim);
+void	ft_free_strs(char **strs);
 
 #endif
