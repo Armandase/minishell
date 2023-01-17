@@ -43,6 +43,8 @@ void	free_struct(t_exec *exec)
 				free(exec->cmd[i].cmd);
 			i++;
 		}
+		if (exec->cmd->exit)
+			free(exec->cmd->exit);
 		free(exec->cmd);
 	}
 }
@@ -90,4 +92,5 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 	close_pipe(tab_pipe);
 	waiting_end(&exec);
 	free_struct(&exec);
+	free(exec.tab_pid);
 }
