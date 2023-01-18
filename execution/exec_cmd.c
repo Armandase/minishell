@@ -1,47 +1,5 @@
 #include "execution.h"
 #include <stdio.h>
-/*
-void	open_output_file(t_exec *exec)
-{
-	int	fail;
-	int	fd;
-	int	i;
-
-	exec->i++;
-	i = exec->i;
-	fail = 0;
-	while (exec->cmd[exec->i].cmd != NULL
-		&& (exec->cmd[exec->i - 1].token == OUT
-			|| exec->cmd[exec->i - 1].token == APPEND))
-	{
-		if (fail == 0)
-		{
-			if (exec->cmd[exec->i - 1].token == OUT)
-				fd = open(exec->cmd[exec->i].cmd[0],
-						O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			else if (exec->cmd[exec->i - 1].token == APPEND)
-				fd = open(exec->cmd[exec->i].cmd[0],
-						O_WRONLY | O_APPEND | O_CREAT, 0644);
-			if (fd == -1)
-				fail = 1;
-			else if (exec->cmd[exec->i].token == OUT)
-				close(fd);
-		}
-		exec->i++;
-	}
-	if (fail == 0)
-		exec->fd_out = fd;
-	else
-	{
-		exec->fd_out = -1;
-		free(exec->tab_pid);
-		exec_free(exec);
-	}
-	dup2(exec->fd_out, 1);
-	if (i == exec->i)
-		exec_free(exec);
-}
-*/
 void	open_input_file(t_exec *exec)
 {
 	int in;
@@ -129,28 +87,10 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], int i)
 		|| exec->cmd[exec->i].token == OUT
 		|| exec->cmd[exec->i].token == APPEND)
 		open_input_file(exec);
-	/*
-	if (exec->i != 0 && exec->cmd[exec->i - 1].token == PIPE)
-		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
-	else if (exec->i != 0 && (exec->cmd[exec->i - 1].token != IN 
-			&& exec->cmd[exec->i - 1].token != HEREDOC))
-		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
-	if (exec->cmd[exec->i].token == PIPE
-			&& (exec->cmd[exec->i - 1].token != OUT
-			|| exec->cmd[exec->i - 1].token != APPEND))
-		dup2(tab_pipe[exec->nb_fork% 2][1], 1);
-		*/
 	if (exec->i != 0 && exec->cmd[i - 1].token == PIPE)
-	{
-		dup2(tab_pipe[i - 1 % 2][0], 0);
-		dprintf(2, "%s : lis pipe au lieu de stdin\n", exec->cmd[i - 1].cmd[0]);
-	}
+		dup2(tab_pipe[exec->nb_fork - 1 % 2][0], 0);
 	if (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i].token == PIPE)
 		dup2(tab_pipe[exec->i % 2][1], 1);
-	//if (exec->fd_in != -1 && exec->fd_in != -2)
-	//	close(exec->fd_in);
-	//if (exec->fd_out != -1 && exec->fd_out != -2)
-	//	close(exec->fd_out);
 }
 
 void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])

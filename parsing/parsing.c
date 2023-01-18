@@ -30,6 +30,7 @@ void	add_exit_addr(t_cmd *cmd)
 
 	i = 0;
 	exit = ft_calloc(1, sizeof(int));
+	*exit = 0;
 	while (cmd[i].cmd != NULL)
 	{
 		cmd[i].exit = exit;
@@ -70,11 +71,22 @@ void	get_cmd(t_cmd *cmd, char *line)
 	add_exit_addr(cmd);
 }
 
+int	check_char(char c)
+{
+	if (c == '|'
+		|| c == '>'
+		|| c == '<')
+		return (1);
+	else
+		return (0);
+}
+
 /********************************************************/
 /*	Parsing:											*/
 /*	  separe la ligne avec delimiteurs(become tokens)	*/
 /*	  split ces tokens par les espaces (cmd & arg)		*/
 /********************************************************/
+
 t_cmd	*parsing(char *line)
 {
 	int		nb_token;
@@ -87,22 +99,15 @@ t_cmd	*parsing(char *line)
 		free(current_line);
 		return (NULL);
 	}
+	if ((check_char(current_line[0]) == 1 && ft_strlen(current_line) == 1)
+		|| check_char(current_line[ft_strlen(current_line) - 1]) == 1)
+	{
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+		return (NULL);
+	}
 	nb_token = number_token(current_line);
 	cmd = malloc (sizeof(t_cmd) * (nb_token + 1));
 	get_cmd(cmd, current_line);
 	free(current_line);
-	/*int i;
-	int j;
-	i=0;
-	while (cmd[i].cmd != NULL)
-	{
-		j=0;
-		while (cmd[i].cmd[j] != NULL)
-		{
-			j++;
-		}
-		ft_printf("cmd: %d -> str: %s\n", i, cmd[i].cmd[0]);
-		i++;
-	}*/
 	return (cmd);
 }
