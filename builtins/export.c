@@ -5,8 +5,7 @@ char	*export_name(char *str)
 	char	*name;
 	int		i;
 
-	i = 0;
-	while (str[i])
+	i = 0; while (str[i])
 	{
 		if (str[i] == '=' && str[i + 1] != ' ')
 			break ;
@@ -90,7 +89,7 @@ void	*main_export(char **args, t_env_list **list_var)
 	i = 0;
 	while (args[i])
 	{
-		if (ft_strcmp(args[i], "export"))
+		while (ft_strcmp(args[i], "export"))
 		{
 			name = NULL;
 			name = export_name(args[i]);
@@ -107,10 +106,15 @@ void	*main_export(char **args, t_env_list **list_var)
 			if (new_var == NULL)
 				return (NULL);
 			if (ft_strchr(args[i], '=') == false)
+			{
 				new_var->export_only = true;
+				if (search_var(name, list_var) == true)
+					break ;
+			}
 			else
 				new_var->export_only = false;
-			new_var->name = name;
+			if (search_var(name, list_var) == false)
+				new_var->name = name;
 			new_var->value = value;
 			new_var->next = NULL;
 			tmp = *list_var;
@@ -120,7 +124,7 @@ void	*main_export(char **args, t_env_list **list_var)
 					break ;
 				tmp = tmp->next;
 			}
-			if (ft_strcmp(name, tmp->name) == false)
+			if (ft_strcmp(name, tmp->name) == false && search_var(name, list_var) == false)
 			{
 				free(tmp->value);
 				tmp->value = value;
@@ -128,6 +132,7 @@ void	*main_export(char **args, t_env_list **list_var)
 			}
 			else
 				tmp->next = new_var;
+			break ;
 		}
 		i++;
 	}
