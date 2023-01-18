@@ -7,18 +7,17 @@ void	*main_unset(char **args, t_env_list **list_var)
 	int			i;
 
 	i = 1;
-	tmp = *list_var;
 	while (args[i] != NULL)
 	{
+		tmp = *list_var;
 		while (tmp)
 		{
 			if (tmp->next && !ft_strcmp(tmp->next->name, args[i]))
 			{
 				to_free = tmp->next;
-				if (tmp->next->next)
-					tmp = tmp->next->next;
-				else
-					tmp->next = NULL;
+				tmp->next = NULL;
+				if (to_free->next)
+					tmp->next = to_free->next;
 				free(to_free->name);
 				free(to_free->value);
 				free(to_free);

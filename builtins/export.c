@@ -102,6 +102,11 @@ void	*main_export(char **args, t_env_list **list_var)
 			}
 			value = NULL;
 			value = export_value(args[i]);
+			if (search_var(name, list_var) == true)
+			{
+				search_replace_var(name, value, list_var);
+				break ;
+			}
 			new_var = ft_calloc(1, sizeof(t_env_list));
 			if (new_var == NULL)
 				return (NULL);
