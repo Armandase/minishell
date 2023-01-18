@@ -61,15 +61,31 @@ void	open_input_file(t_exec *exec)
 		if (fail == 0)
 		{
 			if (exec->cmd[exec->i - 1].token == IN)
+			{
 				in = open(exec->cmd[exec->i].cmd[0], O_RDONLY);
+				exec->fd_in = in;
+				dup2(exec->fd_in, 0);
+			}
 			else if (exec->cmd[exec->i - 1].token == HEREDOC)
+			{
 				in = heredoc(exec);
+				exec->fd_in = in;
+				dup2(exec->fd_in, 0);
+			}
 			else if (exec->cmd[exec->i - 1].token == OUT)
+			{
 				out = open(exec->cmd[exec->i].cmd[0],
 						O_WRONLY | O_TRUNC | O_CREAT, 0644);
+				exec->fd_out = out;
+				dup2(exec->fd_out, 1);
+			}
 			else if (exec->cmd[exec->i - 1].token == APPEND)
+			{
 				out = open(exec->cmd[exec->i].cmd[0],
 						O_WRONLY | O_APPEND | O_CREAT, 0644);
+				exec->fd_out = out;
+				dup2(exec->fd_out, 1);
+			}
 			if (in == -1 || out == -1)
 				fail = 1;
 			else if (exec->cmd[exec->i].token == IN || exec->cmd[exec->i].token == HEREDOC)
@@ -79,6 +95,7 @@ void	open_input_file(t_exec *exec)
 		}
 		exec->i++;
 	}
+	/*
 	if (fail == 0 && in != -2 && out == -2)
 	{
 		exec->fd_in = in;
@@ -95,7 +112,7 @@ void	open_input_file(t_exec *exec)
 		exec->fd_out = out;
 		dup2(exec->fd_in, 0);
 		dup2(exec->fd_out, 1);
-	}
+	}*/
 	if (fail == 1)
 	{
 		exec->fd_in = -1;
@@ -124,9 +141,16 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], int i)
 		dup2(tab_pipe[exec->nb_fork% 2][1], 1);
 		*/
 	if (exec->i != 0 && exec->cmd[i - 1].token == PIPE)
+	{
 		dup2(tab_pipe[i - 1 % 2][0], 0);
-	if (exec->cmd[exec->i].token == PIPE)
+		dprintf(2, "%s : lis pipe au lieu de stdin\n", exec->cmd[i - 1].cmd[0]);
+	}
+	if (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i].token == PIPE)
 		dup2(tab_pipe[exec->i % 2][1], 1);
+	//if (exec->fd_in != -1 && exec->fd_in != -2)
+	//	close(exec->fd_in);
+	//if (exec->fd_out != -1 && exec->fd_out != -2)
+	//	close(exec->fd_out);
 }
 
 void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])
@@ -149,10 +173,7 @@ void	apply_execution(t_exec *exec, char **envp, int tab_pipe[2][2])
 	if (exec->tab_pid[exec->nb_fork] == -1)
 		print_error("Fork error", 127, exec->cmd);
 	else if (exec->tab_pid[exec->nb_fork] == 0)
-	{
-		dprintf(2, "newfork for %s\n", exec->cmd[exec->i].cmd[0]);
 		inside_fork(exec, envp, tab_pipe);
-	}
 }
 
 void	exec_cmd(t_exec *exec, char **envp, t_env_list **list_var, int tab_pipe[2][2])

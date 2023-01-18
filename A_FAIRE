@@ -7,3 +7,4 @@ redireciton avec builtins
 =======
 echo "-n"nn test a changer dans le parsing
 >>>>>>> f797363ddfaadccadf61ffa13c8b3bf13b4ed808
+ls | tr 'm' 'M' > out | wc -l
