@@ -19,5 +19,5 @@ void	exit_shell(t_env_list **list_var, char **envp)
 		}
 	}
 	ft_printf("exit\n");
-	exit(1);
+	exit(0);
 }
