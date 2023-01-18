@@ -39,3 +39,17 @@ char	**env_export(t_env_list *list_var)
 	}
 	return (env_var);
 }
+
+bool	search_var(char *var, t_env_list **list_var)
+{
+	t_env_list	*tmp;
+
+	tmp = *list_var;
+	while (tmp->next)
+	{
+		if (ft_strcmp(var, tmp->name) == false)
+			return (true);
+		tmp = tmp->next;
+	}
+	return (false);
+}
