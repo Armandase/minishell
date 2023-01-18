@@ -185,9 +185,9 @@ char	**split_token(char const *s, char c, t_cmd *cmd)
 	if (!s)
 		return (0);
 	strs = malloc(sizeof(char *) * (count_word(s, c) + 1));
-	cmd->quote = malloc(sizeof(int) * count_word(s, c) + 1);
 	if (strs == NULL)
 		return (0);
+	cmd->quote = malloc(sizeof(int) * count_word(s, c) + 1);
 	i = 0;
 	j = 0;
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
