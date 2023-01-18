@@ -141,10 +141,7 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], int i)
 		dup2(tab_pipe[exec->nb_fork% 2][1], 1);
 		*/
 	if (exec->i != 0 && exec->cmd[i - 1].token == PIPE)
-	{
-		dup2(tab_pipe[i - 1 % 2][0], 0);
-		dprintf(2, "%s : lis pipe au lieu de stdin\n", exec->cmd[i - 1].cmd[0]);
-	}
+		dup2(tab_pipe[exec->nb_fork - 1 % 2][0], 0);
 	if (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i].token == PIPE)
 		dup2(tab_pipe[exec->i % 2][1], 1);
 	//if (exec->fd_in != -1 && exec->fd_in != -2)
