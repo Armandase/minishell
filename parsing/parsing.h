@@ -8,6 +8,7 @@
 # define APPEND 3
 # define HEREDOC 4
 # define PIPE 5
+# define FLAG 6
 
 typedef struct s_cmd{
 	char	**cmd;

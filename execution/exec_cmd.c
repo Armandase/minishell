@@ -100,6 +100,8 @@ void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])
 
 	i = exec->i;
 	dup2_manager(exec, tab_pipe, i);
+	if (exec->cmd[i - 1].token == FLAG)
+		i = exec->i;
 	close_pipe(tab_pipe);
 	ret = execve(exec->cmd[i].cmd[0], exec->cmd[i].cmd, envp);
 	if (ret == -1)
@@ -128,13 +130,16 @@ void	exec_cmd(t_exec *exec, char **envp, t_env_list **list_var, int tab_pipe[2][
 		builtins_selection(&exec->cmd[exec->i], list_var);
 	else
 	{
-		if (access(exec->cmd[exec->i].cmd[0], X_OK) != 0)
+		if (exec->cmd[exec->i].cmd[0][0] != FLAG)
 		{
-			get_cmd_path(&exec->cmd[exec->i].cmd[0], envp);
-			if (exec->cmd[exec->i].cmd[0] == NULL)
+			if (access(exec->cmd[exec->i].cmd[0], X_OK) != 0)
 			{
-				print_error("Command not found", 127, exec->cmd);
-				return ;
+				get_cmd_path(&exec->cmd[exec->i].cmd[0], envp);
+				if (exec->cmd[exec->i].cmd[0] == NULL)
+				{
+					print_error("Command not found", 127, exec->cmd);
+					return ;
+				}
 			}
 		}
 		apply_execution(exec, envp, tab_pipe);
