@@ -41,23 +41,26 @@ bool	search_file_name(char *file_name, char *wildcard)
 
 	i = 0;
 	j = 0;
+	if (file_name[0] == '.' && wildcard[0] != '.')
+		return (false);
 	while (file_name[i])
 	{
-		while (wildcard[j] && file_name[i]
-			&& wildcard[j] == file_name[i] && wildcard[j] != '*')
+		while (wildcard[j] && file_name[i] && wildcard[j] == file_name[i])
 		{
+			if (wildcard[j] == '*')
+				break ;
 			i++;
 			j++;
 		}
-		if (wildcard[j] != file_name[i] && (wildcard[j] != '*' && j != 0))
+		if (wildcard[j] != file_name[i] && (wildcard[j] != '*' && j == 0))
 			return (false);
 		else
 		{
-			while (wildcard[j] && wildcard[j] == '*')
+			while (wildcard[j] == '*' && wildcard[j + 1])
 				j++;
 			while (wildcard[j] && file_name[i] && wildcard[j] != file_name[i])
 				i++;
-			if (file_name[i] == '\0' && wildcard[j])
+			if (file_name[i] == '\0' && wildcard[j] != '*' && wildcard[j] != file_name[i])
 				return (false);
 		}
 	}
