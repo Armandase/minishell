@@ -43,13 +43,33 @@ char	**env_export(t_env_list *list_var)
 bool	search_var(char *var, t_env_list **list_var)
 {
 	t_env_list	*tmp;
+	int			i;
 
 	tmp = *list_var;
-	while (tmp->next)
+	i = 0;
+	while (tmp)
 	{
 		if (ft_strcmp(var, tmp->name) == false)
 			return (true);
 		tmp = tmp->next;
+		i++;
 	}
 	return (false);
+}
+
+void	search_replace_var(char *name, char *value, t_env_list **list_var)
+{
+	t_env_list	*tmp;
+
+	tmp = *list_var;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->name, name) == false)
+		{
+			free(tmp->value);
+			tmp->value = value;
+			tmp->export_only = false;
+		}
+		tmp = tmp->next;
+	}
 }

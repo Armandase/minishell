@@ -19,5 +19,6 @@ void		print_args_ascii(t_env_list *list_var, size_t size);
 size_t		env_list_size(t_env_list *list_var);
 char		**env_export(t_env_list *list_var);
 bool		search_var(char *var, t_env_list **list_var);
+void		search_replace_var(char *name, char *value, t_env_list **list_var);
 
 #endif
