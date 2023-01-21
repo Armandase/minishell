@@ -1,58 +1,17 @@
 #include "parsing.h"
-#include <stdlib.h>
+#include <stdio.h>
 
-/********************************************/
-/*	Compte le nombre de delimiteur			*/
-/*	sauf ceux entre quote					*/
-/********************************************/
-
-int	number_token(char *line)
+void	begin_offset(t_cmd **cmd, char *line)
 {
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = strtok_unquote(line, ">|<");
-	i++;
-	while (tmp != NULL)
-	{
-		free(tmp);
-		tmp = strtok_unquote(NULL, ">|<");
-		i++;
-	}
-	return (i);
-}
-
-void	add_exit_addr(t_cmd *cmd)
-{
-	int	i;
-	int	*exit;
-
-	i = 0;
-	exit = ft_calloc(1, sizeof(int));
-	*exit = 0;
-	while (cmd[i].cmd != NULL)
-	{
-		cmd[i].exit = exit;
-		i++;
-	}
-}
-
-void	begin_offset(t_cmd *cmd, char *line)
-{
+	*cmd = list_new(NULL, NULL);
 	if (line[0] && line[0] == '<' && line[1] && line[1] == '<')
-		cmd[0].token = HEREDOC;
+		(*cmd)->token = HEREDOC;
 	else if (line[0] && line[0] == '>' && line[1] && line[1] == '>')
-		cmd[0].token = APPEND;
+		(*cmd)->token = APPEND;
 	else if (line[0] && line[0] == '>')
-		cmd[0].token = OUT;
+		(*cmd)->token = OUT;
 	else if (line[0] && line[0] == '<')
-		cmd[0].token = IN;
-	cmd[0].cmd = malloc(sizeof(char **) * 2);
-	cmd[0].cmd[0] = malloc(sizeof(char *) * 2);
-	cmd[0].cmd[0][0] = FLAG;
-	cmd[0].cmd[0][1] = '\0';
-	cmd[0].cmd[1] = NULL;
+		(*cmd)->token = IN;
 }
 
 /********************************************************/
@@ -62,21 +21,32 @@ void	begin_offset(t_cmd *cmd, char *line)
 /*	assigne le delim qui a cut le token a cmd id		*/
 /********************************************************/
 
-void	get_cmd(t_cmd *cmd, char *line)
+t_cmd	*get_cmd(char *line)
 {
-	int		i;
+	t_cmd	*cmd;
 	t_token	*token;
 
-	i = 0;
+	cmd = NULL;
 	if (line[0] && (line[0] == '<' || line[0] == '>'))
 	{
-		begin_offset(cmd, line);
-		i++;
+		begin_offset(&cmd, line);
+		if (line[0] && line[1] && ((line[0] == '<' && line[1] == '<')
+				|| (line[0] == '>' && line[1] == '>')))
+			line += 2;
+		else if (line[0] && (line[0] == '>' || line[0] == '<'))
+			line++;
+		token = str_get_token(line, ">|<");
+		cmd->next = list_new(split_token(token->line, ' '), cmd);
+		cmd = cmd->next;
 	}
-	token = str_get_token(line, ">|<");
-	cmd[i].cmd = split_token(token->line, ' ', &cmd[i]);
-	cmd[i].token = token->id;
-	i++;
+	else
+	{
+		token = str_get_token(line, ">|<");
+		cmd = list_new(split_token(token->line, ' '), NULL);
+	}
+	cmd->next = list_new(NULL, cmd);
+	cmd = cmd->next ;
+	cmd->token = token->id;
 	while (token->line != NULL)
 	{
 		free(token->line);
@@ -84,14 +54,22 @@ void	get_cmd(t_cmd *cmd, char *line)
 		token = str_get_token(NULL, ">|<");
 		if (token->line == NULL)
 			break ;
-		cmd[i].cmd = split_token(token->line, ' ', &cmd[i]);
-		cmd[i].token = token->id;
-		i++;
+		cmd->next = list_new(split_token(token->line, ' '), cmd);
+		cmd = cmd->next ;
+		cmd->next = list_new(NULL, cmd);
+		cmd = cmd->next ;
+		cmd->token = token->id;
 	}
 	free(token);
-	cmd[i].cmd = NULL;
-	add_exit_addr(cmd);
+	while (cmd->prev != NULL)
+		cmd = cmd->prev;
+	return (cmd);
 }
+
+/********************************************************/
+/*	Check if there are some delim						*/
+/*	at the beginning or the at end of the line			*/
+/********************************************************/		
 
 int	check_char(char c)
 {
@@ -103,25 +81,16 @@ int	check_char(char c)
 		return (0);
 }
 
-int	first_token_offset(char *line)
-{
-	if (line[0]
-		&& (line[0] == '>' || line[0] == '<'))
-		return (1);
-	else
-		return (0);
-}
-
 /********************************************************/
 /*	Parsing:											*/
 /*	  separe la ligne avec delimiteurs(become tokens)	*/
 /*	  split ces tokens par les espaces (cmd & arg)		*/
 /********************************************************/
 
+#include <stdio.h>
 t_cmd	*parsing(char *line)
 {
-	int		nb_token;
-	t_cmd	*cmd;
+	t_cmd	*begin;
 	char	*current_line;
 
 	current_line = ft_strtrim(line, " ");
@@ -130,15 +99,47 @@ t_cmd	*parsing(char *line)
 		free(current_line);
 		return (NULL);
 	}
-	if ((check_char(current_line[0]) == 1 && (ft_strlen(current_line) == 1 || current_line[0] == '|'))
+	if ((check_char(current_line[0]) == 1
+			&& (ft_strlen(current_line) == 1 || current_line[0] == '|'))
 		|| check_char(current_line[ft_strlen(current_line) - 1]) == 1)
 	{
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (NULL);
 	}
-	nb_token = number_token(current_line);
-	cmd = malloc (sizeof(t_cmd) * (nb_token + first_token_offset(current_line) + 1));
-	get_cmd(cmd, current_line);
+	begin = get_cmd(current_line);
+	while (begin->next)
+	{
+		if (begin->token == 0 && begin->prev && begin->prev->token != 0 && begin->prev->token != PIPE)
+			begin->token = FILES;
+		begin = begin->next;
+	}
+	while (begin->prev != NULL)
+		begin = begin->prev;
+	while (begin->next)
+	{
+		if (begin->token == 0)
+			begin->token = CMD;
+		begin = begin->next;
+	}
+	while (begin->prev != NULL)
+		begin = begin->prev;
 	free(current_line);
-	return (cmd);
+	/*t_cmd	*tmp;
+	tmp = begin;
+	while (tmp)
+	{
+		int	i = 0;
+		if (tmp->cmd != NULL)
+		{
+			while (tmp->cmd[i] != NULL)
+			{
+				printf("cmd[%d] = %s token : %d\n", i, tmp->cmd[i], tmp->token);
+				i++;
+			}
+		}
+		else
+			printf("token : %d\n", tmp->token);
+		tmp = tmp->next;
+	}*/
+	return (begin);
 }

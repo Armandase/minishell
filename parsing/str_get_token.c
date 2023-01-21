@@ -1,5 +1,6 @@
 #include "../libft/libft.h"
 #include "parsing.h"
+#include <stdio.h>
 
 static int	find_next_quote(char *str, char c)
 {

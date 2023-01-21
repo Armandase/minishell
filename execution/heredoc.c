@@ -20,7 +20,7 @@ char	*cpy_without_nl(char *buffer)
 	return (ret);
 }
 
-int	heredoc(t_exec *exec)
+int	heredoc(t_cmd *cmd)
 {
 	char	*buf;
 	char	*str;
@@ -32,8 +32,8 @@ int	heredoc(t_exec *exec)
 	ft_printf("> ");
 	buf = get_next_line(0);
 	str = cpy_without_nl(buf);
-	len = ft_strlen(exec->cmd[exec->i].cmd[0]) + 1;
-	while (ft_strncmp(exec->cmd[exec->i].cmd[0], str, len) != 0)
+	len = ft_strlen(cmd->cmd[0]) + 1;
+	while (ft_strncmp(cmd->cmd[0], str, len) != 0)
 	{
 		ft_printf("> ");
 		ft_putstr_fd(buf, fd_buf[1]);
@@ -43,7 +43,6 @@ int	heredoc(t_exec *exec)
 		str = cpy_without_nl(buf);
 	}
 	free(str);
-	exec->fd_in = fd_buf[0];
 	close(fd_buf[1]);
 	free(buf);
 	return (fd_buf[0]);

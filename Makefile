@@ -5,7 +5,7 @@ SRCS		= main.c\
 			  builtins/echo.c builtins/exit.c\
 			  parsing/parsing.c parsing/strtok_unquote.c \
 			  parsing/parsing_utils.c parsing/split_token.c \
-			  parsing/str_get_token.c \
+			  parsing/str_get_token.c parsing/stack_func.c\
 			  execution/exec_cmd.c execution/execution.c execution/find_path.c \
 			  execution/exec_utils.c execution/signals_handlers.c\
 			  execution/exit.c execution/heredoc.c\
