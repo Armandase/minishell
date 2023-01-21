@@ -84,7 +84,7 @@ void	builtins_selection(t_cmd *cmd, t_exec *exec)
 		return ;
 	}
 	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
-		main_exit(cmd->cmd, exec->list_var);
+		main_exit(cmd, exec);
 	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
 		main_cd(cmd->cmd, exec->list_var);
 }

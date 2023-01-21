@@ -9,32 +9,11 @@
 # define PROMPT 0
 # define HERE_DOC 1
 
-<<<<<<< HEAD
-typedef struct s_exec
-{
-	t_cmd	*cmd;
-	int		i;
-	int		*tab_pid;
-	int		nb_fork;
-	int		fd_out;
-	int		fd_in;
-}			t_exec;
-
 typedef struct s_sh_state
 {
 	int		state;
 	bool	check_signal;
 }			t_sh_state;
-=======
-typedef struct s_exec{
-	int			*tab_pid;
-	int			nb_fork;
-	int			fd_out;
-	int			fd_in;
-	t_env_list	**list_var;
-	char		**envp;
-}t_exec;
->>>>>>> 0c94ce0038aba6bf3ef7bf4c1772e3076bc657c1
 
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var);
 void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2]);

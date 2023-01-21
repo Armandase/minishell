@@ -2,6 +2,7 @@
 # define PARSING_H
 
 # include "../libft/libft.h"
+# include "../struct.h"
 
 # define IN 1
 # define OUT 2
@@ -11,13 +12,6 @@
 # define FILES 6
 # define CMD 7
 # define BUILTINS 8
-
-typedef struct s_cmd{
-	char			**cmd;
-	int				token;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-}	t_cmd;
 
 typedef struct s_token{
 	char	*line;

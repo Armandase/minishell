@@ -32,15 +32,19 @@ int	heredoc(t_cmd *cmd)
 		perror("Error");
 	ft_printf("> ");
 	buf = get_next_line(0);
+	if (buf == NULL)
+		ft_printf("\n");
 	str = cpy_without_nl(buf);
 	free(buf);
 	g_sh_state.state = HERE_DOC;
-	len = ft_strlen(exec->cmd[exec->i].cmd[0]) + 1;
-	while (ft_strncmp(exec->cmd[exec->i].cmd[0], str, len) != 0)
+	len = ft_strlen(cmd->cmd[0]) + 1;
+	while (ft_strncmp(cmd->cmd[0], str, len) != 0)
 	{
 		ft_printf("> ");
 		ft_putstr_fd(buf, fd_buf[1]);
 		buf = get_next_line(0);
+		if (buf == NULL)
+			ft_printf("\n");
 		free(str);
 		str = cpy_without_nl(buf);
 		if (g_sh_state.check_signal == true)
@@ -52,7 +56,7 @@ int	heredoc(t_cmd *cmd)
 	if (g_sh_state.check_signal == true)
 	{
 		close(fd_buf[0]);
-		exit(130);
+		return (-2);
 	}
 	return (fd_buf[0]);
 }
