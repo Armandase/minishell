@@ -10,7 +10,8 @@ void	open_input_file(t_exec *exec)
 	in = -2;
 	out = -2;
 	exec->i++;
-	while (exec->cmd[exec->i].cmd != NULL
+	while ((exec->cmd[exec->i].cmd != NULL
+		|| exec->cmd[exec->i - 1].cmd[0][0] == FLAG)
 		&& (exec->cmd[exec->i - 1].token == IN
 			|| exec->cmd[exec->i - 1].token == HEREDOC
 			|| exec->cmd[exec->i - 1].token == OUT
