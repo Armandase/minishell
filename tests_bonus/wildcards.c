@@ -29,7 +29,7 @@ char	*ft_strjoin_space(char *s1, char const *s2)
 		str[j] = s2[i];
 		j++;
 	}
-	str[j] = ' ';
+	str[j] = 1;
 	str[j + 1] = '\0';
 	return (str);
 }
@@ -41,23 +41,26 @@ bool	search_file_name(char *file_name, char *wildcard)
 
 	i = 0;
 	j = 0;
+	if (file_name[0] == '.' && wildcard[0] != '.')
+		return (false);
 	while (file_name[i])
 	{
-		while (wildcard[j] && file_name[i]
-			&& wildcard[j] == file_name[i] && wildcard[j] != '*')
+		while (wildcard[j] && file_name[i] && wildcard[j] == file_name[i])
 		{
+			if (wildcard[j] == '*')
+				break ;
 			i++;
 			j++;
 		}
-		if (wildcard[j] != file_name[i] && (wildcard[j] != '*' && j != 0))
+		if (wildcard[j] != file_name[i] && (wildcard[j] != '*' && j == 0))
 			return (false);
 		else
 		{
-			while (wildcard[j] && wildcard[j] == '*')
+			while (wildcard[j] == '*' && wildcard[j + 1])
 				j++;
 			while (wildcard[j] && file_name[i] && wildcard[j] != file_name[i])
 				i++;
-			if (file_name[i] == '\0' && wildcard[j])
+			if (file_name[i] == '\0' && wildcard[j] != '*' && wildcard[j] != file_name[i])
 				return (false);
 		}
 	}
@@ -93,7 +96,7 @@ int	main(int ac, char **av)
 			joined_files = ft_strjoin_space(joined_files, dir_ent->d_name);
 		dir_ent = readdir(dir);
 	}
-	files = ft_split(joined_files, ' ');
+	files = ft_split(joined_files, 1);
 	free(joined_files);
 	i = 2;
 	while (files[i])
