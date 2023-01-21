@@ -4,68 +4,59 @@
 void	waiting_end(t_exec	*exec)
 {
 	int	wstatus;
+	int exit_code;
 
 	exec->nb_fork--;
 	while (exec->nb_fork >= 0)
 	{ 
 		waitpid(exec->tab_pid[exec->nb_fork], &wstatus, 0);
 		if (WIFEXITED(wstatus))
-			*exec->cmd->exit = WEXITSTATUS(wstatus);
+			exit_code = WEXITSTATUS(wstatus);
 		else if (WIFSIGNALED(wstatus))
-			*exec->cmd->exit = WTERMSIG(wstatus);
+			exit_code = WTERMSIG(wstatus);
 		exec->nb_fork--;
 	}
+	(void)exit_code;
 }
 
-void	free_struct(t_exec *exec)
+void	free_struct(t_cmd *cmd)
 {
-	int	i;
-	int	j;
+	int		i;
+	t_cmd	*tmp;
 
-	i = 0;
-	if (exec->cmd)
+	while (cmd->next != NULL)
 	{
-		while (exec->cmd[i].cmd != NULL)
+		i = 0;
+		if (cmd->cmd)
 		{
-			j = 0;
-			while (exec->cmd[i].cmd[j] != NULL)
+			while (cmd->cmd[i] != NULL)
 			{
-				if (exec->cmd[i].cmd[j])
-					free(exec->cmd[i].cmd[j]);
-				if (exec->cmd[i].quote != NULL)
-				{
-					free(exec->cmd[i].quote);
-					exec->cmd[i].quote = NULL;
-				}
-				j++;
+				if (cmd->cmd[i])
+					free(cmd->cmd[i]);
+				i++;
 			}
-			if (exec->cmd[i].cmd)
-				free(exec->cmd[i].cmd);
-			i++;
+			free(cmd->cmd);
 		}
-		if (exec->cmd->exit)
-			free(exec->cmd->exit);
-		free(exec->cmd);
+		tmp = cmd;
+		cmd = cmd->next;
+		free(tmp);
+		tmp = NULL;
 	}
 }
 
 int	tab_pid_len(t_cmd	*cmd)
 {
 	int	i;
-	int	j;
 	int	ret;
 
 	i = 0;
 	ret = 0;
-	while (cmd[i].cmd != NULL)
+	while (cmd->next != NULL)
 	{
-		j = 0;
-		while (cmd[i].cmd[j] != NULL)
-		{
-			j++;
+		if (cmd->token == CMD)
 			ret++;
-		}
 		i++;
+		cmd = cmd->next;
 	}
 	return (ret);
 }
@@ -78,19 +69,16 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 	pipe(tab_pipe[0]);
 	pipe(tab_pipe[1]);
 	exec.nb_fork = 0;
-	exec.i = 0;
-	exec.cmd = cmd;
-	exec.fd_out = -1;
-	exec.fd_in = -1;
 	exec.tab_pid = ft_calloc(sizeof(int), tab_pid_len(cmd));
-	while (cmd[exec.i].cmd != NULL)
+	exec.envp = envp;
+	exec.list_var = list_var;
+	while (cmd->next != NULL)
 	{
-		exec_cmd(&exec, envp, list_var, tab_pipe);
-		exec.i++;
-		redirection_offset(&exec);
+		exec_cmd(&exec, cmd, tab_pipe);
+		redirection_offset(&cmd);
 	}
 	close_pipe(tab_pipe);
 	waiting_end(&exec);
-	free_struct(&exec);
+	free_struct(cmd);
 	free(exec.tab_pid);
 }

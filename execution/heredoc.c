@@ -21,7 +21,7 @@ char	*cpy_without_nl(char *buffer)
 	return (ret);
 }
 
-int	heredoc(t_exec *exec)
+int	heredoc(t_cmd *cmd)
 {
 	char	*buf;
 	char	*str;
@@ -33,10 +33,15 @@ int	heredoc(t_exec *exec)
 	ft_printf("> ");
 	buf = get_next_line(0);
 	str = cpy_without_nl(buf);
+<<<<<<< HEAD
 	free(buf);
 	g_sh_state.state = HERE_DOC;
 	len = ft_strlen(exec->cmd[exec->i].cmd[0]) + 1;
 	while (ft_strncmp(exec->cmd[exec->i].cmd[0], str, len) != 0)
+=======
+	len = ft_strlen(cmd->cmd[0]) + 1;
+	while (ft_strncmp(cmd->cmd[0], str, len) != 0)
+>>>>>>> 0c94ce0038aba6bf3ef7bf4c1772e3076bc657c1
 	{
 		ft_printf("> ");
 		ft_putstr_fd(buf, fd_buf[1]);
@@ -47,7 +52,6 @@ int	heredoc(t_exec *exec)
 			break ;
 	}
 	free(str);
-	exec->fd_in = fd_buf[0];
 	close(fd_buf[1]);
 	free(buf);
 	if (g_sh_state.check_signal == true)

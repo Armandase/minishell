@@ -32,11 +32,11 @@ char	**get_path(char **envp)
 
 	path = ft_find_path(envp);
 	if (!path)
-		exit(1);
+		return (NULL);
 	directory = ft_split(path, ':');
 	free(path);
 	if (!directory)
-		exit(1);
+		return (NULL);
 	len = ft_strlen(directory[0]);
 	tmp = ft_substr(directory[0], 5, len);
 	if (!tmp)
@@ -53,6 +53,8 @@ void	cpy_path(char **cmd, char **directory)
 	char	*str;
 
 	j = 0;
+	if (!directory)
+		return ;
 	while (directory[j])
 	{
 		tmp = ft_strjoin(directory[j], "/");
@@ -80,6 +82,11 @@ void	get_cmd_path(char **cmd, char **envp)
 	directories = get_path(envp);
 	cpy_path(cmd, directories);
 	i = 0;
+	if (!directories)
+	{
+		cmd[0] = NULL;
+		return ;
+	};
 	while (directories[i] != NULL)
 	{
 		free(directories[i]);

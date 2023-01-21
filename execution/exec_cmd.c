@@ -1,148 +1,154 @@
 #include "execution.h"
 #include <stdio.h>
-void	open_input_file(t_exec *exec)
+void	open_input_file(t_exec *exec, t_cmd *cmd)
 {
 	int in;
 	int out;
 	int	fail;
+	t_cmd	*cpy;
 
+	cpy = cmd;
 	fail = 0;
 	in = -2;
 	out = -2;
-	exec->i++;
-	while (exec->cmd[exec->i].cmd != NULL
-		&& (exec->cmd[exec->i - 1].token == IN
-			|| exec->cmd[exec->i - 1].token == HEREDOC
-			|| exec->cmd[exec->i - 1].token == OUT
-			|| exec->cmd[exec->i - 1].token == APPEND))
+	while (cpy->next != NULL && cpy->token != CMD && cpy->token != BUILTINS)
 	{
 		if (fail == 0)
 		{
-			if (exec->cmd[exec->i - 1].token == IN)
+			if (cpy->token == IN)
 			{
-				in = open(exec->cmd[exec->i].cmd[0], O_RDONLY);
+				cpy = cpy->next;
+				if (!cpy)
+					return ;
+				in = open(cpy->cmd[0], O_RDONLY);
 				exec->fd_in = in;
 				dup2(exec->fd_in, 0);
 			}
-			else if (exec->cmd[exec->i - 1].token == HEREDOC)
+			else if (cpy->token == HEREDOC)
 			{
-				in = heredoc(exec);
+				cpy = cpy->next;
+				if (!cpy)
+					return ;
+				in = heredoc(cpy);
 				exec->fd_in = in;
 				dup2(exec->fd_in, 0);
 			}
-			else if (exec->cmd[exec->i - 1].token == OUT)
+			else if (cpy->token == OUT)
 			{
-				out = open(exec->cmd[exec->i].cmd[0],
+				cpy = cpy->next;
+				if (!cpy)
+					return ;
+				out = open(cpy->cmd[0],
 						O_WRONLY | O_TRUNC | O_CREAT, 0644);
 				exec->fd_out = out;
 				dup2(exec->fd_out, 1);
 			}
-			else if (exec->cmd[exec->i - 1].token == APPEND)
+			else if (cpy->token == APPEND)
 			{
-				out = open(exec->cmd[exec->i].cmd[0],
+				cpy = cpy->next;
+				if (!cpy)
+					return ;
+				out = open(cpy->cmd[0],
 						O_WRONLY | O_APPEND | O_CREAT, 0644);
 				exec->fd_out = out;
 				dup2(exec->fd_out, 1);
 			}
 			if (in == -1 || out == -1)
 				fail = 1;
-			else if (exec->cmd[exec->i].token == IN || exec->cmd[exec->i].token == HEREDOC)
+			else if (cpy->next && (cpy->next->token == IN || cpy->next->token == HEREDOC))
 				close(in);
-			else if (exec->cmd[exec->i].token == OUT || exec->cmd[exec->i].token == APPEND)
+			else if (cpy->next && (cpy->next->token == OUT || cpy->next->token == APPEND))
 				close(out);
 		}
-		exec->i++;
+		cpy = cpy->next;
 	}
-	/*
-	if (fail == 0 && in != -2 && out == -2)
-	{
-		exec->fd_in = in;
-		dup2(exec->fd_in, 0);
-	}
-	if (fail == 0 && out != -2 && in == -2)
-	{
-		exec->fd_out = out;
-		dup2(exec->fd_out, 1);
-	}
-	if (fail == 0 && out != 2 && in != 2)
-	{
-		exec->fd_in = in;
-		exec->fd_out = out;
-		dup2(exec->fd_in, 0);
-		dup2(exec->fd_out, 1);
-	}*/
 	if (fail == 1)
 	{
 		exec->fd_in = -1;
 		exec->fd_out = -1;
-		free(exec->tab_pid);
-		exec_free(exec);
+		exec_free(exec, cmd, 1);
 	}
 }
 
-void	dup2_manager(t_exec *exec, int tab_pipe[2][2], int i)
+void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 {
-	if (exec->cmd[exec->i].token == HEREDOC
-		|| exec->cmd[exec->i].token == IN
-		|| exec->cmd[exec->i].token == OUT
-		|| exec->cmd[exec->i].token == APPEND)
-		open_input_file(exec);
-	if (exec->i != 0 && exec->cmd[i - 1].token == PIPE)
+	if (cmd->next && (cmd->token == FILES || cmd->token == CMD || cmd->token == 0 || cmd->token == BUILTINS))
+		cmd = cmd->next;
+	if (cmd->token == HEREDOC
+		|| cmd->token == IN
+		|| cmd->token == OUT
+		|| cmd->token == APPEND)
+		open_input_file(exec, cmd);
+	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD || cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
+		cmd = cmd->prev;
+	if (cmd->prev && cmd->prev->token == PIPE)
 		dup2(tab_pipe[exec->nb_fork - 1 % 2][0], 0);
-	if (exec->cmd[exec->i].cmd != NULL && exec->cmd[exec->i].token == PIPE)
-		dup2(tab_pipe[exec->i % 2][1], 1);
+	while (cmd->next)
+	{
+		if (cmd->token == PIPE || cmd->token == 0)
+			break ;
+		cmd = cmd->next;
+	}
+	if (cmd && cmd->token == PIPE)
+		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
 }
 
-void	inside_fork(t_exec *exec, char **envp, int tab_pipe[2][2])
+void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 {
 	int	ret;
-	int	i;
 
-	i = exec->i;
-	dup2_manager(exec, tab_pipe, i);
-	if (exec->cmd[i - 1].token == FLAG)
-		i = exec->i;
+	ret = 0;
+	dup2_manager(exec, tab_pipe, cmd);
 	close_pipe(tab_pipe);
-	ret = execve(exec->cmd[i].cmd[0], exec->cmd[i].cmd, envp);
-	if (ret == -1)
-		exec_free(exec);
+	if (cmd->token == CMD)
+		ret = execve(cmd->cmd[0], cmd->cmd, exec->envp);
+	else if (cmd->token == BUILTINS)
+	{
+		if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "echo") == 0))
+			main_echo(cmd->cmd);
+		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "pwd") == 0))
+			main_pwd();
+		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "export") == 0))
+			main_export(cmd->cmd, exec->list_var);
+		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
+			main_unset(cmd->cmd, exec->list_var);
+		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "env") == 0))
+			main_env(cmd->cmd, *exec->list_var);
+	}
+	exec_free(exec, cmd, ret);
 }
 
-void	apply_execution(t_exec *exec, char **envp, int tab_pipe[2][2])
+void	apply_execution(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 {
-	open_pipe(tab_pipe, exec->i);
+	open_pipe(tab_pipe, exec->nb_fork);
 	exec->tab_pid[exec->nb_fork] = fork();
 	if (exec->tab_pid[exec->nb_fork] == -1)
-		print_error("Fork error", 127, exec->cmd);
+		print_error("Fork error", 127, cmd);
 	else if (exec->tab_pid[exec->nb_fork] == 0)
-		inside_fork(exec, envp, tab_pipe);
+		inside_fork(exec, cmd, tab_pipe);
 }
 
-void	exec_cmd(t_exec *exec, char **envp, t_env_list **list_var, int tab_pipe[2][2])
+void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 {
-	if (ft_strcmp(exec->cmd[exec->i].cmd[0], "echo") == 0
-		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "cd") == 0
-		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "pwd") == 0
-		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "export") == 0
-		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "unset") == 0
-		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "env") == 0
-		|| ft_strcmp(exec->cmd[exec->i].cmd[0], "exit") == 0)
-		builtins_selection(&exec->cmd[exec->i], list_var);
-	else
+	if (cmd->cmd != NULL && cmd->token == CMD
+		&& (ft_strcmp(cmd->cmd[0], "echo") == 0
+			|| ft_strcmp(cmd->cmd[0], "pwd") == 0
+			|| ft_strcmp(cmd->cmd[0], "export") == 0
+			|| ft_strcmp(cmd->cmd[0], "unset") == 0
+			|| ft_strcmp(cmd->cmd[0], "env") == 0
+			|| ft_strcmp(cmd->cmd[0], "cd") == 0
+			|| ft_strcmp(cmd->cmd[0], "exit") == 0))
+		builtins_selection(cmd, exec);
+	if (cmd->cmd && cmd->token == CMD && cmd->token != BUILTINS
+		&& access(cmd->cmd[0], X_OK) != 0)
 	{
-		if (exec->cmd[exec->i].cmd[0][0] != FLAG)
+		get_cmd_path(cmd->cmd, exec->envp);
+		if (cmd->cmd[0] == NULL)
 		{
-			if (access(exec->cmd[exec->i].cmd[0], X_OK) != 0)
-			{
-				get_cmd_path(&exec->cmd[exec->i].cmd[0], envp);
-				if (exec->cmd[exec->i].cmd[0] == NULL)
-				{
-					print_error("Command not found", 127, exec->cmd);
-					return ;
-				}
-			}
+			print_error("Error", 127, cmd);
+			return ;
 		}
-		apply_execution(exec, envp, tab_pipe);
-		exec->nb_fork++;
 	}
+	apply_execution(exec, cmd, tab_pipe);
+	exec->nb_fork++;
 }

@@ -60,7 +60,7 @@ static size_t	count_word(char const *s, char c)
 	return (count);
 }
 
-static size_t	count_char(char const *s, char c, size_t i, int *quote)
+static size_t	count_char(char const *s, char c, size_t i)
 {
 	size_t	count;
 	int		tmp;
@@ -97,7 +97,7 @@ static size_t	count_char(char const *s, char c, size_t i, int *quote)
 			}
 			else
 			{
-				*quote = 1;
+				// CHECK LE DOLLAAAARS;
 				count += tmp;
 				i += tmp;
 			}
@@ -175,8 +175,7 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 	return (j);
 }
 
-
-char	**split_token(char const *s, char c, t_cmd *cmd)
+char	**split_token(char const *s, char c)
 {
 	size_t	i;
 	size_t	j;
@@ -187,12 +186,11 @@ char	**split_token(char const *s, char c, t_cmd *cmd)
 	strs = malloc(sizeof(char *) * (count_word(s, c) + 1));
 	if (strs == NULL)
 		return (0);
-	cmd->quote = malloc(sizeof(int) * count_word(s, c) + 1);
 	i = 0;
 	j = 0;
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
-		strs[j] = malloc(count_char(s, c, i, &cmd->quote[j]) + 1);
+		strs[j] = malloc(count_char(s, c, i) + 1);
 		if (!strs[j])
 			return (0);
 		i = ft_strccpy(s, strs[j], c, i);
