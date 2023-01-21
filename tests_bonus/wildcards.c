@@ -29,7 +29,7 @@ char	*ft_strjoin_space(char *s1, char const *s2)
 		str[j] = s2[i];
 		j++;
 	}
-	str[j] = ' ';
+	str[j] = 1;
 	str[j + 1] = '\0';
 	return (str);
 }
@@ -96,7 +96,7 @@ int	main(int ac, char **av)
 			joined_files = ft_strjoin_space(joined_files, dir_ent->d_name);
 		dir_ent = readdir(dir);
 	}
-	files = ft_split(joined_files, ' ');
+	files = ft_split(joined_files, 1);
 	free(joined_files);
 	i = 2;
 	while (files[i])

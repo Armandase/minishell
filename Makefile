@@ -37,6 +37,6 @@ norm:
 	norminette *.c && norminette *.h
 
 vg:
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=.vsupp --trace-children=yes ./minishell
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=.vsupp ./minishell
 
 .PHONY: all clean fclean re norm vg
