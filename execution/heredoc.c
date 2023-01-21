@@ -33,15 +33,10 @@ int	heredoc(t_cmd *cmd)
 	ft_printf("> ");
 	buf = get_next_line(0);
 	str = cpy_without_nl(buf);
-<<<<<<< HEAD
 	free(buf);
 	g_sh_state.state = HERE_DOC;
 	len = ft_strlen(exec->cmd[exec->i].cmd[0]) + 1;
 	while (ft_strncmp(exec->cmd[exec->i].cmd[0], str, len) != 0)
-=======
-	len = ft_strlen(cmd->cmd[0]) + 1;
-	while (ft_strncmp(cmd->cmd[0], str, len) != 0)
->>>>>>> 0c94ce0038aba6bf3ef7bf4c1772e3076bc657c1
 	{
 		ft_printf("> ");
 		ft_putstr_fd(buf, fd_buf[1]);
