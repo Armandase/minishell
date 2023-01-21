@@ -18,6 +18,8 @@
 	}
 }
 */
+t_sh_state	g_sh_state;
+
 int	main(int ac, char **av, char **envp)
 {
 	t_env_list	*list_var;
@@ -29,9 +31,10 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	cmd = NULL;
 	list_var = create_env_list(envp);
-	signal(SIGINT, exit_signals);
+	signal(SIGINT, handle_sigint);
 	while (1)
 	{
+		g_sh_state.state = PROMPT;
 		prompt = create_prompt();
 		line = readline(prompt);
 		envp = env_export(list_var);

@@ -1,5 +1,6 @@
 #include "execution.h"
-#include <stdio.h>
+
+extern t_sh_state	g_sh_state;
 
 char	*cpy_without_nl(char *buffer)
 {
@@ -32,19 +33,27 @@ int	heredoc(t_exec *exec)
 	ft_printf("> ");
 	buf = get_next_line(0);
 	str = cpy_without_nl(buf);
+	free(buf);
+	g_sh_state.state = HERE_DOC;
 	len = ft_strlen(exec->cmd[exec->i].cmd[0]) + 1;
 	while (ft_strncmp(exec->cmd[exec->i].cmd[0], str, len) != 0)
 	{
 		ft_printf("> ");
 		ft_putstr_fd(buf, fd_buf[1]);
-		free(buf);
 		buf = get_next_line(0);
 		free(str);
 		str = cpy_without_nl(buf);
+		if (g_sh_state.check_signal == true)
+			break ;
 	}
 	free(str);
 	exec->fd_in = fd_buf[0];
 	close(fd_buf[1]);
 	free(buf);
+	if (g_sh_state.check_signal == true)
+	{
+		close(fd_buf[0]);
+		exit(130);
+	}
 	return (fd_buf[0]);
 }

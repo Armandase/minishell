@@ -1,5 +1,7 @@
 #include "execution.h"
 
+extern t_sh_state	g_sh_state;
+
 char	*create_prompt(void)
 {
 	int		i;
@@ -17,12 +19,13 @@ char	*create_prompt(void)
 	return (prompt);
 }
 
-void	exit_signals(int signum)
+void	handle_sigint(int signum)
 {
+	(void)signum;
 	//char	*prompt;
 
 	//prompt = create_prompt();
-	if (signum == SIGINT)
+	if (g_sh_state.state == PROMPT)
 	{
 		/*
 		ft_printf("\n%s", prompt);
@@ -34,4 +37,6 @@ void	exit_signals(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	else if (g_sh_state.state == HERE_DOC)
+		g_sh_state.check_signal = true;
 }
