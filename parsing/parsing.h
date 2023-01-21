@@ -10,6 +10,7 @@
 # define PIPE 5
 # define FILES 6
 # define CMD 7
+# define BUILTINS 8
 
 typedef struct s_cmd{
 	char			**cmd;

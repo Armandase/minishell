@@ -25,7 +25,8 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 	int		j;
 	t_cmd	*tmp;
 
-	print_error("Error", 1, NULL);
+	if (exit_code)
+		print_error("Error", exit_code, NULL);
 	if (cmd)
 	{
 		while (cmd->next != NULL)
@@ -37,10 +38,10 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 				j++;
 			}
 			free(cmd->cmd);
+			tmp = cmd;
+			cmd = cmd->next;
+			free(tmp);
 		}
-		tmp = cmd;
-		cmd = cmd->next;
-		free(tmp);
 	}
 	if (exec && exec->tab_pid)
 		free(exec->tab_pid);
@@ -58,19 +59,34 @@ void	print_error(char *error, int exit_code, t_cmd *cmd)
 void	builtins_selection(t_cmd *cmd, t_exec *exec)
 {
 	if (ft_strcmp(cmd->cmd[0], "echo") == 0)
-		main_echo(cmd->cmd);
-	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
-		main_cd(cmd->cmd, exec->list_var);
+	{
+		cmd->token = BUILTINS;
+		return ;
+	}
 	else if (ft_strcmp(cmd->cmd[0], "pwd") == 0)
-		main_pwd();
+	{
+		cmd->token = BUILTINS;
+		return ;
+	}
 	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
-		main_export(cmd->cmd, exec->list_var);
+	{
+		cmd->token = BUILTINS;
+		return ;
+	}
 	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
-		main_unset(cmd->cmd, exec->list_var);
+	{
+		cmd->token = BUILTINS;
+		return ;
+	}
 	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
-		main_env(cmd->cmd, *exec->list_var);
+	{
+		cmd->token = BUILTINS;
+		return ;
+	}
 	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
 		main_exit(cmd->cmd, exec->list_var);
+	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
+		main_cd(cmd->cmd, exec->list_var);
 }
 
 void	open_pipe(int tab_pipe[2][2], int i)
