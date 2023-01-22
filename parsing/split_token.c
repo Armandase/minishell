@@ -60,6 +60,8 @@ static size_t	count_word(char const *s, char c)
 	return (count);
 }
 
+//void	get_dollar_value()
+
 static size_t	count_char(char const *s, char c, size_t i)
 {
 	size_t	count;

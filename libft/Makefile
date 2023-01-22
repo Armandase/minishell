@@ -31,7 +31,7 @@ $(NAME): ${OBJS}
 	@ar -rc ${NAME} ${OBJS}
 
 .c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+	@${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 clean:
 	@rm -f ${OBJS}
 fclean : clean

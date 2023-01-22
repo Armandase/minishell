@@ -1,5 +1,8 @@
 #include "parsing.h"
-#include <stdio.h>
+
+/********************************************************/
+/*	Create a node for store a token value				*/
+/*******************************************************/
 
 void	begin_offset(t_cmd **cmd, char *line)
 {
@@ -87,7 +90,6 @@ int	check_char(char c)
 /*	  split ces tokens par les espaces (cmd & arg)		*/
 /********************************************************/
 
-#include <stdio.h>
 t_cmd	*parsing(char *line)
 {
 	t_cmd	*begin;
@@ -107,7 +109,7 @@ t_cmd	*parsing(char *line)
 		return (NULL);
 	}
 	begin = get_cmd(current_line);
-	while (begin->next)
+	while (begin->next != NULL)
 	{
 		if (begin->token == 0 && begin->prev && begin->prev->token != 0 && begin->prev->token != PIPE)
 			begin->token = FILES;
@@ -115,7 +117,7 @@ t_cmd	*parsing(char *line)
 	}
 	while (begin->prev != NULL)
 		begin = begin->prev;
-	while (begin->next)
+	while (begin->next != NULL)
 	{
 		if (begin->token == 0)
 			begin->token = CMD;
@@ -124,22 +126,5 @@ t_cmd	*parsing(char *line)
 	while (begin->prev != NULL)
 		begin = begin->prev;
 	free(current_line);
-	/*t_cmd	*tmp;
-	tmp = begin;
-	while (tmp)
-	{
-		int	i = 0;
-		if (tmp->cmd != NULL)
-		{
-			while (tmp->cmd[i] != NULL)
-			{
-				printf("cmd[%d] = %s token : %d\n", i, tmp->cmd[i], tmp->token);
-				i++;
-			}
-		}
-		else
-			printf("token : %d\n", tmp->token);
-		tmp = tmp->next;
-	}*/
 	return (begin);
 }
