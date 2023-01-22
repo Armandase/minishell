@@ -1,4 +1,5 @@
 #include "execution.h"
+#include <unistd.h>
 
 void	free_list_var(t_env_list **list_var, char **envp)
 {
@@ -32,12 +33,15 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 		while (cmd->next != NULL)
 		{
 			j = 0;
-			while (cmd->cmd[j] != NULL)
+			if (cmd->cmd)
 			{
-				free(cmd->cmd[j]);
-				j++;
-			}
+				while (cmd->cmd[j] != NULL)
+				{
+					free(cmd->cmd[j]);
+					j++;
+				}
 			free(cmd->cmd);
+			}
 			tmp = cmd;
 			cmd = cmd->next;
 			free(tmp);
@@ -57,37 +61,63 @@ void	print_error(char *error, int exit_code, t_cmd *cmd)
 	(void)exit_code;
 }
 
+int	builtins_check_pipe(t_cmd *cmd)
+{
+	while (cmd->prev != NULL)
+		cmd = cmd->prev;
+	while (cmd->next != NULL)
+	{
+		if (cmd->token == PIPE)
+			return (1);
+		cmd = cmd->next;
+	}
+	return (0);
+}
+
+void	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
+{
+	cmd->token = BUILTINS;
+	if (cmd->next && (cmd->token == FILES || cmd->token == CMD || cmd->token == 0 || cmd->token == BUILTINS))
+		cmd = cmd->next;
+	if (cmd->token == HEREDOC
+		|| cmd->token == IN
+		|| cmd->token == OUT
+		|| cmd->token == APPEND)
+		open_input_file(exec, cmd, 1);
+	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD || cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
+		cmd = cmd->prev;
+	if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "cd") == 0))
+		main_cd(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "exit") == 0))
+		main_exit(cmd, exec);
+}
+
 void	builtins_selection(t_cmd *cmd, t_exec *exec)
 {
 	if (ft_strcmp(cmd->cmd[0], "echo") == 0)
-	{
 		cmd->token = BUILTINS;
-		return ;
-	}
 	else if (ft_strcmp(cmd->cmd[0], "pwd") == 0)
-	{
 		cmd->token = BUILTINS;
-		return ;
-	}
 	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
-	{
 		cmd->token = BUILTINS;
-		return ;
-	}
 	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
-	{
 		cmd->token = BUILTINS;
-		return ;
-	}
 	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
-	{
 		cmd->token = BUILTINS;
-		return ;
-	}
 	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
-		main_exit(cmd, exec);
+	{
+		if (builtins_check_pipe(cmd))
+			cmd->token = BUILTINS;
+		else
+			builtins_without_redirect(cmd, exec);
+	}
 	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
-		main_cd(cmd->cmd, exec->list_var);
+	{
+		if (builtins_check_pipe(cmd))
+			cmd->token = BUILTINS;
+		else
+			builtins_without_redirect(cmd, exec);
+	}
 }
 
 void	open_pipe(int tab_pipe[2][2], int i)

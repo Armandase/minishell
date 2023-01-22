@@ -28,5 +28,6 @@ void	close_pipe(int tab_pipe[2][2]);
 void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code);
 void	redirection_offset(t_cmd **cmd);
 int		heredoc(t_cmd *cmd);
+void	open_input_file(t_exec *exec, t_cmd *cmd, int check);
 
 #endif

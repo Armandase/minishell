@@ -1,6 +1,6 @@
 #include "execution.h"
 #include <stdio.h>
-void	open_input_file(t_exec *exec, t_cmd *cmd)
+void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 {
 	int in;
 	int out;
@@ -22,7 +22,10 @@ void	open_input_file(t_exec *exec, t_cmd *cmd)
 					return ;
 				in = open(cpy->cmd[0], O_RDONLY);
 				exec->fd_in = in;
-				dup2(exec->fd_in, 0);
+				if (check != 1)
+					dup2(exec->fd_in, 0);
+				else
+					close(in);
 			}
 			else if (cpy->token == HEREDOC)
 			{
@@ -31,7 +34,10 @@ void	open_input_file(t_exec *exec, t_cmd *cmd)
 					return ;
 				in = heredoc(cpy);
 				exec->fd_in = in;
-				dup2(exec->fd_in, 0);
+				if (check != 1)
+					dup2(exec->fd_in, 0);
+				else
+					close(in);
 			}
 			else if (cpy->token == OUT)
 			{
@@ -41,7 +47,10 @@ void	open_input_file(t_exec *exec, t_cmd *cmd)
 				out = open(cpy->cmd[0],
 						O_WRONLY | O_TRUNC | O_CREAT, 0644);
 				exec->fd_out = out;
-				dup2(exec->fd_out, 1);
+				if (check != 1)
+					dup2(exec->fd_out, 1);
+				else
+					close(out);
 			}
 			else if (cpy->token == APPEND)
 			{
@@ -51,7 +60,10 @@ void	open_input_file(t_exec *exec, t_cmd *cmd)
 				out = open(cpy->cmd[0],
 						O_WRONLY | O_APPEND | O_CREAT, 0644);
 				exec->fd_out = out;
-				dup2(exec->fd_out, 1);
+				if (check != 1)
+					dup2(exec->fd_out, 1);
+				else
+					close(out);
 			}
 			if (in == -1 || out == -1)
 				fail = 1;
@@ -78,7 +90,7 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 		|| cmd->token == IN
 		|| cmd->token == OUT
 		|| cmd->token == APPEND)
-		open_input_file(exec, cmd);
+		open_input_file(exec, cmd, 0);
 	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD || cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
 		cmd = cmd->prev;
 	if (cmd->prev && cmd->prev->token == PIPE)
@@ -114,6 +126,10 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 			main_unset(cmd->cmd, exec->list_var);
 		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "env") == 0))
 			main_env(cmd->cmd, *exec->list_var);
+		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "cd") == 0))
+			main_cd(cmd->cmd, exec->list_var);
+		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "exit") == 0))
+			main_exit(cmd, exec);
 	}
 	exec_free(exec, cmd, ret);
 }
