@@ -42,6 +42,7 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 			cmd = cmd->next;
 			free(tmp);
 		}
+		free(cmd);
 	}
 	if (exec && exec->tab_pid)
 		free(exec->tab_pid);

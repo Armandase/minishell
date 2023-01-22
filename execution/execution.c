@@ -31,8 +31,7 @@ void	free_struct(t_cmd *cmd)
 		{
 			while (cmd->cmd[i] != NULL)
 			{
-				if (cmd->cmd[i])
-					free(cmd->cmd[i]);
+				free(cmd->cmd[i]);
 				i++;
 			}
 			free(cmd->cmd);
@@ -42,6 +41,7 @@ void	free_struct(t_cmd *cmd)
 		free(tmp);
 		tmp = NULL;
 	}
+	free(cmd);
 }
 
 int	tab_pid_len(t_cmd	*cmd)
@@ -79,6 +79,8 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 	}
 	close_pipe(tab_pipe);
 	waiting_end(&exec);
+	while (cmd->prev != NULL)
+		cmd = cmd->prev;
 	free_struct(cmd);
 	free(exec.tab_pid);
 }
