@@ -1,10 +1,5 @@
-gerer si > ou < au debut
-leak si juste . dans le promt, besoin variable global pour le fix
-tab pid leak si un file est pas ouvert
-<<<<<<< HEAD
-gerer les erreurs pour les redirections type ls > out ok dois print erreur sur ok
-redireciton avec builtins
-=======
-echo "-n"nn test a changer dans le parsing
->>>>>>> f797363ddfaadccadf61ffa13c8b3bf13b4ed808
-ls | tr 'm' 'M' > out | wc -l
+faire en sorte (pas oblige) que . et .. affiche cmd not found
+gerer les dollars
+renvoyer bon exit code
+gerer lorsque des files existent pas 
+
