@@ -14,7 +14,7 @@ static int	check_name(char *name)
 	return (1);
 }
 
-void	*main_unset(char **args, t_env_list **list_var)
+int	main_unset(char **args, t_env_list **list_var)
 {
 	t_env_list	*to_free;
 	t_env_list	*tmp;
@@ -23,7 +23,7 @@ void	*main_unset(char **args, t_env_list **list_var)
 	i = 1;
 	while (args[i] != NULL)
 	{
-		if (ft_isdigit(name[0]) || !check_name(name) || name[0] == '-')
+		if (ft_isdigit(args[i][0]) || !check_name(args[i]) || args[i][0] == '-')
 		{
 			ft_putstr_fd("bash: export: `", 2);
 			write(2, args[i], ft_strlen(args[i]));

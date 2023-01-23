@@ -13,4 +13,5 @@ int	main_env(char **args, t_env_list *list_var)
 			ft_printf("%s=%s\n", tmp->name, tmp->value);
 		tmp = tmp->next;
 	}
+	return (0);
 }

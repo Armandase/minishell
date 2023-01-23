@@ -21,5 +21,6 @@ char		**env_export(t_env_list *list_var);
 char		*search_send_var(char *var, t_env_list **list_var);
 bool		search_var(char *var, t_env_list **list_var);
 void		search_replace_var(char *name, char *value, t_env_list **list_var);
+char		*ft_strjoin_space(char *s1, char const *s2);
 
 #endif
