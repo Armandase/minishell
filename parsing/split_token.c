@@ -65,7 +65,6 @@ void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
 {
 	int		k;
 	char	*var;
-	int		j;
 
 	k = 1;
 	var = NULL;
