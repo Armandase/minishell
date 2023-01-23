@@ -5,7 +5,8 @@ void	exit_shell(t_env_list **list_var, char **envp)
 	t_env_list	*head;
 	t_env_list	*tmp;
 
-	ft_free_strs(envp);
+	if (envp != NULL)
+		ft_free_strs(envp);
 	head = *list_var;
 	while (head != NULL)
 	{
@@ -19,5 +20,5 @@ void	exit_shell(t_env_list **list_var, char **envp)
 		}
 	}
 	ft_printf("exit\n");
-	exit(0);
+	exit(1);
 }

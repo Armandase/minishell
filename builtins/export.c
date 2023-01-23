@@ -65,7 +65,7 @@ static int	check_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])))
+		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i]) || !ft_strcmp(name, "?")))
 			return (0);
 		i++;
 	}
@@ -112,7 +112,10 @@ int	main_export(char **args, t_env_list **list_var)
 				return (12);
 			if (ft_strchr(args[i], '=') == false)
 			{
-				new_var->export_only = true;
+				if (name[0] == '?')
+				   new_var->export_only = 2;	
+				else
+					new_var->export_only = true;
 				if (search_var(name, list_var) == true)
 					break ;
 			}

@@ -30,4 +30,10 @@ typedef struct s_exec
 	char		**envp;
 }				t_exec;
 
+typedef struct s_sh_state
+{
+	int		state;
+	bool	check_signal;
+}			t_sh_state;
+
 #endif

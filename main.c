@@ -20,6 +20,17 @@
 */
 t_sh_state	g_sh_state;
 
+void	create_exit_env(t_env_list **list_var)
+{
+	char	**cmd;
+
+	cmd = ft_split("export ?", ' ');
+	if (cmd == NULL)
+		exit_shell(list_var, NULL);
+	main_export(cmd, list_var);
+	ft_free_strs(cmd);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_env_list	*list_var;
@@ -31,6 +42,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	cmd = NULL;
 	list_var = create_env_list(envp);
+	create_exit_env(&list_var);
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{
