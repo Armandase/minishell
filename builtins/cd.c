@@ -41,28 +41,25 @@ char	*get_current_pwd(t_env_list **list_var)
 	return (NULL);
 }
 
-void	*main_cd(char **args, t_env_list **list_var)
+int	main_cd(char **args, t_env_list **list_var)
 {
 	char	*old_pwd;
 	char	*pwd;
 
 	old_pwd = ft_calloc(4096, sizeof(char));
 	if (old_pwd == NULL)
-		return (NULL);
+		return (12);
 	old_pwd = getcwd(old_pwd, 4096);
 	if (chdir(args[1]))
 	{
 		ft_printf("bash: cd: %s: No such file or directory\n", args[1]);
-		return (NULL);
+		return (1);
 	}
-	else
-	{
-		pwd = ft_calloc(4096, sizeof(char));
-		if (pwd == NULL)
-			return (NULL);
-		getcwd(pwd, 4096);
-		search_replace_pwd(old_pwd, OLDPWD, list_var);
-		search_replace_pwd(pwd, PWD, list_var);
-		return (list_var);
-	}
+	pwd = ft_calloc(4096, sizeof(char));
+	if (pwd == NULL)
+		return (12);
+	getcwd(pwd, 4096);
+	search_replace_pwd(old_pwd, OLDPWD, list_var);
+	search_replace_pwd(pwd, PWD, list_var);
+	return (0);
 }
