@@ -1,5 +1,3 @@
 faire en sorte (pas oblige) que . et .. affiche cmd not found
-gerer les dollars
-renvoyer bon exit code
-gerer lorsque des files existent pas 
-
+verif le heredoc  ctrl + d
+la norme...

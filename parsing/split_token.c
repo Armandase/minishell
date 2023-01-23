@@ -1,7 +1,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static int	find_next_quote(const char *str, char c)
+static int	find_next_quote(char *str, char c)
 {
 	int	i;
 
@@ -17,7 +17,7 @@ static int	find_next_quote(const char *str, char c)
 	return (-1);
 }
 
-static size_t	count_word(char const *s, char c)
+static size_t	count_word(char *s, char c)
 {
 	size_t	i;
 	size_t	count;
@@ -87,7 +87,7 @@ void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
 		*count += ft_strlen(var);
 }
 
-static size_t	count_char(char const *s, char c, size_t i, t_env_list *list_var)
+static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
 {
 	size_t	count;
 	int		tmp;
@@ -142,7 +142,37 @@ static size_t	count_char(char const *s, char c, size_t i, t_env_list *list_var)
 	return (count);
 }
 
-static size_t	ft_strccpy(const char *s, char *str, size_t j, t_env_list *list_var)
+static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
+{
+	char	*trunc_str;
+	char	*tmp_str;
+	size_t	i;
+	char	tmp;
+
+	i = 0;
+	while (str[i] != '$')
+		i++;
+	tmp = str[i];
+	str[i] = '\0';
+	tmp_str = ft_strdup(str);
+	str[i] = tmp;
+	str += *j;
+	i = 0;
+	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\'')
+		i++;
+	tmp = str[i];
+	str[i] = '\0';
+	trunc_str = search_send_var(str + 1, &list_var);
+	str[i] = tmp;
+	tmp_str = ft_strjoin_space(tmp_str, trunc_str);
+	free(trunc_str);
+	trunc_str = ft_strdup(&str[i]);
+	str = ft_strjoin_space(trunc_str, tmp_str);
+	free(tmp_str);
+	return (str);
+}
+
+static size_t	ft_strccpy(char *s, char *str, size_t j, t_env_list *list_var)
 {
 	size_t	i;
 
@@ -175,7 +205,7 @@ static size_t	ft_strccpy(const char *s, char *str, size_t j, t_env_list *list_va
 		if (s[j] == ' ' || !s[j])
 			break ;
 		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
-			j += cpy_envp_val((char *)&s[j], list_var);
+			s = cpy_envp_val(s, list_var, &j);
 		if (s[j] == '\"')
 		{
 			j++;
@@ -207,7 +237,7 @@ static size_t	ft_strccpy(const char *s, char *str, size_t j, t_env_list *list_va
 	return (j);
 }
 
-char	**split_token(char const *s, t_env_list *list_var)
+char	**split_token(char *s, t_env_list *list_var)
 {
 	size_t	i;
 	size_t	j;

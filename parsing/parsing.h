@@ -20,7 +20,7 @@ typedef struct s_token{
 t_cmd	*parsing(char *line, t_env_list *list_var);
 char	*strtok_unquote(char *str, const char *delim);
 void	free_cmd(t_cmd *cmd);
-char	**split_token(char const *s, t_env_list *list_var);
+char	**split_token(char *s, t_env_list *list_var);
 t_token	*str_get_token(char *str, const char *delim);
 t_cmd	*list_new(void	*content, t_cmd *prev);
 

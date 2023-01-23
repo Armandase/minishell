@@ -1,5 +1,31 @@
 #include "builtins.h"
 
+char	*ft_strjoin_space(char *s1, char const *s2)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
+	i = -1;
+	j = 0;
+	while (s1 && s1[++i])
+	{
+		str[j] = s1[i];
+		j++;
+	}
+	free(s1);
+	i = -1;
+	while (s2 && s2[++i])
+	{
+		str[j] = s2[i];
+		j++;
+	}
+	str[j] = ' ';
+	str[j + 1] = '\0';
+	return (str);
+}
+
 size_t	env_list_size(t_env_list *list_var)
 {
 	t_env_list	*tmp;
@@ -68,14 +94,12 @@ char	*search_send_var(char *var, t_env_list **list_var)
 	{
 		if (ft_strcmp(var, tmp->name) == false)
 		{
-			free(var);
 			var = ft_strdup(tmp->value);
 			return (var);
 		}
 		tmp = tmp->next;
 		i++;
 	}
-	free(var);
 	return (NULL);
 }
 

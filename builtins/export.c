@@ -72,7 +72,7 @@ static int	check_name(char *name)
 	return (1);
 }
 
-void	*main_export(char **args, t_env_list **list_var)
+int	main_export(char **args, t_env_list **list_var)
 {
 	t_env_list	*tmp;
 	t_env_list	*new_var;

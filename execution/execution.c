@@ -4,11 +4,11 @@
 void	waiting_end(t_exec	*exec)
 {
 	int	wstatus;
-	int exit_code;
+	int	exit_code;
 
 	exec->nb_fork--;
 	while (exec->nb_fork >= 0)
-	{ 
+	{
 		waitpid(exec->tab_pid[exec->nb_fork], &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			exit_code = WEXITSTATUS(wstatus);

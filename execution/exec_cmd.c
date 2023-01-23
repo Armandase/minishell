@@ -121,17 +121,17 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 	else if (cmd->token == BUILTINS)
 	{
 		if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "echo") == 0))
-			main_echo(cmd->cmd);
+			ret = main_echo(cmd->cmd);
 		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "pwd") == 0))
-			main_pwd();
+			ret = main_pwd();
 		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "export") == 0))
-			main_export(cmd->cmd, exec->list_var);
+			ret = main_export(cmd->cmd, exec->list_var);
 		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
-			main_unset(cmd->cmd, exec->list_var);
+			ret = main_unset(cmd->cmd, exec->list_var);
 		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "env") == 0))
-			main_env(cmd->cmd, *exec->list_var);
+			ret = main_env(cmd->cmd, *exec->list_var);
 		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "cd") == 0))
-			main_cd(cmd->cmd, exec->list_var);
+			ret = main_cd(cmd->cmd, exec->list_var);
 		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "exit") == 0))
 			main_exit(cmd, exec);
 	}

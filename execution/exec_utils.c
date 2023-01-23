@@ -90,6 +90,10 @@ void	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 		main_cd(cmd->cmd, exec->list_var);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "exit") == 0))
 		main_exit(cmd, exec);
+	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "export") == 0))
+		main_export(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
+		main_unset(cmd->cmd, exec->list_var);
 }
 
 void	builtins_selection(t_cmd *cmd, t_exec *exec)
@@ -98,12 +102,22 @@ void	builtins_selection(t_cmd *cmd, t_exec *exec)
 		cmd->token = BUILTINS;
 	else if (ft_strcmp(cmd->cmd[0], "pwd") == 0)
 		cmd->token = BUILTINS;
-	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
-		cmd->token = BUILTINS;
-	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
-		cmd->token = BUILTINS;
 	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
 		cmd->token = BUILTINS;
+	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
+	{
+		if (builtins_check_pipe(cmd))
+			cmd->token = BUILTINS;
+		else
+			builtins_without_redirect(cmd, exec);
+	}
+	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
+	{
+		if (builtins_check_pipe(cmd))
+			cmd->token = BUILTINS;
+		else
+			builtins_without_redirect(cmd, exec);
+	}
 	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
 	{
 		if (builtins_check_pipe(cmd))
