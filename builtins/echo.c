@@ -18,7 +18,7 @@ int	check_option(char *arg)
 		return (0);
 }
 
-void	main_echo(char **args)
+int	main_echo(char **args)
 {
 	int		i;
 	bool	no_newline;		
@@ -27,7 +27,7 @@ void	main_echo(char **args)
 	if (ft_strlen_2d((const char **)args) == 1)
 	{
 		ft_printf("\n");
-		return ;
+		return (0);
 	}
 	i = 1;
 	while (args[i] && check_option(args[i]))
@@ -44,4 +44,5 @@ void	main_echo(char **args)
 	}
 	if (no_newline == false)
 		ft_printf("\n");
+	return (0);
 }

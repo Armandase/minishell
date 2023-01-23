@@ -57,6 +57,28 @@ bool	search_var(char *var, t_env_list **list_var)
 	return (false);
 }
 
+char	*search_send_var(char *var, t_env_list **list_var)
+{
+	t_env_list	*tmp;
+	int			i;
+
+	tmp = *list_var;
+	i = 0;
+	while (tmp)
+	{
+		if (ft_strcmp(var, tmp->name) == false)
+		{
+			free(var);
+			var = ft_strdup(tmp->value);
+			return (var);
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	free(var);
+	return (NULL);
+}
+
 void	search_replace_var(char *name, char *value, t_env_list **list_var)
 {
 	t_env_list	*tmp;

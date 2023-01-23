@@ -58,7 +58,7 @@ char	*export_value(char *str)
 	return (value);
 }
 
-int	check_name(char *name)
+static int	check_name(char *name)
 {
 	int	i;
 
@@ -84,7 +84,7 @@ void	*main_export(char **args, t_env_list **list_var)
 		&& ft_strcmp(args[0], "export") == 0)
 	{
 		print_args_ascii(*list_var, env_list_size(*list_var));
-		return (list_var);
+		return (0);
 	}
 	i = 0;
 	while (args[i])
@@ -98,7 +98,7 @@ void	*main_export(char **args, t_env_list **list_var)
 				ft_putstr_fd("bash: export: `", 2);
 				write(2, args[i], ft_strlen(args[i]));
 				ft_putstr_fd("`: not a valid identifier\n", 2);
-				break ;
+				return (1); 
 			}
 			value = NULL;
 			value = export_value(args[i]);
@@ -109,7 +109,7 @@ void	*main_export(char **args, t_env_list **list_var)
 			}
 			new_var = ft_calloc(1, sizeof(t_env_list));
 			if (new_var == NULL)
-				return (NULL);
+				return (12);
 			if (ft_strchr(args[i], '=') == false)
 			{
 				new_var->export_only = true;
@@ -141,5 +141,5 @@ void	*main_export(char **args, t_env_list **list_var)
 		}
 		i++;
 	}
-	return (list_var);
+	return (0);
 }
