@@ -7,6 +7,8 @@
 # define PWD 0
 # define OLDPWD 1
 
+extern t_sh_state	g_sh_state;
+
 t_env_list	*create_env_list(char **envp);
 int			main_env(char **args, t_env_list *list_var);
 int			main_pwd(void);

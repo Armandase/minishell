@@ -1,19 +1,15 @@
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
-# include "../minishell.h"
-# include <stdio.h>
+# include "../builtins/builtins.h"
+# include "../parsing/parsing.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <signal.h>
 # define PROMPT 0
 # define HERE_DOC 1
-
-typedef struct s_sh_state
-{
-	int		state;
-	bool	check_signal;
-}			t_sh_state;
 
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var);
 void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2]);

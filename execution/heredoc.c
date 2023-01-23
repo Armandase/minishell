@@ -1,7 +1,5 @@
 #include "execution.h"
 
-extern t_sh_state	g_sh_state;
-
 char	*cpy_without_nl(char *buffer)
 {
 	int		i;
