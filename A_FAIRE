@@ -1,3 +1,4 @@
 faire en sorte (pas oblige) que . et .. affiche cmd not found
-verif le heredoc  ctrl + d
 la norme...
+faire le 0
+gerer si echo $'USER'
