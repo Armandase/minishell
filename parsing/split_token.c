@@ -65,6 +65,7 @@ void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
 {
 	int		k;
 	char	*var;
+	char	*str;
 
 	k = 1;
 	var = NULL;
@@ -80,11 +81,13 @@ void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
 		k++;
 	}
 	var[k - 1] = '\0';
-	var = search_send_var(var, &list_var);
-	if (!var)
+	str = search_send_var(var, &list_var);
+	free(var);
+	if (!str)
 		*(i) += k - 1;
 	else
-		*count += ft_strlen(var);
+		*count += ft_strlen(str);
+	free(str);
 }
 
 static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
@@ -168,7 +171,8 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	free(trunc_str);
 	trunc_str = ft_strdup(&str[i]);
 	str = ft_strjoin_space(tmp_str, trunc_str);
-	//free(tmp_str);
+	if (trunc_str)
+		free(trunc_str);
 	return (str);
 }
 
@@ -184,10 +188,7 @@ static size_t	ft_strccpy(char *s, char *str, size_t j, t_env_list *list_var)
 		if (s[j] == ' ')
 			break ;
 		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
-		{
 			s = cpy_envp_val(s, list_var, &j);
-			j++;
-		}
 		if (s[j] == '\'')
 		{
 			j++;
