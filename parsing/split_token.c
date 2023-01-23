@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include <stdlib.h>
 
 static int	find_next_quote(const char *str, char c)
 {
@@ -60,9 +61,34 @@ static size_t	count_word(char const *s, char c)
 	return (count);
 }
 
-//void	get_dollar_value()
+void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
+{
+	int		k;
+	char	*var;
+	int		j;
 
-static size_t	count_char(char const *s, char c, size_t i)
+	k = 1;
+	var = NULL;
+	if (!s[k] || s[k] == ' ')
+		return ;
+	while (s[k] || s[k] == ' ')
+		k++;
+	var = malloc(sizeof(char) * k);
+	k = 1;
+	while (s[k] || s[k] == ' ')
+	{
+		var[k - 1] = s[k];
+		k++;
+	}
+	var[k - 1] = '\0';
+	search_send_var(var, list_var);
+	if (!var)
+		*(i) += k - 1;
+	else
+		*count += ft_strlen(var);
+}
+
+static size_t	count_char(char const *s, char c, size_t i, t_env_list *list_var)
 {
 	size_t	count;
 	int		tmp;
@@ -89,7 +115,9 @@ static size_t	count_char(char const *s, char c, size_t i)
 		}
 		if (!s[i])
 			break ;
-		if (s[i] == '\"')
+		if (s[i] == '$')
+			get_dollar_value((char *)&s[i], &count, &i, list_var);
+		if (s[i] && s[i] == '\"')
 		{
 			i++;
 			tmp = find_next_quote(&s[i], '\"');
@@ -99,7 +127,8 @@ static size_t	count_char(char const *s, char c, size_t i)
 			}
 			else
 			{
-				// CHECK LE DOLLAAAARS;
+				if (s[i] == '$')
+					get_dollar_value((char *)&s[i], &count, &i, list_var);
 				count += tmp;
 				i += tmp;
 			}
@@ -177,7 +206,7 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 	return (j);
 }
 
-char	**split_token(char const *s, char c)
+char	**split_token(char const *s, char c, t_env_list *list_var)
 {
 	size_t	i;
 	size_t	j;
@@ -192,7 +221,7 @@ char	**split_token(char const *s, char c)
 	j = 0;
 	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
 	{
-		strs[j] = malloc(count_char(s, c, i) + 1);
+		strs[j] = malloc(count_char(s, c, i, list_var) + 1);
 		if (!strs[j])
 			return (0);
 		i = ft_strccpy(s, strs[j], c, i);

@@ -43,7 +43,7 @@ int	main(int ac, char **av, char **envp)
 			exit_shell(&list_var, envp);
 		if (ft_strlen(line) != 0)
 		{
-			cmd = parsing(line);
+			cmd = parsing(line, list_var);
 			if (cmd != NULL)
 				execution(cmd, envp, &list_var);
 		}

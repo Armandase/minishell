@@ -24,7 +24,7 @@ void	begin_offset(t_cmd **cmd, char *line)
 /*	assigne le delim qui a cut le token a cmd id		*/
 /********************************************************/
 
-t_cmd	*get_cmd(char *line)
+t_cmd	*get_cmd(char *line, t_env_list *list_var)
 {
 	t_cmd	*cmd;
 	t_token	*token;
@@ -39,13 +39,13 @@ t_cmd	*get_cmd(char *line)
 		else if (line[0] && (line[0] == '>' || line[0] == '<'))
 			line++;
 		token = str_get_token(line, ">|<");
-		cmd->next = list_new(split_token(token->line, ' '), cmd);
+		cmd->next = list_new(split_token(token->line, ' ', list_var), cmd);
 		cmd = cmd->next;
 	}
 	else
 	{
 		token = str_get_token(line, ">|<");
-		cmd = list_new(split_token(token->line, ' '), NULL);
+		cmd = list_new(split_token(token->line, ' ', list_var), NULL);
 	}
 	cmd->next = list_new(NULL, cmd);
 	cmd = cmd->next ;
@@ -57,7 +57,7 @@ t_cmd	*get_cmd(char *line)
 		token = str_get_token(NULL, ">|<");
 		if (token->line == NULL)
 			break ;
-		cmd->next = list_new(split_token(token->line, ' '), cmd);
+		cmd->next = list_new(split_token(token->line, ' ', list_var), cmd);
 		cmd = cmd->next ;
 		cmd->next = list_new(NULL, cmd);
 		cmd = cmd->next ;
@@ -90,7 +90,7 @@ int	check_char(char c)
 /*	  split ces tokens par les espaces (cmd & arg)		*/
 /********************************************************/
 
-t_cmd	*parsing(char *line)
+t_cmd	*parsing(char *line, t_env_list *list_var)
 {
 	t_cmd	*begin;
 	char	*current_line;
@@ -108,7 +108,7 @@ t_cmd	*parsing(char *line)
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (NULL);
 	}
-	begin = get_cmd(current_line);
+	begin = get_cmd(current_line, list_var);
 	while (begin->next != NULL)
 	{
 		if (begin->token == 0 && begin->prev && begin->prev->token != 0 && begin->prev->token != PIPE)
