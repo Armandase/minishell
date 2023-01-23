@@ -1,10 +1,10 @@
 #include "execution.h"
-#include <stdio.h>
+
 void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 {
-	int in;
-	int out;
-	int	fail;
+	int		in;
+	int		out;
+	int		fail;
 	t_cmd	*cpy;
 
 	cpy = cmd;
@@ -24,7 +24,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_in = in;
 				if (check != 1)
 					dup2(exec->fd_in, 0);
-				else
+				else if (check == 1 && in != -1 && in != -2)
 					close(in);
 			}
 			else if (cpy->token == HEREDOC)
@@ -36,7 +36,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_in = in;
 				if (check != 1)
 					dup2(exec->fd_in, 0);
-				else
+				else if (check == 1 && in != -1 && in != -2)
 					close(in);
 			}
 			else if (cpy->token == OUT)
@@ -49,7 +49,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_out = out;
 				if (check != 1)
 					dup2(exec->fd_out, 1);
-				else
+				else if (check == 1 && out != -1 && out != -2)
 					close(out);
 			}
 			else if (cpy->token == APPEND)
@@ -62,7 +62,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_out = out;
 				if (check != 1)
 					dup2(exec->fd_out, 1);
-				else
+				else if (check == 1 && out != -1 && out != -2)
 					close(out);
 			}
 			if (in == -1 || out == -1)
@@ -76,6 +76,10 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 	}
 	if (fail == 1)
 	{
+		if (exec->fd_in != -1)
+			close(exec->fd_in);
+		else if (exec->fd_out != 1)
+			close(exec->fd_out);
 		exec->fd_in = -1;
 		exec->fd_out = -1;
 		exec_free(exec, cmd, 1);
