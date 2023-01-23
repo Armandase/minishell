@@ -39,13 +39,13 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		else if (line[0] && (line[0] == '>' || line[0] == '<'))
 			line++;
 		token = str_get_token(line, ">|<");
-		cmd->next = list_new(split_token(token->line, ' ', list_var), cmd);
+		cmd->next = list_new(split_token(token->line, list_var), cmd);
 		cmd = cmd->next;
 	}
 	else
 	{
 		token = str_get_token(line, ">|<");
-		cmd = list_new(split_token(token->line, ' ', list_var), NULL);
+		cmd = list_new(split_token(token->line, list_var), NULL);
 	}
 	cmd->next = list_new(NULL, cmd);
 	cmd = cmd->next ;
@@ -57,7 +57,7 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		token = str_get_token(NULL, ">|<");
 		if (token->line == NULL)
 			break ;
-		cmd->next = list_new(split_token(token->line, ' ', list_var), cmd);
+		cmd->next = list_new(split_token(token->line, list_var), cmd);
 		cmd = cmd->next ;
 		cmd->next = list_new(NULL, cmd);
 		cmd = cmd->next ;

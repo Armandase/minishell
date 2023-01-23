@@ -81,7 +81,7 @@ void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
 		k++;
 	}
 	var[k - 1] = '\0';
-	search_send_var(var, list_var);
+	var = search_send_var(var, &list_var);
 	if (!var)
 		*(i) += k - 1;
 	else
@@ -143,16 +143,16 @@ static size_t	count_char(char const *s, char c, size_t i, t_env_list *list_var)
 	return (count);
 }
 
-static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
+static size_t	ft_strccpy(const char *s, char *str, size_t j, t_env_list *list_var)
 {
 	size_t	i;
 
 	i = 0;
-	while (s[j] == c && s[j])
+	while (s[j] == ' ' && s[j])
 		j++;
 	while (s[j])
 	{
-		if (s[j] == c)
+		if (s[j] == ' ')
 			break ;
 		if (s[j] == '\'')
 		{
@@ -173,8 +173,10 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 				}
 			}
 		}
-		if (s[j] == c || !s[j])
+		if (s[j] == ' ' || !s[j])
 			break ;
+		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
+			j += cpy_envp_val((char *)&s[j], list_var);
 		if (s[j] == '\"')
 		{
 			j++;
@@ -194,19 +196,19 @@ static size_t	ft_strccpy(const char *s, char *str, char c, size_t j)
 				}
 			}
 		}
-		if (s[j] == c || !s[j])
+		if (s[j] == ' ' || !s[j])
 			break ;
 		str[i] = s[j];
 		i++;
 		j++;
 	}
 	str[i] = 0;
-	while (s[j] == c && s[j])
+	while (s[j] == ' ' && s[j])
 		j++;
 	return (j);
 }
 
-char	**split_token(char const *s, char c, t_env_list *list_var)
+char	**split_token(char const *s, t_env_list *list_var)
 {
 	size_t	i;
 	size_t	j;
@@ -214,17 +216,17 @@ char	**split_token(char const *s, char c, t_env_list *list_var)
 
 	if (!s)
 		return (0);
-	strs = malloc(sizeof(char *) * (count_word(s, c) + 1));
+	strs = malloc(sizeof(char *) * (count_word(s, ' ') + 1));
 	if (strs == NULL)
 		return (0);
 	i = 0;
 	j = 0;
-	while (s[i] && (j < count_word(s, c) && count_word(s, c)))
+	while (s[i] && (j < count_word(s, ' ') && count_word(s, ' ')))
 	{
-		strs[j] = malloc(count_char(s, c, i, list_var) + 1);
+		strs[j] = malloc(count_char(s, ' ', i, list_var) + 1);
 		if (!strs[j])
 			return (0);
-		i = ft_strccpy(s, strs[j], c, i);
+		i = ft_strccpy(s, strs[j], i, list_var);
 		j++;
 	}
 	strs[j] = 0;

@@ -1,8 +1,7 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "../libft/libft.h"
-# include "../struct.h"
+# include "../builtins/builtins.h"
 
 # define IN 1
 # define OUT 2
@@ -21,7 +20,7 @@ typedef struct s_token{
 t_cmd	*parsing(char *line, t_env_list *list_var);
 char	*strtok_unquote(char *str, const char *delim);
 void	free_cmd(t_cmd *cmd);
-char	**split_token(char const *s, char c, t_env_list *list_var);
+char	**split_token(char const *s, t_env_list *list_var);
 t_token	*str_get_token(char *str, const char *delim);
 t_cmd	*list_new(void	*content, t_cmd *prev);
 
