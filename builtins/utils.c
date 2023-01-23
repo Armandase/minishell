@@ -112,7 +112,8 @@ void	search_replace_var(char *name, char *value, t_env_list **list_var)
 	{
 		if (ft_strcmp(tmp->name, name) == false)
 		{
-			free(tmp->value);
+			if (tmp->value != NULL)
+				free(tmp->value);
 			tmp->value = value;
 			tmp->export_only = false;
 		}

@@ -50,11 +50,8 @@ int	main_cd(char **args, t_env_list **list_var)
 	if (old_pwd == NULL)
 		return (12);
 	old_pwd = getcwd(old_pwd, 4096);
-	if (chdir(args[1]))
-	{
-		ft_printf("bash: cd: %s: No such file or directory\n", args[1]);
+	if (chdir(args[1]) != 0)
 		return (1);
-	}
 	pwd = ft_calloc(4096, sizeof(char));
 	if (pwd == NULL)
 		return (12);

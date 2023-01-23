@@ -167,8 +167,8 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	tmp_str = ft_strjoin_space(tmp_str, trunc_str);
 	free(trunc_str);
 	trunc_str = ft_strdup(&str[i]);
-	str = ft_strjoin_space(trunc_str, tmp_str);
-	free(tmp_str);
+	str = ft_strjoin_space(tmp_str, trunc_str);
+	//free(tmp_str);
 	return (str);
 }
 
@@ -183,6 +183,11 @@ static size_t	ft_strccpy(char *s, char *str, size_t j, t_env_list *list_var)
 	{
 		if (s[j] == ' ')
 			break ;
+		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
+		{
+			s = cpy_envp_val(s, list_var, &j);
+			j++;
+		}
 		if (s[j] == '\'')
 		{
 			j++;
@@ -205,12 +210,17 @@ static size_t	ft_strccpy(char *s, char *str, size_t j, t_env_list *list_var)
 		if (s[j] == ' ' || !s[j])
 			break ;
 		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
+		{
 			s = cpy_envp_val(s, list_var, &j);
+			j++;
+		}
 		if (s[j] == '\"')
 		{
 			j++;
 			if (!s[j])
 				break ;
+			if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
+				s = cpy_envp_val(s, list_var, &j);
 			while (s[j] && s[j] == '\"')
 				j++;
 			while (s[j])
