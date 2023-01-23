@@ -67,10 +67,15 @@ char	*search_send_var(char *var, t_env_list **list_var)
 	while (tmp)
 	{
 		if (ft_strcmp(var, tmp->name) == false)
-			return (tmp->value);
+		{
+			free(var);
+			var = ft_strdup(tmp->value);
+			return (var);
+		}
 		tmp = tmp->next;
 		i++;
 	}
+	free(var);
 	return (NULL);
 }
 
