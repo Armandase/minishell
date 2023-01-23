@@ -1,22 +1,23 @@
 #include "execution.h"
 #include <stdio.h>
 
-void	waiting_end(t_exec	*exec)
+void	waiting_end(t_exec	*exec, t_env_list **list_var)
 {
 	int	wstatus;
 	int	exit_code;
+	int	i;
 
-	exec->nb_fork--;
-	while (exec->nb_fork >= 0)
+	i = 0;
+	while (i < exec->nb_fork)
 	{
-		waitpid(exec->tab_pid[exec->nb_fork], &wstatus, 0);
+		waitpid(exec->tab_pid[i], &wstatus, 0);
 		if (WIFEXITED(wstatus))
 			exit_code = WEXITSTATUS(wstatus);
 		else if (WIFSIGNALED(wstatus))
 			exit_code = WTERMSIG(wstatus);
-		exec->nb_fork--;
+		i++;
 	}
-	(void)exit_code;
+	search_replace_var("?", ft_itoa(exit_code), list_var);
 }
 
 void	free_struct(t_cmd *cmd)
@@ -78,7 +79,7 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 		redirection_offset(&cmd);
 	}
 	close_pipe(tab_pipe);
-	waiting_end(&exec);
+	waiting_end(&exec, list_var);
 	while (cmd->prev != NULL)
 		cmd = cmd->prev;
 	free_struct(cmd);
