@@ -76,6 +76,9 @@ int	builtins_check_pipe(t_cmd *cmd)
 
 void	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 {
+	int	exit_code;
+
+	exit_code = 0;
 	cmd->token = BUILTINS;
 	if (cmd->next && (cmd->token == FILES || cmd->token == CMD || cmd->token == 0 || cmd->token == BUILTINS))
 		cmd = cmd->next;
@@ -87,13 +90,14 @@ void	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD || cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
 		cmd = cmd->prev;
 	if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "cd") == 0))
-		main_cd(cmd->cmd, exec->list_var);
+		exit_code = main_cd(cmd->cmd, exec->list_var);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "exit") == 0))
 		main_exit(cmd, exec);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "export") == 0))
-		main_export(cmd->cmd, exec->list_var);
+		exit_code = main_export(cmd->cmd, exec->list_var);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
-		main_unset(cmd->cmd, exec->list_var);
+		exit_code = main_unset(cmd->cmd, exec->list_var);
+	search_replace_var("?", ft_itoa(exit_code), exec->list_var);
 }
 
 void	builtins_selection(t_cmd *cmd, t_exec *exec)
