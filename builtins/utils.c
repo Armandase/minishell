@@ -9,17 +9,14 @@ char	*ft_strjoin_space(char *s1, char const *s2)
 	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
 	i = -1;
 	j = 0;
-	if (s1)
+	while (s1 && s1[++i])
 	{
-		while (s1[++i])
-		{
-			str[j] = s1[i];
-			j++;
-		}
+		str[j] = s1[i];
+		j++;
 	}
 	free(s1);
 	i = -1;
-	while (s2[++i])
+	while (s2 && s2[++i])
 	{
 		str[j] = s2[i];
 		j++;
