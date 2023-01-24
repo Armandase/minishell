@@ -74,7 +74,7 @@ int	builtins_check_pipe(t_cmd *cmd)
 	return (0);
 }
 
-void	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
+int	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 {
 	int	exit_code;
 
@@ -98,6 +98,7 @@ void	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
 		exit_code = main_unset(cmd->cmd, exec->list_var);
 	search_replace_var("?", ft_itoa(exit_code), exec->list_var);
+	return (UN_FORK);
 }
 
 void	builtins_selection(t_cmd *cmd, t_exec *exec)
@@ -113,28 +114,28 @@ void	builtins_selection(t_cmd *cmd, t_exec *exec)
 		if (builtins_check_pipe(cmd))
 			cmd->token = BUILTINS;
 		else
-			builtins_without_redirect(cmd, exec);
+			cmd->token = builtins_without_redirect(cmd, exec);
 	}
 	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
 	{
 		if (builtins_check_pipe(cmd))
 			cmd->token = BUILTINS;
 		else
-			builtins_without_redirect(cmd, exec);
+			cmd->token = builtins_without_redirect(cmd, exec);
 	}
 	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
 	{
 		if (builtins_check_pipe(cmd))
 			cmd->token = BUILTINS;
 		else
-			builtins_without_redirect(cmd, exec);
+			cmd->token = builtins_without_redirect(cmd, exec);
 	}
 	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
 	{
 		if (builtins_check_pipe(cmd))
 			cmd->token = BUILTINS;
 		else
-			builtins_without_redirect(cmd, exec);
+			cmd->token = builtins_without_redirect(cmd, exec);
 	}
 }
 
