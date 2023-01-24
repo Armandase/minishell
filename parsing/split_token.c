@@ -71,11 +71,11 @@ void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
 	var = NULL;
 	if (!s[k] || s[k] == ' ')
 		return ;
-	while (s[k] || s[k] == ' ')
+	while (s[k] && s[k] != ' ')
 		k++;
 	var = malloc(sizeof(char) * k);
 	k = 1;
-	while (s[k] || s[k] == ' ')
+	while (s[k] && s[k] != ' ')
 	{
 		var[k - 1] = s[k];
 		k++;
@@ -86,7 +86,10 @@ void	get_dollar_value(char *s, size_t *count, size_t *i, t_env_list *list_var)
 	if (!str)
 		*(i) += k - 1;
 	else
+	{
 		*count += ft_strlen(str);
+		*i += k;
+	}
 	free(str);
 }
 
@@ -152,9 +155,7 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	size_t	i;
 	char	tmp;
 
-	i = 0;
-	while (str[i] != '$')
-		i++;
+	i = *j;
 	tmp = str[i];
 	str[i] = '\0';
 	tmp_str = ft_strdup(str);
@@ -211,10 +212,7 @@ static size_t	ft_strccpy(char *s, char *str, size_t j, t_env_list *list_var)
 		if (s[j] == ' ' || !s[j])
 			break ;
 		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
-		{
 			s = cpy_envp_val(s, list_var, &j);
-			j++;
-		}
 		if (s[j] == '\"')
 		{
 			j++;
