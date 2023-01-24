@@ -3,3 +3,4 @@ la norme...
 pas pareil que bash si echo $USER"okok"
 	nous : echo adamiens okok
 	bash : echo adamiensokok
+echo adamiens"ok"
