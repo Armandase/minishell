@@ -46,6 +46,7 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		g_sh_state.state = PROMPT;
 		prompt = create_prompt();
 		line = readline(prompt);
@@ -56,6 +57,7 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strlen(line) != 0)
 		{
 			cmd = parsing(line, list_var);
+			signal(SIGQUIT, handle_sigquit);
 			if (cmd != NULL)
 				execution(cmd, envp, &list_var);
 		}

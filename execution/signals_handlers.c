@@ -40,3 +40,9 @@ void	handle_sigint(int signum)
 	else if (g_sh_state.state == HERE_DOC)
 		g_sh_state.check_signal = true;
 }
+
+void	handle_sigquit(int signum)
+{
+	(void)signum;
+	ft_printf("Quit (core dumped)\n");
+}
