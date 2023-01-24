@@ -177,73 +177,75 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	return (str);
 }
 
-static size_t	ft_strccpy(char *s, char *str, size_t j, t_env_list *list_var)
+static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 {
 	size_t	i;
+	char	*cpy;
 
 	i = 0;
-	while (s[j] == ' ' && s[j])
+	while (s[*j] == ' ' && s[*j])
 		j++;
-	while (s[j])
+	while (s[*j])
 	{
-		if (s[j] == ' ')
+		if (s[*j] == ' ')
 			break ;
-		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
-			s = cpy_envp_val(s, list_var, &j);
-		if (s[j] == '\'')
+		if (s[*j] == '$' && s[*j + 1] && s[*j + 1] != ' ')
+			s = cpy_envp_val(s, list_var, j);
+		if (s[*j] == '\'')
 		{
-			j++;
-			if (!s[j])
+			(*j)++;
+			if (!s[*j])
 				break ;
-			while (s[j] && s[j] == '\'')
-				j++;
-			while (s[j])
+			while (s[*j] && s[*j] == '\'')
+				(*j)++;
+			while (s[*j])
 			{
-				str[i] = s[j];
+				str[i] = s[*j];
+				(*j)++;
 				i++;
-				j++;
-				if (s[j] == '\'')
+				if (s[*j] == '\'')
 				{
-					j++;
+					(*j)++;
 					break ;
 				}
 			}
 		}
-		if (s[j] == ' ' || !s[j])
+		if (s[*j] == ' ' || !s[*j])
 			break ;
-		if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
-			s = cpy_envp_val(s, list_var, &j);
-		if (s[j] == '\"')
+		if (s[*j] == '$' && s[*j + 1] && s[*j + 1] != ' ')
+			s = cpy_envp_val(s, list_var, j);
+		if (s[*j] == '\"')
 		{
-			j++;
-			if (!s[j])
+			(*j)++;
+			if (!s[*j])
 				break ;
-			if (s[j] == '$' && s[j + 1] && s[j + 1] != ' ')
-				s = cpy_envp_val(s, list_var, &j);
-			while (s[j] && s[j] == '\"')
-				j++;
-			while (s[j])
+			if (s[*j] == '$' && s[*j + 1] && s[*j + 1] != ' ')
+				s = cpy_envp_val(s, list_var, j);
+			while (s[*j] && s[*j] == '\"')
+				(*j)++;
+			while (s[*j])
 			{
-				str[i] = s[j];
+				str[i] = s[*j];
 				i++;
-				j++;
-				if (s[j] == '\"')
+				(*j)++;
+				if (s[*j] == '\"')
 				{
-					j++;
+					(*j)++;
 					break ;
 				}
 			}
 		}
-		if (s[j] == ' ' || !s[j])
+		if (s[*j] == ' ' || !s[*j])
 			break ;
-		str[i] = s[j];
+		str[i] = s[*j];
 		i++;
-		j++;
+		(*j)++;
 	}
 	str[i] = 0;
-	while (s[j] == ' ' && s[j])
-		j++;
-	return (j);
+	while (s[*j] == ' ' && s[*j])
+		(*j)++;
+	cpy = ft_strdup(s);
+	return (cpy);
 }
 
 char	**split_token(char *s, t_env_list *list_var)
@@ -264,9 +266,14 @@ char	**split_token(char *s, t_env_list *list_var)
 		strs[j] = malloc(count_char(s, ' ', i, list_var) + 1);
 		if (!strs[j])
 			return (0);
-		i = ft_strccpy(s, strs[j], i, list_var);
+		s = ft_strccpy(s, strs[j], &i, list_var);
 		j++;
 	}
 	strs[j] = 0;
+	if (s)
+	{
+		free(s);
+		s = NULL;
+	}
 	return (strs);
 }
