@@ -1,13 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/24 14:18:14 by ulayus            #+#    #+#             */
+/*   Updated: 2023/01/24 14:18:34 by ulayus           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 
-static int	check_name(char *name)
+static int	check_name_unset(char *name)
 {
 	int	i;
 
 	i = 0;
 	while (name[i])
 	{
-		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])))
+		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])
+				|| name[0] == '?'))
 			return (0);
 		i++;
 	}
@@ -23,7 +36,8 @@ int	main_unset(char **args, t_env_list **list_var)
 	i = 1;
 	while (args[i] != NULL)
 	{
-		if (ft_isdigit(args[i][0]) || !check_name(args[i]) || args[i][0] == '-')
+		if (ft_isdigit(args[i][0]) || !check_name_unset(args[i])
+				|| args[i][0] == '-')
 		{
 			ft_putstr_fd("bash: export: `", 2);
 			write(2, args[i], ft_strlen(args[i]));

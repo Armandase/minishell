@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
+/*   Updated: 2023/01/24 14:15:46 by ulayus           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 
 char	*export_name(char *str)
@@ -5,7 +17,8 @@ char	*export_name(char *str)
 	char	*name;
 	int		i;
 
-	i = 0; while (str[i])
+	i = 0;
+	while (str[i])
 	{
 		if (str[i] == '=' && str[i + 1] != ' ')
 			break ;
@@ -65,7 +78,8 @@ static int	check_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i]) || !ft_strcmp(name, "?")))
+		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])
+				|| !ft_strcmp(name, "?")))
 			return (0);
 		i++;
 	}
@@ -98,11 +112,11 @@ int	main_export(char **args, t_env_list **list_var)
 				ft_putstr_fd("bash: export: `", 2);
 				write(2, args[i], ft_strlen(args[i]));
 				ft_putstr_fd("`: not a valid identifier\n", 2);
-				return (1); 
+				return (1);
 			}
 			value = NULL;
 			value = export_value(args[i]);
-			if (search_var(name, list_var) == true)
+			if (search_var(name, list_var) == true && value && *value)
 			{
 				search_replace_var(name, value, list_var);
 				break ;
@@ -112,10 +126,7 @@ int	main_export(char **args, t_env_list **list_var)
 				return (12);
 			if (ft_strchr(args[i], '=') == false)
 			{
-				if (name[0] == '?')
-				   new_var->export_only = 2;	
-				else
-					new_var->export_only = true;
+				new_var->export_only = true;
 				if (search_var(name, list_var) == true)
 					break ;
 			}
@@ -132,7 +143,8 @@ int	main_export(char **args, t_env_list **list_var)
 					break ;
 				tmp = tmp->next;
 			}
-			if (ft_strcmp(name, tmp->name) == false && search_var(name, list_var) == false)
+			if (ft_strcmp(name, tmp->name) == false
+				&& search_var(name, list_var) == false)
 			{
 				free(tmp->value);
 				tmp->value = value;

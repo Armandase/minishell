@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
+/*   Updated: 2023/01/24 14:18:09 by ulayus           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
@@ -20,6 +32,9 @@ void		main_exit(t_cmd *cmd, t_exec *exec);
 void		print_args_ascii(t_env_list *list_var, size_t size);
 size_t		env_list_size(t_env_list *list_var);
 char		**env_export(t_env_list *list_var);
+//bool		check_name(char *name);
+char		*export_value(char *str);
+char		*export_name(char *str);
 char		*search_send_var(char *var, t_env_list **list_var);
 bool		search_var(char *var, t_env_list **list_var);
 void		search_replace_var(char *name, char *value, t_env_list **list_var);

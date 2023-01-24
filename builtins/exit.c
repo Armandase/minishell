@@ -1,10 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
+/*   Updated: 2023/01/24 13:20:10 by ulayus           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
+
+static void	free_exec(t_exec *exec)
+{
+	t_env_list	*env_tmp;
+
+	while (*exec->list_var)
+	{
+		env_tmp = *exec->list_var;
+		*exec->list_var = (*exec->list_var)->next;
+		free(env_tmp->name);
+		free(env_tmp->value);
+		free(env_tmp);
+	}
+	if (exec->tab_pid != NULL)
+		free(exec->tab_pid);
+	if (exec->envp)
+		ft_free_strs(exec->envp);
+}
+
+static void	free_cmd(t_cmd *cmd)
+{
+	t_cmd	*cmd_tmp;
+
+	while (cmd->prev != NULL)
+		cmd = cmd->prev;
+	while (cmd->next != NULL)
+	{
+		cmd_tmp = cmd;
+		cmd = cmd->next;
+		ft_free_strs(cmd_tmp->cmd);
+		free(cmd_tmp);
+	}
+}
 
 void	main_exit(t_cmd *cmd, t_exec *exec)
 {
-	t_cmd		*cmd_tmp;
-	t_env_list	*env_tmp;
-	int			exit_code;
+	int	exit_code;
 
 	exit_code = 0;
 	if (ft_strlen_2d((const char **)cmd->cmd) > 1)
@@ -18,27 +61,8 @@ void	main_exit(t_cmd *cmd, t_exec *exec)
 	}
 	while (exit_code > 256)
 		exit_code -= 256;
-	while (*exec->list_var)
-	{
-		env_tmp = *exec->list_var;
-		*exec->list_var = (*exec->list_var)->next;
-		free(env_tmp->name);
-		free(env_tmp->value);
-		free(env_tmp);
-	}
-	if (exec->tab_pid != NULL)
-		free(exec->tab_pid);
-	if (exec->envp)
-		ft_free_strs(exec->envp);
-	while (cmd->prev != NULL)
-		cmd = cmd->prev;
-	while (cmd->next != NULL)
-	{
-		cmd_tmp = cmd;
-		cmd = cmd->next;
-		ft_free_strs(cmd_tmp->cmd);
-		free(cmd_tmp);
-	}
+	free_exec(exec);
+	free_cmd(cmd);
 	ft_printf("exit\n");
 	exit(exit_code);
 }

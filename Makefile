@@ -9,6 +9,7 @@ SRCS		= main.c\
 			  execution/exec_cmd.c execution/execution.c execution/find_path.c \
 			  execution/exec_utils.c execution/signals_handlers.c\
 			  execution/exit.c execution/heredoc.c\
+#builtins/export_utils.c\
 
 CC			= clang
 LIBS        = -Llibft -lft -lreadline
