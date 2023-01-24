@@ -152,9 +152,11 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 {
 	char	*trunc_str;
 	char	*tmp_str;
+	char	*cpy_str;
 	size_t	i;
 	char	tmp;
 
+	cpy_str = NULL;
 	i = *j;
 	tmp = str[i];
 	str[i] = '\0';
@@ -169,10 +171,13 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	trunc_str = search_send_var(str + 1, &list_var);
 	str[i] = tmp;
 	if (trunc_str)
-		tmp_str = ft_strjoin_space(tmp_str, trunc_str);
+	{
+		cpy_str = ft_strjoin(tmp_str, trunc_str);
+		free(tmp_str);
+	}
 	free(trunc_str);
 	trunc_str = ft_strdup(&str[i]);
-	str = ft_strjoin_space(tmp_str, trunc_str);
+	str = ft_strjoin_space(cpy_str, trunc_str);
 	if (trunc_str)
 		free(trunc_str);
 	return (str);
@@ -181,7 +186,6 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 {
 	size_t	i;
-	char	*cpy;
 
 	i = 0;
 	while (s[*j] && s[*j] == ' ')
@@ -236,17 +240,16 @@ static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 				}
 			}
 		}
-		if (s[*j] == ' ' || !s[*j])
+		if (!s[*j] || s[*j] == ' ')
 			break ;
 		str[i] = s[*j];
 		i++;
 		(*j)++;
 	}
 	str[i] = 0;
-	while (s[*j] == ' ' && s[*j])
+	while (s[*j] && s[*j] == ' ')
 		(*j)++;
-	cpy = ft_strdup(s);
-	return (cpy);
+	return (s);
 }
 
 char	**split_token(char *s, t_env_list *list_var)
