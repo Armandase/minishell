@@ -184,8 +184,8 @@ static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 	char	*cpy;
 
 	i = 0;
-	while (s[*j] == ' ' && s[*j])
-		j++;
+	while (s[*j] && s[*j] == ' ')
+		(*j)++;
 	while (s[*j])
 	{
 		if (s[*j] == ' ')

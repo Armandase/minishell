@@ -8,6 +8,7 @@ void	waiting_end(t_exec	*exec, t_env_list **list_var)
 	int	i;
 
 	i = 0;
+	exit_code = 0;
 	while (i < exec->nb_fork)
 	{
 		waitpid(exec->tab_pid[i], &wstatus, 0);

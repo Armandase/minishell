@@ -33,7 +33,6 @@ int	heredoc(t_cmd *cmd)
 	if (buf == NULL)
 		ft_printf("\n");
 	str = cpy_without_nl(buf);
-	free(buf);
 	g_sh_state.state = HERE_DOC;
 	len = ft_strlen(cmd->cmd[0]) + 1;
 	while (ft_strncmp(cmd->cmd[0], str, len) != 0)

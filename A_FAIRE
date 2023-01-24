@@ -1,8 +1,5 @@
 faire en sorte (pas oblige) que . et .. affiche cmd not found
 la norme...
-faire le 0
-gerer si echo $'USER'
-leak sur echo adamiens
-echo adamiens ok
-echo ER
-si adamiens la len ajouter au compteur du split est de la size du contenu de la variable et non de adamiens
+pas pareil que bash si echo $USER"okok"
+	nous : echo adamiens okok
+	bash : echo adamiensokok

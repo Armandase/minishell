@@ -169,6 +169,9 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 			return ;
 		}
 	}
-	apply_execution(exec, cmd, tab_pipe);
-	exec->nb_fork++;
+	if (cmd->cmd && (cmd->token == CMD || cmd->token == BUILTINS))
+	{
+		apply_execution(exec, cmd, tab_pipe);
+		exec->nb_fork++;
+	}
 }
