@@ -5,3 +5,4 @@ gerer si echo $'USER'
 leak sur echo adamiens
 echo adamiens ok
 echo ER
+si adamiens la len ajouter au compteur du split est de la size du contenu de la variable et non de adamiens
