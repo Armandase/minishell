@@ -24,7 +24,7 @@ void	create_exit_env(t_env_list **list_var)
 {
 	char	**cmd;
 
-	cmd = ft_split("export ?", ' ');
+	cmd = ft_split("export ?=0", ' ');
 	if (cmd == NULL)
 		exit_shell(list_var, NULL);
 	main_export(cmd, list_var);

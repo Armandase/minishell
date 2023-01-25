@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 09:29:30 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 09:57:17 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ static int	check_name(char *name)
 	int	i;
 
 	i = 0;
+	if (name == NULL || name[0] == '\0')
+		return (0);
 	while (name[i])
 	{
 		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])
