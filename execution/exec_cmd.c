@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:09:58 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 17:10:00 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/25 19:06:09 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_in = in;
 				if (check != 1)
 					dup2(exec->fd_in, 0);
-				else if (check == 1 && in != -1 && in != -2)
+				else if (check == 1 && in > 0)
 					close(in);
 			}
 			else if (cpy->token == HEREDOC)
@@ -48,7 +48,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_in = in;
 				if (check != 1)
 					dup2(exec->fd_in, 0);
-				else if (check == 1 && in != -1 && in != -2)
+				else if (check == 1 && in > 0)
 					close(in);
 			}
 			else if (cpy->token == OUT)
@@ -61,7 +61,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_out = out;
 				if (check != 1)
 					dup2(exec->fd_out, 1);
-				else if (check == 1 && out != -1 && out != -2)
+				else if (check == 1 && out > 0)
 					close(out);
 			}
 			else if (cpy->token == APPEND)
@@ -74,15 +74,15 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				exec->fd_out = out;
 				if (check != 1)
 					dup2(exec->fd_out, 1);
-				else if (check == 1 && out != -1 && out != -2)
+				else if (check == 1 && out > 0)
 					close(out);
 			}
 			if (in == -1 || out == -1)
 				fail = 1;
-			else if (cpy->next
+			else if (cpy->next && fail == 0
 				&& (cpy->next->token == IN || cpy->next->token == HEREDOC))
 				close(in);
-			else if (cpy->next
+			else if (cpy->next && fail == 0
 				&& (cpy->next->token == OUT || cpy->next->token == APPEND))
 				close(out);
 		}
@@ -90,12 +90,12 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 	}
 	if (fail == 1)
 	{
-		if (exec->fd_in != -1)
-			close(exec->fd_in);
-		else if (exec->fd_out != 1)
-			close(exec->fd_out);
-		exec->fd_in = -1;
-		exec->fd_out = -1;
+		if (in > 0)
+			close(in);
+		if (out > 0)
+			close(out);
+		exec->fd_in = 0;
+		exec->fd_out = 0;
 		exec_free(exec, cmd, 1);
 	}
 }
