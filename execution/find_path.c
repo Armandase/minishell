@@ -86,7 +86,7 @@ void	get_cmd_path(char **cmd, char **envp)
 	{
 		cmd[0] = NULL;
 		return ;
-	};
+	}
 	while (directories[i] != NULL)
 	{
 		free(directories[i]);

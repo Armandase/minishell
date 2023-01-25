@@ -26,7 +26,9 @@ void	free_struct(t_cmd *cmd)
 	int		i;
 	t_cmd	*tmp;
 
-	while (cmd->next != NULL)
+	while (cmd->prev != NULL)
+		cmd = cmd->prev;
+	while (cmd != NULL)
 	{
 		i = 0;
 		if (cmd->cmd)
@@ -43,7 +45,6 @@ void	free_struct(t_cmd *cmd)
 		free(tmp);
 		tmp = NULL;
 	}
-	free(cmd);
 }
 
 int	tab_pid_len(t_cmd	*cmd)
