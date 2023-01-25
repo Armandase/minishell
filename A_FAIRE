@@ -1,7 +1,4 @@
-faire en sorte (pas oblige) que . et .. affiche cmd not found
 la norme...
-pas pareil que bash si echo $USER"okok"
-	nous : echo adamiens okok
-	bash : echo adamiensokok
-echo adamiens"ok"
-<><><<> ok | ls
+LEAK SUR :
+	echo $USER
+	echo $"USER"
