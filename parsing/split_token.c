@@ -274,10 +274,5 @@ char	**split_token(char *s, t_env_list *list_var)
 		j++;
 	}
 	strs[j] = 0;
-	if (s)
-	{
-		free(s);
-		s = NULL;
-	}
 	return (strs);
 }
