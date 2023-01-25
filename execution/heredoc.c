@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/25 16:53:19 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/25 16:53:21 by adamiens         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 char	*cpy_without_nl(char *buffer)
@@ -19,21 +31,10 @@ char	*cpy_without_nl(char *buffer)
 	return (ret);
 }
 
-int	heredoc(t_cmd *cmd)
+void	get_line(t_cmd *cmd, char *str, char *buf, int fd_buf[2])
 {
-	char	*buf;
-	char	*str;
-	int		fd_buf[2];
-	int		len;
+	int	len;
 
-	if (pipe(fd_buf) == -1)
-		perror("Error");
-	ft_printf("> ");
-	buf = get_next_line(0);
-	if (buf == NULL)
-		ft_printf("\n");
-	str = cpy_without_nl(buf);
-	g_sh_state.state = HERE_DOC;
 	len = ft_strlen(cmd->cmd[0]) + 1;
 	while (ft_strncmp(cmd->cmd[0], str, len) != 0)
 	{
@@ -50,6 +51,23 @@ int	heredoc(t_cmd *cmd)
 	free(str);
 	close(fd_buf[1]);
 	free(buf);
+}
+
+int	heredoc(t_cmd *cmd)
+{
+	char	*buf;
+	char	*str;
+	int		fd_buf[2];
+
+	if (pipe(fd_buf) == -1)
+		perror("Error");
+	ft_printf("> ");
+	buf = get_next_line(0);
+	if (buf == NULL)
+		ft_printf("\n");
+	str = cpy_without_nl(buf);
+	g_sh_state.state = HERE_DOC;
+	get_line(cmd, str, buf, fd_buf);
 	if (g_sh_state.check_signal == true)
 	{
 		close(fd_buf[0]);

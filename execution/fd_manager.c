@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   fd_manager.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 16:53:35 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 16:53:38 by adamiens         ###   ########.fr       */
+/*   Created: 2023/01/25 17:02:56 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/25 17:04:17 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	exit_shell(t_env_list **list_var, char **envp)
+void	open_pipe(int tab_pipe[2][2], int i)
 {
-	t_env_list	*head;
-	t_env_list	*tmp;
+	close(tab_pipe[i % 2][1]);
+	close(tab_pipe[i % 2][0]);
+	pipe(tab_pipe[i % 2]);
+}
 
-	if (envp != NULL)
-		ft_free_strs(envp);
-	head = *list_var;
-	while (head != NULL)
-	{
-		tmp = head;
-		head = head->next;
-		if (tmp)
-		{
-			free(tmp->name);
-			free(tmp->value);
-			free(tmp);
-		}
-	}
-	ft_printf("exit\n");
-	exit(1);
+void	close_pipe(int tab_pipe[2][2])
+{
+	close(tab_pipe[1][1]);
+	close(tab_pipe[1][0]);
+	close(tab_pipe[0][1]);
+	close(tab_pipe[0][0]);
 }

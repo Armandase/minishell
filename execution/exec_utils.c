@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/25 17:02:09 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/25 17:03:41 by adamiens         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 void	free_list_var(t_env_list **list_var, char **envp)
@@ -58,21 +70,6 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 		free(exec->tab_pid);
 	free_list_var(exec->list_var, exec->envp);
 	exit(exit_code);
-}
-
-void	open_pipe(int tab_pipe[2][2], int i)
-{
-	close(tab_pipe[i % 2][1]);
-	close(tab_pipe[i % 2][0]);
-	pipe(tab_pipe[i % 2]);
-}
-
-void	close_pipe(int tab_pipe[2][2])
-{
-	close(tab_pipe[1][1]);
-	close(tab_pipe[1][0]);
-	close(tab_pipe[0][1]);
-	close(tab_pipe[0][0]);
 }
 
 void	redirection_offset(t_cmd **cmd)

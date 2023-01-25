@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_execution.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/25 17:01:57 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/25 17:01:59 by adamiens         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 int	builtins_check_pipe(t_cmd *cmd)
@@ -50,28 +62,10 @@ void	builtins_selection(t_cmd *cmd, t_exec *exec)
 		cmd->token = BUILTINS;
 	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
 		cmd->token = BUILTINS;
-	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
-	{
-		if (builtins_check_pipe(cmd))
-			cmd->token = BUILTINS;
-		else
-			cmd->token = builtins_without_redirect(cmd, exec);
-	}
-	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
-	{
-		if (builtins_check_pipe(cmd))
-			cmd->token = BUILTINS;
-		else
-			cmd->token = builtins_without_redirect(cmd, exec);
-	}
-	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
-	{
-		if (builtins_check_pipe(cmd))
-			cmd->token = BUILTINS;
-		else
-			cmd->token = builtins_without_redirect(cmd, exec);
-	}
-	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
+	else if (ft_strcmp(cmd->cmd[0], "export") == 0
+		|| ft_strcmp(cmd->cmd[0], "unset") == 0
+		|| ft_strcmp(cmd->cmd[0], "exit") == 0
+		|| ft_strcmp(cmd->cmd[0], "cd") == 0)
 	{
 		if (builtins_check_pipe(cmd))
 			cmd->token = BUILTINS;

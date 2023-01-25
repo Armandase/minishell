@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/25 17:09:58 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/25 17:10:00 by adamiens         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
@@ -67,9 +79,11 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 			}
 			if (in == -1 || out == -1)
 				fail = 1;
-			else if (cpy->next && (cpy->next->token == IN || cpy->next->token == HEREDOC))
+			else if (cpy->next
+				&& (cpy->next->token == IN || cpy->next->token == HEREDOC))
 				close(in);
-			else if (cpy->next && (cpy->next->token == OUT || cpy->next->token == APPEND))
+			else if (cpy->next
+				&& (cpy->next->token == OUT || cpy->next->token == APPEND))
 				close(out);
 		}
 		cpy = cpy->next;
@@ -88,14 +102,16 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 {
-	if (cmd->next && (cmd->token == FILES || cmd->token == CMD || cmd->token == 0 || cmd->token == BUILTINS))
+	if (cmd->next && (cmd->token == FILES || cmd->token == CMD
+			|| cmd->token == 0 || cmd->token == BUILTINS))
 		cmd = cmd->next;
 	if (cmd->token == HEREDOC
 		|| cmd->token == IN
 		|| cmd->token == OUT
 		|| cmd->token == APPEND)
 		open_input_file(exec, cmd, 0);
-	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD || cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
+	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD
+			|| cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
 		cmd = cmd->prev;
 	if (cmd->prev && cmd->prev->token == PIPE)
 		dup2(tab_pipe[exec->nb_fork - 1 % 2][0], 0);
@@ -120,19 +136,19 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 		ret = execve(cmd->cmd[0], cmd->cmd, exec->envp);
 	else if (cmd->token == BUILTINS)
 	{
-		if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "echo") == 0))
+		if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "echo")))
 			ret = main_echo(cmd->cmd);
-		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "pwd") == 0))
+		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "pwd")))
 			ret = main_pwd();
-		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "export") == 0))
+		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "export")))
 			ret = main_export(cmd->cmd, exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
+		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "unset")))
 			ret = main_unset(cmd->cmd, exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "env") == 0))
+		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "env")))
 			ret = main_env(cmd->cmd, *exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "cd") == 0))
+		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "cd")))
 			ret = main_cd(cmd->cmd, exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "exit") == 0))
+		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "exit")))
 			main_exit(cmd, exec);
 	}
 	exec_free(exec, cmd, ret);
@@ -173,9 +189,6 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 			return ;
 		}
 	}
-	if (cmd->cmd && (cmd->token == CMD || cmd->token == BUILTINS))
-	{
-		apply_execution(exec, cmd, tab_pipe);
-		exec->nb_fork++;
-	}
+	apply_execution(exec, cmd, tab_pipe);
+	exec->nb_fork++;
 }
