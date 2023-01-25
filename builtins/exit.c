@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 09:37:49 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 11:18:26 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,26 @@ static void	free_cmd(t_cmd *cmd)
 	}
 }
 
-void	main_exit(t_cmd *cmd, t_exec *exec)
+int	main_exit(t_cmd *cmd, t_exec *exec)
 {
 	int	exit_code;
 
 	exit_code = 0;
-	if (ft_strlen_2d((const char **)cmd->cmd) > 1)
+	if (ft_strlen_2d((const char **)cmd->cmd) > 1
+		&& ft_strlen_2d((const char **)cmd->cmd) < 3)
 	{
 		exit_code = ft_atoi(cmd->cmd[1]);
-		if (cmd->cmd[1][0] && ft_isdigit(cmd->cmd[1][0]) == false)
+		if (cmd->cmd[1][0] && ft_isdigit(cmd->cmd[1][0]) == false
+			&& cmd->cmd[1][0] != '-' && cmd->cmd[1][0] != '+')
 		{
 			ft_putstr_fd("exit: numeric argument required\n", 2);
 			exit_code = 2;
 		}
+	}
+	else
+	{
+		ft_putstr_fd("Too many arguments\n", 2);
+		return (1);
 	}
 	while (exit_code > 256)
 		exit_code -= 256;

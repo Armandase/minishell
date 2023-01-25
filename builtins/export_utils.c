@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:50:08 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/24 13:52:57 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 11:21:03 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,8 @@ char	*export_value(char *str)
 	value = ft_calloc(i + 1, 1);
 	j++;
 	i = 0;
-	while (str[++j])
-	{
-		value[i] = str[j];
-		i++;
-	}
+	while (str[j])
+		value[i++] = str[j++];
 	value[i] = str[j];
 	return (value);
 }
@@ -75,7 +72,7 @@ bool	check_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])
+		if (!(name[i] == '_' || ft_isalnum(name[i])
 				|| !ft_strcmp(name, "?")))
 			return (false);
 		i++;

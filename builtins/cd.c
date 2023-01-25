@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:17:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/24 14:17:45 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 10:46:36 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,20 @@ int	main_cd(char **args, t_env_list **list_var)
 	char	*old_pwd;
 	char	*pwd;
 
+	if (ft_strlen_2d((const char **)args) > 2)
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
 	old_pwd = ft_calloc(4096, sizeof(char));
 	if (old_pwd == NULL)
 		return (12);
 	old_pwd = getcwd(old_pwd, 4096);
 	if (chdir(args[1]) != 0)
+	{
+		ft_putstr_fd("No such file or directory\n", 2);
 		return (1);
+	}
 	pwd = ft_calloc(4096, sizeof(char));
 	if (pwd == NULL)
 		return (12);

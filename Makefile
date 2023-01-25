@@ -2,14 +2,14 @@ NAME		= minishell
 SRCS		= main.c\
 			  builtins/env.c builtins/pwd.c builtins/export.c builtins/var_env.c\
 			  builtins/unset.c builtins/utils.c builtins/print_args.c builtins/cd.c\
-			  builtins/echo.c builtins/exit.c\
+			  builtins/echo.c builtins/exit.c builtins/export_utils.c\
+			  builtins/var_utils.c\
 			  parsing/parsing.c \
 			  parsing/parsing_utils.c parsing/split_token.c \
 			  parsing/str_get_token.c parsing/stack_func.c\
 			  execution/exec_cmd.c execution/execution.c execution/find_path.c \
 			  execution/exec_utils.c execution/signals_handlers.c\
 			  execution/exit.c execution/heredoc.c\
-#builtins/export_utils.c\
 
 CC			= clang
 LIBS        = -Llibft -lft -lreadline
