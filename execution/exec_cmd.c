@@ -143,7 +143,10 @@ void	apply_execution(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 	open_pipe(tab_pipe, exec->nb_fork);
 	exec->tab_pid[exec->nb_fork] = fork();
 	if (exec->tab_pid[exec->nb_fork] == -1)
-		print_error("Fork error", 127, cmd);
+	{
+		perror("Error");
+		search_replace_var("?", ft_itoa(127), exec->list_var);
+	}
 	else if (exec->tab_pid[exec->nb_fork] == 0)
 		inside_fork(exec, cmd, tab_pipe);
 }
@@ -165,7 +168,8 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 		get_cmd_path(cmd->cmd, exec->envp);
 		if (cmd->cmd[0] == NULL)
 		{
-			print_error("Error", 127, cmd);
+			perror("Error");
+			search_replace_var("?", ft_itoa(127), exec->list_var);
 			return ;
 		}
 	}
