@@ -30,6 +30,8 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 		print_error("Error", exit_code, NULL);
 	if (cmd)
 	{
+		while (cmd->prev != NULL)
+			cmd = cmd->prev;
 		while (cmd->next != NULL)
 		{
 			j = 0;
@@ -40,7 +42,7 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 					free(cmd->cmd[j]);
 					j++;
 				}
-			free(cmd->cmd);
+				free(cmd->cmd);
 			}
 			tmp = cmd;
 			cmd = cmd->next;
