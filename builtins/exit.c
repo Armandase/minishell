@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 19:10:39 by ulayus           ###   ########.fr       */
+/*   Created: 2023/01/25 19:13:11 by ulayus            #+#    #+#             */
+/*   Updated: 2023/01/25 19:13:21 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main_exit(t_cmd *cmd, t_exec *exec)
 			exit_code = 2;
 		}
 	}
-	else
+	else if (ft_strlen_2d((const char **)cmd->cmd) > 2)
 	{
 		ft_putstr_fd("Too many arguments\n", 2);
 		return (1);

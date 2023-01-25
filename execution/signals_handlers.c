@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals_handlers.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/25 16:58:23 by adamiens         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 extern t_sh_state	g_sh_state;
@@ -22,16 +34,8 @@ char	*create_prompt(void)
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	//char	*prompt;
-
-	//prompt = create_prompt();
 	if (g_sh_state.state == PROMPT)
 	{
-		/*
-		ft_printf("\n%s", prompt);
-		rl_replace_line("", 0);
-		free(prompt);
-		*/
 		rl_replace_line("", 0);
 		ft_printf("\n");
 		rl_on_new_line();
