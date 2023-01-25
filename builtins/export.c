@@ -6,87 +6,11 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 09:57:17 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 11:27:53 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
-char	*export_name(char *str)
-{
-	char	*name;
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '=' && str[i + 1] != ' ')
-			break ;
-		i++;
-	}
-	name = ft_calloc(i + 1, 1);
-	if (name == NULL)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		name[i] = str[i];
-		if (name[i] == '=')
-			break ;
-		i++;
-	}
-	name[i] = '\0';
-	return (name);
-}
-
-char	*export_value(char *str)
-{
-	char	*value;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (str[i + j])
-	{
-		if (str[i + j] == '=')
-		{
-			j = i;
-			i = 0;
-		}
-		i++;
-	}
-	value = ft_calloc(i + 1, 1);
-	if (value == NULL)
-		return (NULL);
-	j++;
-	i = 0;
-	while (str[j])
-	{
-		value[i] = str[j];
-		j++;
-		i++;
-	}
-	value[i] = str[j];
-	return (value);
-}
-
-static int	check_name(char *name)
-{
-	int	i;
-
-	i = 0;
-	if (name == NULL || name[0] == '\0')
-		return (0);
-	while (name[i])
-	{
-		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])
-				|| !ft_strcmp(name, "?")))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 int	main_export(char **args, t_env_list **list_var)
 {
@@ -107,16 +31,14 @@ int	main_export(char **args, t_env_list **list_var)
 	{
 		while (ft_strcmp(args[i], "export"))
 		{
-			name = NULL;
 			name = export_name(args[i]);
-			if (ft_isdigit(name[0]) || !check_name(name) || name[0] == '-')
+			if (ft_isdigit(name[0]) || check_name(name) == false)
 			{
 				ft_putstr_fd("bash: export: `", 2);
 				write(2, args[i], ft_strlen(args[i]));
 				ft_putstr_fd("`: not a valid identifier\n", 2);
 				return (1);
 			}
-			value = NULL;
 			value = export_value(args[i]);
 			if (search_var(name, list_var) == true && value && *value)
 			{

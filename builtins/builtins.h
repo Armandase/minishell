@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/24 14:18:09 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 11:23:30 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int			main_export(char **args, t_env_list **list_var);
 int			main_unset(char **args, t_env_list **list_var);
 int			main_cd(char **args, t_env_list **list_var);
 int			main_echo(char **args);
-void		main_exit(t_cmd *cmd, t_exec *exec);
+int			main_exit(t_cmd *cmd, t_exec *exec);
 void		print_args_ascii(t_env_list *list_var, size_t size);
 size_t		env_list_size(t_env_list *list_var);
 char		**env_export(t_env_list *list_var);
-//bool		check_name(char *name);
+bool		check_name(char *name);
 char		*export_value(char *str);
 char		*export_name(char *str);
 char		*search_send_var(char *var, t_env_list **list_var);

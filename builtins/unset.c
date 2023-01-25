@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:14 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/24 14:18:34 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 11:41:00 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,31 @@ static int	check_name_unset(char *name)
 	return (1);
 }
 
-int	main_unset(char **args, t_env_list **list_var)
+static void	delete_var(t_env_list **list_var, char *name)
 {
 	t_env_list	*to_free;
 	t_env_list	*tmp;
-	int			i;
+
+	tmp = *list_var;
+	while (tmp)
+	{
+		if (tmp->next && !ft_strcmp(tmp->next->name, name))
+		{
+			to_free = tmp->next;
+			tmp->next = NULL;
+			if (to_free->next)
+				tmp->next = to_free->next;
+			free(to_free->name);
+			free(to_free->value);
+			free(to_free);
+		}
+		tmp = tmp->next;
+	}
+}
+
+int	main_unset(char **args, t_env_list **list_var)
+{
+	int	i;
 
 	i = 1;
 	while (args[i] != NULL)
@@ -44,21 +64,7 @@ int	main_unset(char **args, t_env_list **list_var)
 			ft_putstr_fd("`: not a valid identifier\n", 2);
 			return (1);
 		}
-		tmp = *list_var;
-		while (tmp)
-		{
-			if (tmp->next && !ft_strcmp(tmp->next->name, args[i]))
-			{
-				to_free = tmp->next;
-				tmp->next = NULL;
-				if (to_free->next)
-					tmp->next = to_free->next;
-				free(to_free->name);
-				free(to_free->value);
-				free(to_free);
-			}
-			tmp = tmp->next;
-		}
+		delete_var(list_var, args[i]);
 		i++;
 	}
 	return (0);

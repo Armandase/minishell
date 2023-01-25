@@ -92,7 +92,7 @@ int	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 	if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "cd") == 0))
 		exit_code = main_cd(cmd->cmd, exec->list_var);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "exit") == 0))
-		main_exit(cmd, exec);
+		exit_code = main_exit(cmd, exec);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "export") == 0))
 		exit_code = main_export(cmd->cmd, exec->list_var);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
