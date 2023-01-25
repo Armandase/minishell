@@ -1,3 +1,0 @@
-export tout seul peut faire apparaitre des variables d'environnement qui ont ete export sans valeurs avant
-seg fault si : unset PATH puis env
-affiche 2 fois l'erreur pour 'cd .. > out' et autre utilisation de cd

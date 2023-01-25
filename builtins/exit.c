@@ -6,15 +6,14 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 11:18:26 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 19:10:39 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 static void	free_exec(t_exec *exec)
-{
-	t_env_list	*env_tmp;
+{ t_env_list	*env_tmp;
 
 	while (*exec->list_var)
 	{
@@ -45,6 +44,13 @@ static void	free_cmd(t_cmd *cmd)
 	}
 }
 
+static bool check_exit_value(char *value)
+{
+	if (ft_strcmp(ft_lltoa(ft_atoll(value)), value))
+		return (false);
+	return (true);
+}
+
 int	main_exit(t_cmd *cmd, t_exec *exec)
 {
 	int	exit_code;
@@ -54,10 +60,10 @@ int	main_exit(t_cmd *cmd, t_exec *exec)
 		&& ft_strlen_2d((const char **)cmd->cmd) < 3)
 	{
 		exit_code = ft_atoi(cmd->cmd[1]);
-		if (cmd->cmd[1][0] && ft_isdigit(cmd->cmd[1][0]) == false
+		if (cmd->cmd[1][0] && check_exit_value(cmd->cmd[1]) == false
 			&& cmd->cmd[1][0] != '-' && cmd->cmd[1][0] != '+')
 		{
-			ft_putstr_fd("exit: numeric argument required\n", 2);
+			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 			exit_code = 2;
 		}
 	}
@@ -66,8 +72,8 @@ int	main_exit(t_cmd *cmd, t_exec *exec)
 		ft_putstr_fd("Too many arguments\n", 2);
 		return (1);
 	}
-	while (exit_code > 256)
-		exit_code -= 256;
+	if (exit_code > 256)
+		exit_code %= 256;
 	free_exec(exec);
 	free_cmd(cmd);
 	ft_printf("exit\n");
