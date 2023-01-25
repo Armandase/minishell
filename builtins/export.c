@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/24 14:15:46 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 09:29:30 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	main_export(char **args, t_env_list **list_var)
 			if (search_var(name, list_var) == true && value && *value)
 			{
 				search_replace_var(name, value, list_var);
+				free(name);
 				break ;
 			}
 			new_var = ft_calloc(1, sizeof(t_env_list));
