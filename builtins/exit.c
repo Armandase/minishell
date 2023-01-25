@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/24 13:20:10 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 09:37:49 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	free_cmd(t_cmd *cmd)
 
 	while (cmd->prev != NULL)
 		cmd = cmd->prev;
-	while (cmd->next != NULL)
+	while (cmd != NULL)
 	{
 		cmd_tmp = cmd;
 		cmd = cmd->next;

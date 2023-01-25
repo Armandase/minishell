@@ -52,8 +52,8 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 	cmd->token = token->id;
 	while (token->line != NULL)
 	{
-		//if (token->line)
-		//	free(token->line);
+		if (token->line)
+			free(token->line);
 		free(token);
 		token = str_get_token(NULL, ">|<");
 		if (token->line == NULL)
