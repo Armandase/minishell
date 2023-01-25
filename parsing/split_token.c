@@ -238,6 +238,8 @@ static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 					(*j)++;
 					break ;
 				}
+				if (s[*j] == '$' && s[*j + 1] && s[*j + 1] != ' ')
+					s = cpy_envp_val(s, list_var, j);
 			}
 		}
 		if (!s[*j] || s[*j] == ' ')
