@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:00 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 10:04:11 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/25 10:08:52 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	*search_send_var(char *var, t_env_list **list_var)
 	i = 0;
 	while (tmp)
 	{
-		if (ft_strcmp(var, tmp->name) == false)
+		if (ft_strcmp(var, tmp->name) == 0)
 		{
 			var = ft_strdup(tmp->value);
 			return (var);
