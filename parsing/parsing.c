@@ -82,19 +82,25 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 
 int	check_char(char *str)
 {
-	int	len;
-	int	i;
+	int		i;
+	char	c;
 
-	len = ft_strlen(str);
-	if (str[0] == '|' || str[len - 1] == '|')
-		return (1);
-	if (((str[0] == '|' || str[0] == '>' || str[0] == '<')
-			&& ft_strlen(str) == 1) || str[ft_strlen(str) - 1] == '|'
-		|| str[ft_strlen(str) - 1] == '>' || str[ft_strlen(str) - 1] == '<')
+	if (((str[0] == '>' || str[0] == '<') && ft_strlen(str) == 1)
+		|| str[ft_strlen(str) - 1] == '>' || str[ft_strlen(str) - 1] == '<'
+		|| (str[0] == '|' || str[ft_strlen(str) - 1] == '|'))
 		return (1);
 	i = 0;
 	while (str[i])
 	{
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			c = str[i];
+			i++;
+			while (str[i] && str[i] != c)
+				i++;
+			if (!str[i])
+				return (1);
+		}
 		if ((str[i] == '<' && str[i + 1] && str[i + 1] == '|')
 			|| (str[i] == '>' && str[i + 1] && str[i + 1] == '|')
 			|| (str[i] == '<' && str[i + 1] && str[i + 1] == '>')
