@@ -1,23 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 13:50:00 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/26 13:51:12 by adamiens         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-/*void	printf_all(t_cmd *cmd)
-{
-	int	i;
-	int j;
-
-	i = 0;
-	while (cmd[i].cmd != NULL)
-	{
-		j = 0;
-		while (cmd[i].cmd[j] != NULL)
-		{
-			printf("token %d; cmd :%s\n", i, cmd[i].cmd[j]);
-			j++;
-		}
-		i++;
-	}
-}
-*/
 t_sh_state	g_sh_state;
 
 void	create_exit_env(t_env_list **list_var)
@@ -38,8 +32,9 @@ int	main(int ac, char **av, char **envp)
 	char		*prompt;
 	t_cmd		*cmd;
 
-	(void)ac;
 	(void)av;
+	if (ac != 1)
+		return (1);
 	cmd = NULL;
 	list_var = create_env_list(envp);
 	create_exit_env(&list_var);

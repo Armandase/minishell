@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:02:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 17:03:41 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:30:20 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	free_list_var(t_env_list **list_var, char **envp)
 	t_env_list	*tmp;
 
 	ft_free_strs(envp);
+	envp = NULL;
 	head = *list_var;
 	while (head != NULL)
 	{

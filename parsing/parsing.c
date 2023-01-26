@@ -39,13 +39,13 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		else if (line[0] && (line[0] == '>' || line[0] == '<'))
 			line++;
 		token = str_get_token(line, ">|<");
-		cmd->next = list_new(split_token(token->line, list_var), cmd);
+		cmd->next = list_new(split_token(&token, list_var), cmd);
 		cmd = cmd->next;
 	}
 	else
 	{
 		token = str_get_token(line, ">|<");
-		cmd = list_new(split_token(token->line, list_var), NULL);
+		cmd = list_new(split_token(&token, list_var), NULL);
 	}
 	cmd->next = list_new(NULL, cmd);
 	cmd = cmd->next ;
@@ -58,7 +58,7 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		token = str_get_token(NULL, ">|<");
 		if (token->line == NULL)
 			break ;
-		cmd->next = list_new(split_token(token->line, list_var), cmd);
+		cmd->next = list_new(split_token(&token, list_var), cmd);
 		cmd = cmd->next ;
 		cmd->next = list_new(NULL, cmd);
 		cmd = cmd->next ;
@@ -91,6 +91,27 @@ int	check_char(char c)
 /*	  split ces tokens par les espaces (cmd & arg)		*/
 /********************************************************/
 
+void	set_token_cmd(t_cmd **begin)
+{
+	while ((*begin)->next != NULL)
+	{
+		if ((*begin)->token == 0 && (*begin)->prev
+			&& (*begin)->prev->token != 0 && (*begin)->prev->token != PIPE)
+			(*begin)->token = FILES;
+		(*begin) = (*begin)->next;
+	}
+	while ((*begin)->prev != NULL)
+		(*begin) = (*begin)->prev;
+	while ((*begin)->next != NULL)
+	{
+		if ((*begin)->token == 0)
+			(*begin)->token = CMD;
+		(*begin) = (*begin)->next;
+	}
+	while ((*begin)->prev != NULL)
+		(*begin) = (*begin)->prev;
+}
+
 t_cmd	*parsing(char *line, t_env_list *list_var)
 {
 	t_cmd	*begin;
@@ -110,22 +131,7 @@ t_cmd	*parsing(char *line, t_env_list *list_var)
 		return (NULL);
 	}
 	begin = get_cmd(current_line, list_var);
-	while (begin->next != NULL)
-	{
-		if (begin->token == 0 && begin->prev && begin->prev->token != 0 && begin->prev->token != PIPE)
-			begin->token = FILES;
-		begin = begin->next;
-	}
-	while (begin->prev != NULL)
-		begin = begin->prev;
-	while (begin->next != NULL)
-	{
-		if (begin->token == 0)
-			begin->token = CMD;
-		begin = begin->next;
-	}
-	while (begin->prev != NULL)
-		begin = begin->prev;
+	set_token_cmd(&begin);
 	free(current_line);
 	return (begin);
 }

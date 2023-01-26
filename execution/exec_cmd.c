@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:09:58 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 19:06:09 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:46:29 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 			|| cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
 		cmd = cmd->prev;
 	if (cmd->prev && cmd->prev->token == PIPE)
-		dup2(tab_pipe[exec->nb_fork - 1 % 2][0], 0);
+		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
 	while (cmd->next)
 	{
 		if (cmd->token == PIPE || cmd->token == 0)
@@ -131,9 +131,11 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 
 	ret = 0;
 	dup2_manager(exec, tab_pipe, cmd);
-	close_pipe(tab_pipe);
 	if (cmd->token == CMD)
+	{
+		close_pipe(tab_pipe);
 		ret = execve(cmd->cmd[0], cmd->cmd, exec->envp);
+	}
 	else if (cmd->token == BUILTINS)
 	{
 		if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "echo")))
@@ -150,6 +152,7 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 			ret = main_cd(cmd->cmd, exec->list_var);
 		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "exit")))
 			main_exit(cmd, exec);
+		close_pipe(tab_pipe);
 	}
 	exec_free(exec, cmd, ret);
 }
