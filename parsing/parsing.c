@@ -24,6 +24,28 @@ void	begin_offset(t_cmd **cmd, char *line)
 /*	assigne le delim qui a cut le token a cmd id		*/
 /********************************************************/
 
+void	create_node(t_cmd *cmd, t_token *token, t_env_list *list_var)
+{
+	cmd->next = list_new(NULL, cmd);
+	cmd = cmd->next ;
+	cmd->token = token->id;
+	while (token->line != NULL)
+	{
+		if (token->line)
+			free(token->line);
+		free(token);
+		token = str_get_token(NULL, ">|<");
+		if (token->line == NULL)
+			break ;
+		cmd->next = list_new(split_token(&token, list_var), cmd);
+		cmd = cmd->next ;
+		cmd->next = list_new(NULL, cmd);
+		cmd = cmd->next ;
+		cmd->token = token->id;
+	}
+	free(token);
+}
+
 t_cmd	*get_cmd(char *line, t_env_list *list_var)
 {
 	t_cmd	*cmd;
@@ -47,24 +69,7 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		token = str_get_token(line, ">|<");
 		cmd = list_new(split_token(&token, list_var), NULL);
 	}
-	cmd->next = list_new(NULL, cmd);
-	cmd = cmd->next ;
-	cmd->token = token->id;
-	while (token->line != NULL)
-	{
-		if (token->line)
-			free(token->line);
-		free(token);
-		token = str_get_token(NULL, ">|<");
-		if (token->line == NULL)
-			break ;
-		cmd->next = list_new(split_token(&token, list_var), cmd);
-		cmd = cmd->next ;
-		cmd->next = list_new(NULL, cmd);
-		cmd = cmd->next ;
-		cmd->token = token->id;
-	}
-	free(token);
+	create_node(cmd, token, list_var);
 	while (cmd->prev != NULL)
 		cmd = cmd->prev;
 	return (cmd);
@@ -75,14 +80,32 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 /*	at the beginning or the at end of the line			*/
 /********************************************************/		
 
-int	check_char(char c)
+int	check_char(char *str)
 {
-	if (c == '|'
-		|| c == '>'
-		|| c == '<')
+	int	len;
+	int	i;
+
+	len = ft_strlen(str);
+	if (str[0] == '|' || str[len - 1] == '|')
 		return (1);
-	else
-		return (0);
+	if (((str[0] == '|' || str[0] == '>' || str[0] == '<')
+			&& ft_strlen(str) == 1) || str[ft_strlen(str) - 1] == '|'
+		|| str[ft_strlen(str) - 1] == '>' || str[ft_strlen(str) - 1] == '<')
+		return (1);
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == '<' && str[i + 1] && str[i + 1] == '|')
+			|| (str[i] == '>' && str[i + 1] && str[i + 1] == '|')
+			|| (str[i] == '<' && str[i + 1] && str[i + 1] == '>')
+			|| (str[i] == '>' && str[i + 1] && str[i + 1] == '<')
+			|| (str[i] == '|' && str[i + 1] && str[i + 1] == '<')
+			|| (str[i] == '|' && str[i + 1] && str[i + 1] == '>')
+			|| (str[i] == '|' && str[i + 1] && str[i + 1] == '|'))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 /********************************************************/
@@ -123,11 +146,9 @@ t_cmd	*parsing(char *line, t_env_list *list_var)
 		free(current_line);
 		return (NULL);
 	}
-	if ((check_char(current_line[0]) == 1
-			&& (ft_strlen(current_line) == 1 || current_line[0] == '|'))
-		|| check_char(current_line[ft_strlen(current_line) - 1]) == 1)
+	if (check_char(current_line))
 	{
-		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+		ft_putstr_fd("syntax error near unexpected token\n", 2);
 		return (NULL);
 	}
 	begin = get_cmd(current_line, list_var);

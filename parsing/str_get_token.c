@@ -1,6 +1,16 @@
-#include "../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   str_get_token.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 16:23:33 by adamiens          #+#    #+#             */
+/*   Updated: 2023/01/26 16:23:41 by adamiens         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
-#include <stdio.h>
 
 static int	find_next_quote(char *str, char c)
 {
@@ -16,10 +26,35 @@ static int	find_next_quote(char *str, char c)
 	return (-1);
 }
 
+int	assign_token(const char *delim, t_token *token, char *str, int *i)
+{
+	int	j;
+
+	j = 0;
+	while (delim[j])
+	{
+		if (str[*i] == delim[j])
+		{
+			if (delim[j] == '|')
+				token->id = PIPE;
+			else if (delim[j] == '<' && str[*i + 1] && str[*i + 1] == '<')
+				token->id = HEREDOC;
+			else if (delim[j] == '>' && str[*i + 1] && str[*i + 1] == '>')
+				token->id = APPEND;
+			else if (delim[j] == '<')
+				token->id = IN;
+			else if (delim[j] == '>')
+				token->id = OUT;
+			return (1);
+		}
+		j++;
+	}
+	return (0);
+}
+
 static int	len_token(char *str, const char *delim, t_token *token)
 {
 	int	i;
-	int	j;
 	int	tmp;
 
 	i = 0;
@@ -39,25 +74,8 @@ static int	len_token(char *str, const char *delim, t_token *token)
 				return (0);
 			i += tmp;
 		}
-		j = 0;
-		while (delim[j])
-		{
-			if (str[i] == delim[j])
-			{
-				if (delim[j] == '|')
-					token->id = PIPE;
-				else if (delim[j] == '<' && str[i + 1] && str[i + 1] == '<')
-					token->id = HEREDOC;
-				else if (delim[j] == '>' && str[i + 1] && str[i + 1] == '>')
-					token->id = APPEND;
-				else if (delim[j] == '<')
-					token->id = IN;
-				else if (delim[j] == '>')
-					token->id = OUT;
-				return (i);
-			}
-			j++;
-		}
+		if (assign_token(delim, token, str, &i))
+			return (i);
 		i++;
 	}
 	return (i);

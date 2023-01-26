@@ -6,11 +6,13 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:50:00 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 13:51:12 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:12:47 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execution/execution.h"
 #include "minishell.h"
+#include "struct.h"
 
 t_sh_state	g_sh_state;
 
@@ -25,12 +27,29 @@ void	create_exit_env(t_env_list **list_var)
 	ft_free_strs(cmd);
 }
 
+void	start_shell(char *line, t_cmd *cmd, t_env_list *list_var, char **envp)
+{
+	if (ft_strlen(line) != 0)
+	{
+		cmd = parsing(line, list_var);
+		signal(SIGQUIT, handle_sigquit);
+		if (cmd != NULL)
+			execution(cmd, envp, &list_var);
+	}
+	if (line && *line)
+		add_history(line);
+	if (line)
+		free(line);
+	if (envp)
+		ft_free_strs(envp);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_env_list	*list_var;
 	char		*line;
-	char		*prompt;
 	t_cmd		*cmd;
+	char		*prompt;
 
 	(void)av;
 	if (ac != 1)
@@ -49,19 +68,7 @@ int	main(int ac, char **av, char **envp)
 		free(prompt);
 		if (line == NULL)
 			exit_shell(&list_var, envp);
-		if (ft_strlen(line) != 0)
-		{
-			cmd = parsing(line, list_var);
-			signal(SIGQUIT, handle_sigquit);
-			if (cmd != NULL)
-				execution(cmd, envp, &list_var);
-		}
-		if (line && *line)
-			add_history(line);
-		if (line)
-			free(line);
-		if (envp)
-			ft_free_strs(envp);
+		start_shell(line, cmd, list_var, envp);
 	}
 	return (0);
 }
