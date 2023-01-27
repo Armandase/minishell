@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 15:40:56 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:26:15 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ void	waiting_end(t_exec	*exec, t_env_list **list_var)
 			exit_code = WEXITSTATUS(wstatus);
 		else if (WIFSIGNALED(wstatus))
 			exit_code = WTERMSIG(wstatus);
-		search_replace_var("?", ft_itoa(exit_code), list_var);
+		if (exit_code)
+			search_replace_var("?", ft_itoa(exit_code), list_var);
 		i++;
 	}
-	search_replace_var("?", ft_itoa(exit_code), list_var);
+	if (exit_code)
+		search_replace_var("?", ft_itoa(exit_code), list_var);
 }
 
 void	free_struct(t_cmd *cmd)

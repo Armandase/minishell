@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:17:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 10:46:36 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/27 14:06:27 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ char	*get_current_pwd(t_env_list **list_var)
 	return (NULL);
 }
 
+void	print_error(char *dir)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	write(2, dir, ft_strlen(dir));
+	ft_putstr_fd(": No such file or directory\n", 2);
+}
+
 int	main_cd(char **args, t_env_list **list_var)
 {
 	char	*old_pwd;
@@ -69,7 +76,7 @@ int	main_cd(char **args, t_env_list **list_var)
 	old_pwd = getcwd(old_pwd, 4096);
 	if (chdir(args[1]) != 0)
 	{
-		ft_putstr_fd("No such file or directory\n", 2);
+		print_error(args[1]);
 		return (1);
 	}
 	pwd = ft_calloc(4096, sizeof(char));

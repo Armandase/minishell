@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 15:15:44 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/27 14:17:15 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 static int	check_format(char *line, char *name)
 {
+	if (name[0] == '\0')
+	{
+		ft_putstr_fd("bash: export: `=`: not a valid identifier\n", 2);
+		return (1);
+	}
 	if (ft_isdigit(name[0]) || check_name(name) == false)
 	{
 		ft_putstr_fd("bash: export: `", 2);
