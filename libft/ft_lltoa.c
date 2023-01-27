@@ -3,85 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lltoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/29 14:01:26 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 18:59:34 by ulayus           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/*   Created: 2022/09/29 23:15:01 by ulayus            #+#    #+#             */
+/*   Updated: 2023/01/27 15:18:49 by ulayus           ###   ########.fr       */
 
 #include "libft.h"
 
-static int	ft_lenint(long long n)
+static unsigned long long	ft_abs(long long n)
 {
-	int			i;
-	long long	number;
-
-	i = 1;
-	number = n;
-	if (n < 0)
-	{
-		i++;
-		number *= -1;
-	}
-	if (number < 10)
-		return (i);
-	while (number >= 10)
-	{
-		number /= 10;
-		i++;
-	}
-	return (i);
+	if (n > 0)
+		return ((unsigned long long)n);
+	return ((unsigned long long)n * -1);
 }
 
-static char	*ft_negative(long long n, char *ret, int nlen)
+static int	nb_digits(long long n)
 {
-	int		counter;
-	long	i;
+	int	count;
 
-	counter = 0;
-	if (n == 0)
+	count = 1;
+	while (n >= 10 || n <= -10)
 	{
-		ret[0] = '0';
-		return (ret);
+		n = n / 10;
+		count++;
 	}
-	i = (long)n;
-	i *= -1;
-	ret[0] = '-';
-	while (i > 0)
-	{
-		ret[(nlen - 1) - counter] = i % 10 + '0';
-		i /= 10;
-		counter++;
-	}
-	return (ret);
+	return (count);
 }
 
 char	*ft_lltoa(long long n)
 {
-	size_t		i;
-	int			counter;
-	char		*ret;
-	long long	nlen;
+	int		i;
+	char	*str;
 
-	nlen = ft_lenint(n);
-	ret = malloc(nlen + 1);
-	if (!ret)
-		return (NULL);
-	counter = 0;
-	i = n;
-	if (n <= 0)
+	if (!n)
+		return (ft_strdup("0"));
+	if (n > 0)
+		i = nb_digits(n);
+	else
+		i = nb_digits(n) + 1;
+	str = malloc(i + 1);
+	if (!str)
+		return (0);
+	if (n < 0)
+		str[0] = '-';
+	str[i--] = 0;
+	while ((i >= 0 && n > 0) || (i >= 1 && n < 0))
 	{
-		ret = ft_negative(n, ret, nlen);
-		ret[nlen] = '\0';
-		return (ret);
+		str[i--] = ft_abs(n) % 10 + 48;
+		n = n / 10;
 	}
-	while (i > 0)
-	{
-		ret[(nlen - 1) - counter] = i % 10 + '0';
-		counter++;
-		i /= 10;
-	}
-	ret[nlen] = '\0';
-	return (ret);
+	return (str);
 }
