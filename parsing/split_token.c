@@ -129,10 +129,8 @@ void	count_to_next_quote(char *s, size_t *i, size_t *count, t_env_list *list_var
 static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
 {
 	size_t	count;
-	int		tmp;
 
 	count = 0;
-	tmp = 0;
 	while (s[i] == c && s[i])
 		i++;
 	while (s[i])

@@ -113,11 +113,11 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD
 			|| cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
 		cmd = cmd->prev;
-	if (cmd->prev && cmd->prev->token == PIPE)
+	if (cmd->prev && cmd->prev->token == PIPE && cmd->next && cmd->next->token != IN && cmd->next->token != HEREDOC)
 		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
 	while (cmd->next)
 	{
-		if (cmd->token == PIPE || cmd->token == 0)
+		if (cmd->token == PIPE || cmd->token == 0 || cmd->token == OUT || cmd->token == APPEND)
 			break ;
 		cmd = cmd->next;
 	}
