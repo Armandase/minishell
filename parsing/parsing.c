@@ -145,7 +145,7 @@ void	set_token_cmd(t_cmd **begin)
 		(*begin) = (*begin)->prev;
 }
 
-char **cpy_without_first(char **search, char **cpy)
+char	**cpy_without_first(char **search, char **cpy)
 {
 	char	**ret;
 	int		len;
@@ -178,7 +178,11 @@ void	redirection_with_args(t_cmd **begin)
 
 	while ((*begin)->next)
 	{
-		if (((*begin)->token == IN || (*begin)->token == OUT || (*begin)->token == HEREDOC || (*begin)->token == APPEND) && (*begin)->next && ft_strlen_2d((const char **)(*begin)->next->cmd) > 1 && (*begin)->prev)
+		if (((*begin)->token == IN || (*begin)->token == OUT
+				|| (*begin)->token == HEREDOC || (*begin)->token == APPEND)
+			&& (*begin)->next
+			&& ft_strlen_2d((const char **)(*begin)->next->cmd) > 1
+			&& (*begin)->prev)
 		{
 			cpy = cpy_without_first((*begin)->next->cmd, (*begin)->prev->cmd);
 			ft_free_strs((*begin)->prev->cmd);

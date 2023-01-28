@@ -11,7 +11,17 @@
 /* ************************************************************************** */
 
 #include "execution.h"
-#include <stdio.h>
+
+void	fail_on_open(int in, int out, t_exec *exec, t_cmd *cmd)
+{
+	if (in > 0)
+		close(in);
+	if (out > 0)
+		close(out);
+	exec->fd_in = 0;
+	exec->fd_out = 0;
+	exec_free(exec, cmd, 1);
+}
 
 void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 {
@@ -35,7 +45,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 					return ;
 				in = open(cpy->cmd[0], O_RDONLY);
 				exec->fd_in = in;
-				if (check != 1)
+				if (check != 1 && in > 0)
 					dup2(exec->fd_in, 0);
 				else if (check == 1 && in > 0)
 					close(in);
@@ -47,7 +57,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 					return ;
 				in = heredoc(cpy);
 				exec->fd_in = in;
-				if (check != 1)
+				if (check != 1 && in > 0)
 					dup2(exec->fd_in, 0);
 				else if (check == 1 && in > 0)
 					close(in);
@@ -60,7 +70,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				out = open(cpy->cmd[0],
 						O_WRONLY | O_TRUNC | O_CREAT, 0644);
 				exec->fd_out = out;
-				if (check != 1)
+				if (check != 1 && out > 0)
 					dup2(exec->fd_out, 1);
 				else if (check == 1 && out > 0)
 					close(out);
@@ -73,7 +83,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 				out = open(cpy->cmd[0],
 						O_WRONLY | O_APPEND | O_CREAT, 0644);
 				exec->fd_out = out;
-				if (check != 1)
+				if (check != 1 && out > 0)
 					dup2(exec->fd_out, 1);
 				else if (check == 1 && out > 0)
 					close(out);
@@ -90,15 +100,7 @@ void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 		cpy = cpy->next;
 	}
 	if (fail == 1)
-	{
-		if (in > 0)
-			close(in);
-		if (out > 0)
-			close(out);
-		exec->fd_in = 0;
-		exec->fd_out = 0;
-		exec_free(exec, cmd, 1);
-	}
+		fail_on_open(in, out, exec, cmd);
 }
 
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
@@ -114,16 +116,37 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD
 			|| cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
 		cmd = cmd->prev;
-	if (cmd->prev && cmd->prev->token == PIPE && cmd->next && cmd->next->token != IN && cmd->next->token != HEREDOC)
+	if (cmd->prev && cmd->prev->token == PIPE
+		&& cmd->next && cmd->next->token != IN && cmd->next->token != HEREDOC)
 		dup2(tab_pipe[(exec->nb_fork - 1) % 2][0], 0);
 	while (cmd->next)
 	{
-		if (cmd->token == PIPE || cmd->token == 0 || cmd->token == OUT || cmd->token == APPEND)
+		if (cmd->token == PIPE
+			|| cmd->token == 0 || cmd->token == OUT || cmd->token == APPEND)
 			break ;
 		cmd = cmd->next;
 	}
 	if (cmd && cmd->token == PIPE)
 		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
+}
+
+void	exec_builtins(t_cmd *cmd, int *ret, int tab_pipe[2][2], t_exec *exec)
+{
+	if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "echo")))
+		*ret = main_echo(cmd->cmd);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "pwd")))
+		*ret = main_pwd();
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "export")))
+		*ret = main_export(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "unset")))
+		*ret = main_unset(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "env")))
+		*ret = main_env(cmd->cmd, *exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "cd")))
+		*ret = main_cd(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "exit")))
+		main_exit(cmd, exec);
+	close_pipe(tab_pipe);
 }
 
 void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
@@ -138,23 +161,7 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 		ret = execve(cmd->cmd[0], cmd->cmd, exec->envp);
 	}
 	else if (cmd->token == BUILTINS)
-	{
-		if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "echo")))
-			ret = main_echo(cmd->cmd);
-		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "pwd")))
-			ret = main_pwd();
-		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "export")))
-			ret = main_export(cmd->cmd, exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "unset")))
-			ret = main_unset(cmd->cmd, exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "env")))
-			ret = main_env(cmd->cmd, *exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "cd")))
-			ret = main_cd(cmd->cmd, exec->list_var);
-		else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "exit")))
-			main_exit(cmd, exec);
-		close_pipe(tab_pipe);
-	}
+		exec_builtins(cmd, &ret, tab_pipe, exec);
 	exec_free(exec, cmd, ret);
 }
 
