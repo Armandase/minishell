@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "../libft/libft.h"
 
 char	*ft_find_path(char **envp)
 {
@@ -58,6 +59,19 @@ char	**get_path(char **envp)
 	return (directory);
 }
 
+void	free_strs_except_himself(char **strs)
+{
+	int	i;
+
+	i = 0;
+	while (strs[i])
+	{
+		free(strs[i]);
+		i++;
+	}
+	*strs = NULL;
+}
+
 void	cpy_path(char **cmd, char **directory)
 {
 	int		j;
@@ -83,7 +97,7 @@ void	cpy_path(char **cmd, char **directory)
 			free(str);
 		j++;
 	}
-	*cmd = NULL;
+	free_strs_except_himself(cmd);
 }
 
 void	get_cmd_path(char **cmd, char **envp)
@@ -92,17 +106,17 @@ void	get_cmd_path(char **cmd, char **envp)
 	int		i;
 
 	directories = get_path(envp);
-	cpy_path(cmd, directories);
 	i = 0;
 	if (!directories)
 	{
+		while (cmd[i])
+		{
+			free(cmd[i]);
+			i++;
+		}
 		cmd[0] = NULL;
 		return ;
 	}
-	while (directories[i] != NULL)
-	{
-		free(directories[i]);
-		i++;
-	}
-	free(directories);
+	cpy_path(cmd, directories);
+	ft_free_strs(directories);
 }

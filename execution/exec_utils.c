@@ -42,7 +42,7 @@ void	free_stack(t_cmd *cmd)
 	{
 		while (cmd->prev != NULL)
 			cmd = cmd->prev;
-		while (cmd->next != NULL)
+		while (cmd != NULL)
 		{
 			j = 0;
 			if (cmd->cmd)
@@ -58,7 +58,6 @@ void	free_stack(t_cmd *cmd)
 			cmd = cmd->next;
 			free(tmp);
 		}
-		free(cmd);
 	}
 }
 

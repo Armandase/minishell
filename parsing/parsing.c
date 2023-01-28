@@ -24,11 +24,11 @@ void	begin_offset(t_cmd **cmd, char *line)
 /*	assigne le delim qui a cut le token a cmd id		*/
 /********************************************************/
 
-void	create_node(t_cmd *cmd, t_token *token, t_env_list *list_var)
+void	create_node(t_cmd **cmd, t_token *token, t_env_list *list_var)
 {
-	cmd->next = list_new(NULL, cmd);
-	cmd = cmd->next ;
-	cmd->token = token->id;
+	(*cmd)->next = list_new(NULL, *cmd);
+	(*cmd) = (*cmd)->next ;
+	(*cmd)->token = token->id;
 	while (token->line != NULL)
 	{
 		if (token->line)
@@ -37,11 +37,11 @@ void	create_node(t_cmd *cmd, t_token *token, t_env_list *list_var)
 		token = str_get_token(NULL, ">|<");
 		if (token->line == NULL)
 			break ;
-		cmd->next = list_new(split_token(&token, list_var), cmd);
-		cmd = cmd->next ;
-		cmd->next = list_new(NULL, cmd);
-		cmd = cmd->next ;
-		cmd->token = token->id;
+		(*cmd)->next = list_new(split_token(&token, list_var), (*cmd));
+		(*cmd) = (*cmd)->next ;
+		(*cmd)->next = list_new(NULL, (*cmd));
+		(*cmd) = (*cmd)->next ;
+		(*cmd)->token = token->id;
 	}
 	free(token);
 }
@@ -69,7 +69,7 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		token = str_get_token(line, ">|<");
 		cmd = list_new(split_token(&token, list_var), NULL);
 	}
-	create_node(cmd, token, list_var);
+	create_node(&cmd, token, list_var);
 	while (cmd->prev != NULL)
 		cmd = cmd->prev;
 	return (cmd);

@@ -57,7 +57,6 @@ void	free_struct(t_cmd *cmd)
 		tmp = cmd;
 		cmd = cmd->next;
 		free(tmp);
-		tmp = NULL;
 	}
 }
 
