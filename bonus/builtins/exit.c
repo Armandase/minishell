@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/28 18:00:02 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/28 17:18:28 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ static bool	check_format(const char *value)
 {
 	char	*nb_s;
 
+	nb_s = ft_lltoa(ft_atoll(value));
 	if (value[0] && ft_isdigit(value[0]) == false
 		&& value[0] != '-' && value[0] != '+')
 		return (false);
-	nb_s = ft_lltoa(ft_atoll(value));
-	if (value[0] != '+' && ft_strcmp(nb_s, value))
+	else if (value[0] != '+' && ft_strcmp(nb_s, value))
 	{
 		free(nb_s);
 		return (false);
