@@ -64,7 +64,7 @@ void	free_stack(t_cmd *cmd)
 void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 {
 	if (exit_code)
-		perror("Error");
+		perror("pd Error");
 	free_stack(cmd);
 	if (exec && exec->tab_pid)
 		free(exec->tab_pid);
