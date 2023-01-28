@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execution.h"
+#include <stdio.h>
 
 void	open_input_file(t_exec *exec, t_cmd *cmd, int check)
 {
