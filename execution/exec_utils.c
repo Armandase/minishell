@@ -83,3 +83,11 @@ void	redirection_offset(t_cmd **cmd)
 		*cmd = (*cmd)->next;
 	}
 }
+
+void	close_pipe(int tab_pipe[2][2])
+{
+	close(tab_pipe[1][1]);
+	close(tab_pipe[1][0]);
+	close(tab_pipe[0][1]);
+	close(tab_pipe[0][0]);
+}
