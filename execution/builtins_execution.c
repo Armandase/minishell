@@ -25,7 +25,7 @@ int	builtins_check_pipe(t_cmd *cmd)
 	return (0);
 }
 
-int	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
+int	builtins_without_redirect(t_cmd *cmd, t_exec *exec, int tab_pipe[2][2])
 {
 	int	exit_code;
 
@@ -38,7 +38,7 @@ int	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 		|| cmd->token == IN
 		|| cmd->token == OUT
 		|| cmd->token == APPEND)
-		open_input_file(exec, cmd, 1);
+		open_file(exec, cmd, 1, tab_pipe);
 	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == CMD
 			|| cmd->prev->token == 0 || cmd->prev->token == BUILTINS))
 		cmd = cmd->prev;
@@ -54,7 +54,7 @@ int	builtins_without_redirect(t_cmd *cmd, t_exec *exec)
 	return (UN_FORK);
 }
 
-void	builtins_selection(t_cmd *cmd, t_exec *exec)
+void	builtins_selection(t_cmd *cmd, t_exec *exec, int tab_pipe[2][2])
 {
 	if (ft_strcmp(cmd->cmd[0], "echo") == 0)
 		cmd->token = BUILTINS;
@@ -70,6 +70,6 @@ void	builtins_selection(t_cmd *cmd, t_exec *exec)
 		if (builtins_check_pipe(cmd))
 			cmd->token = BUILTINS;
 		else
-			cmd->token = builtins_without_redirect(cmd, exec);
+			cmd->token = builtins_without_redirect(cmd, exec, tab_pipe);
 	}
 }

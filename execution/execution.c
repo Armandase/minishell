@@ -87,6 +87,8 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 	exec.tab_pid = ft_calloc(sizeof(int), tab_pid_len(cmd));
 	exec.envp = envp;
 	exec.list_var = list_var;
+	exec.fd_out = -2;
+	exec.fd_in = -2;
 	while (cmd->next != NULL)
 	{
 		exec_cmd(&exec, cmd, tab_pipe);

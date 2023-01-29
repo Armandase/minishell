@@ -27,7 +27,7 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var);
 void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2]);
 void	get_cmd_path(char **cmd, char **envp);
 void	print_error(char *error, int exit_code, t_cmd *cmd);
-void	builtins_selection(t_cmd *cmd, t_exec *exec);
+void	builtins_selection(t_cmd *cmd, t_exec *exec, int tab_pipe[2][2]);
 void	exit_shell(t_env_list **list_var, char **envp);
 char	*create_prompt(void);
 void	handle_sigint(int signum);
@@ -37,6 +37,6 @@ void	close_pipe(int tab_pipe[2][2]);
 void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code);
 void	redirection_offset(t_cmd **cmd);
 int		heredoc(t_cmd *cmd);
-void	open_input_file(t_exec *exec, t_cmd *cmd, int check);
+void	open_file(t_exec *exec, t_cmd *cmd, int check, int pipe_tab[2][2]);
 
 #endif
