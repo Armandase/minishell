@@ -156,6 +156,17 @@ static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
 	return (count);
 }
 
+static char	*strjoin_exit_code(int exit_code, char *line)
+{
+	char	*str_code;
+	char	*joined_line;
+
+	str_code = ft_itoa(exit_code);
+	joined_line = ft_strjoin(str_code, line);
+	free(str_code);
+	return (joined_line);
+}
+
 static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 {
 	char	*trunc_str;
@@ -172,23 +183,27 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	str[i] = tmp;
 	str += *j;
 	i = 0;
-	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\'')
+	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\'' && str[i] != '?')
 		i++;
+	if (str[i] == '?')
+	{
+		trunc_str = strjoin_exit_code(g_sh_state.exit_code, str + 2);
+		cpy_str = ft_strjoin(tmp_str, trunc_str);
+		free(trunc_str);
+		return (cpy_str);
+	}
 	tmp = str[i];
 	str[i] = '\0';
-	if (!ft_strcmp(str + 1, "?"))
-		trunc_str = ft_itoa(g_sh_state.exit_code);
-	else
-		trunc_str = search_send_var(str + 1, &list_var);
+	trunc_str = search_send_var(str + 1, &list_var);
 	str[i] = tmp;
 	cpy_str = ft_strjoin(tmp_str, trunc_str);
 	if (cpy_str)
 	{
-		str = ft_strjoin_space(cpy_str, &str[i]);
+		str = ft_strjoin(cpy_str, &str[i]);
 		free(tmp_str);
 	}
 	else
-		str = ft_strjoin_space(tmp_str, &str[i]);
+		str = ft_strjoin(tmp_str, &str[i]);
 	free(trunc_str);
 	return (str);
 }
