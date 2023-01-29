@@ -6,13 +6,13 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/28 17:26:41 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/29 17:27:33 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	waiting_end(t_exec	*exec, t_env_list **list_var)
+void	waiting_end(t_exec	*exec)
 {
 	int	wstatus;
 	int	exit_code;
@@ -27,11 +27,10 @@ void	waiting_end(t_exec	*exec, t_env_list **list_var)
 			exit_code = WEXITSTATUS(wstatus);
 		else if (WIFSIGNALED(wstatus))
 			exit_code = WTERMSIG(wstatus);
-		search_replace_var("?", ft_itoa(exit_code), list_var);
 		i++;
 	}
 	if (exit_code)
-		search_replace_var("?", ft_itoa(exit_code), list_var);
+		g_sh_state.exit_code = exit_code;
 }
 
 void	free_struct(t_cmd *cmd)
@@ -95,7 +94,7 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 		redirection_offset(&cmd);
 	}
 	close_pipe(tab_pipe);
-	waiting_end(&exec, list_var);
+	waiting_end(&exec);
 	while (cmd->prev != NULL)
 		cmd = cmd->prev;
 	free_struct(cmd);

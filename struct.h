@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:13:43 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 16:13:44 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/29 17:06:32 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_sh_state
 {
 	int		state;
 	bool	check_signal;
+	int		exit_code;
 }			t_sh_state;
 
 #endif

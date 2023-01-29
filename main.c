@@ -6,26 +6,13 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:50:00 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 16:12:47 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/29 17:11:33 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution/execution.h"
 #include "minishell.h"
-#include "struct.h"
 
 t_sh_state	g_sh_state;
-
-void	create_exit_env(t_env_list **list_var)
-{
-	char	**cmd;
-
-	cmd = ft_split("export ?=0", ' ');
-	if (cmd == NULL)
-		exit_shell(list_var, NULL);
-	main_export(cmd, list_var);
-	ft_free_strs(cmd);
-}
 
 void	start_shell(char *line, t_cmd *cmd, t_env_list *list_var, char **envp)
 {
@@ -56,7 +43,6 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	cmd = NULL;
 	list_var = create_env_list(envp);
-	create_exit_env(&list_var);
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{

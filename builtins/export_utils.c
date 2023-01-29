@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:50:08 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 11:21:03 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/29 17:01:46 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ bool	check_name(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (!(name[i] == '_' || ft_isalnum(name[i])
-				|| !ft_strcmp(name, "?")))
+		if (!(name[i] == '_' || ft_isalnum(name[i])))
 			return (false);
 		i++;
 	}

@@ -100,7 +100,10 @@ void	get_dollar_value(char *s,
 		k++;
 	}
 	var[k - 1] = '\0';
-	str = search_send_var(var, &list_var);
+	if (!ft_strcmp(var, "?"))
+		str = ft_itoa(g_sh_state.exit_code);
+	else
+		str = search_send_var(var, &list_var);
 	free(var);
 	take_dollar_offset(str, i, count, k);
 }
@@ -173,7 +176,10 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 		i++;
 	tmp = str[i];
 	str[i] = '\0';
-	trunc_str = search_send_var(str + 1, &list_var);
+	if (!ft_strcmp(str + 1, "?"))
+		trunc_str = ft_itoa(g_sh_state.exit_code);
+	else
+		trunc_str = search_send_var(str + 1, &list_var);
 	str[i] = tmp;
 	cpy_str = ft_strjoin(tmp_str, trunc_str);
 	if (cpy_str)

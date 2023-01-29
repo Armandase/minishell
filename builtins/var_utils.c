@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:39:22 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 11:39:54 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/29 16:45:01 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ void	search_replace_var(char *name, char *value, t_env_list **list_var)
 		{
 			free(tmp->value);
 			tmp->value = value;
+			return ;
 		}
 		tmp = tmp->next;
 	}
+	free(value);
 }

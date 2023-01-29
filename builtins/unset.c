@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:14 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/25 11:41:00 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/29 17:02:54 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static int	check_name_unset(char *name)
 	i = 0;
 	while (name[i])
 	{
-		if (!(name[i] == '_' || name[i] == '-' || ft_isalnum(name[i])
-				|| name[0] == '?'))
+		if (!(name[i] == '_' || ft_isalnum(name[i])))
 			return (0);
 		i++;
 	}

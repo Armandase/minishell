@@ -6,13 +6,11 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 16:58:23 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/29 17:12:19 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-extern t_sh_state	g_sh_state;
 
 char	*create_prompt(void)
 {

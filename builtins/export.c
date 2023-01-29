@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/27 14:17:15 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/29 17:00:21 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,11 @@ static int	add_env_var(char *line, t_env_list **list_var, char *name,
 		name = export_name(line);
 		value = export_value(line);
 		if (check_format(line, name))
+		{
+			free(name);
+			free(value);
 			return (1);
+		}
 		if (search_var(name, list_var) == true && value && *value)
 		{
 			search_replace_var(name, value, list_var);
@@ -110,13 +114,15 @@ int	main_export(char **args, t_env_list **list_var)
 	name = NULL;
 	value = NULL;
 	if (ft_strlen_2d((const char **)args) == 1
-		&& ft_strcmp(args[i], "export") == 0)
+		&& !ft_strcmp(args[i], "export"))
 		print_args_ascii(*list_var, env_list_size(*list_var));
 	while (args[i])
 	{
 		check = add_env_var(args[i], list_var, name, value);
 		if (check != 0)
 			return (check);
+		free(name);
+		free(value);
 		i++;
 	}
 	return (0);
