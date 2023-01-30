@@ -146,7 +146,7 @@ static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
 			get_dollar_value((char *)&s[i], &count, &i, list_var);
 		if (s[i] && s[i] == '\"')
 			count_to_next_quote(s, &i, &count, list_var);
-		if (!s[i])
+		if (i > ft_strlen(s) || !s[i])
 			break ;
 		if (s[i] == c)
 			break ;
@@ -210,6 +210,30 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	return (str);
 }
 
+int simple_quote_check(char *s, char *str, size_t *j, size_t *i)
+{
+	if (s[*j] == '\'')
+	{
+		(*j)++;
+		if (!s[*j])
+			return (1);
+		while (s[*j] && s[*j] == '\'')
+			(*j)++;
+		while (s[*j])
+		{
+			str[*i] = s[*j];
+			(*j)++;
+			(*i)++;
+			if (s[*j] == '\'')
+			{
+				(*j)++;
+				break ;
+			}
+		}
+	}
+	return (0);
+}
+
 static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 {
 	size_t	i;
@@ -228,25 +252,8 @@ static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 			free(s);
 			s = cpy;
 		}
-		if (s[*j] == '\'')
-		{
-			(*j)++;
-			if (!s[*j])
-				break ;
-			while (s[*j] && s[*j] == '\'')
-				(*j)++;
-			while (s[*j])
-			{
-				str[i] = s[*j];
-				(*j)++;
-				i++;
-				if (s[*j] == '\'')
-				{
-					(*j)++;
-					break ;
-				}
-			}
-		}
+		if (simple_quote_check(s, str, j, &i))
+			break ;
 		if (s[*j] == ' ' || !s[*j])
 			break ;
 		if (s[*j] == '$' && s[*j + 1] && s[*j + 1] != ' ')
