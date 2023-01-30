@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:23 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 14:14:17 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/30 12:54:18 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	builtins_selection(t_cmd *cmd, t_exec *exec, int tab_pipe[2][2]);
 void	exit_shell(t_env_list **list_var, char **envp);
 char	*create_prompt(void);
 void	handle_sigint(int signum);
+void	handle_sigint_exec(int signum);
 void	handle_sigquit(int signum);
 void	open_pipe(int tab_pipe[2][2], int i);
 void	close_pipe(int tab_pipe[2][2]);

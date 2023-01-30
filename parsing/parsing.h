@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:00:30 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 15:00:31 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/30 12:37:39 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ void	free_cmd(t_cmd *cmd);
 char	**split_token(t_token **token, t_env_list *list_var);
 t_token	*str_get_token(char *str, const char *delim);
 t_cmd	*list_new(void	*content, t_cmd *prev);
+t_cmd	*get_cmd(char *line, t_env_list *list_var);
+int		check_char(char *str);
 
 #endif

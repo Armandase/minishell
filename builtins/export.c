@@ -6,17 +6,19 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/29 17:00:21 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/30 10:40:35 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static int	check_format(char *line, char *name)
+static int	check_format(char *line, char *name, char *value)
 {
 	if (name[0] == '\0')
 	{
 		ft_putstr_fd("bash: export: `=`: not a valid identifier\n", 2);
+		free(name);
+		free(value);
 		return (1);
 	}
 	if (ft_isdigit(name[0]) || check_name(name) == false)
@@ -24,6 +26,8 @@ static int	check_format(char *line, char *name)
 		ft_putstr_fd("bash: export: `", 2);
 		write(2, line, ft_strlen(line));
 		ft_putstr_fd("`: not a valid identifier\n", 2);
+		free(name);
+		free(value);
 		return (1);
 	}
 	return (0);
@@ -78,12 +82,8 @@ static int	add_env_var(char *line, t_env_list **list_var, char *name,
 	{
 		name = export_name(line);
 		value = export_value(line);
-		if (check_format(line, name))
-		{
-			free(name);
-			free(value);
+		if (check_format(line, name, value))
 			return (1);
-		}
 		if (search_var(name, list_var) == true && value && *value)
 		{
 			search_replace_var(name, value, list_var);

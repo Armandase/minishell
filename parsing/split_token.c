@@ -190,6 +190,7 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 		trunc_str = strjoin_exit_code(g_sh_state.exit_code, str + 2);
 		cpy_str = ft_strjoin(tmp_str, trunc_str);
 		free(trunc_str);
+		free(tmp_str);
 		return (cpy_str);
 	}
 	tmp = str[i];
@@ -200,6 +201,7 @@ static char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
 	if (cpy_str)
 	{
 		str = ft_strjoin(cpy_str, &str[i]);
+		free(cpy_str);
 		free(tmp_str);
 	}
 	else
