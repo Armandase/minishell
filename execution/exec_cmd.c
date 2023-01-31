@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:09:58 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 13:15:50 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:00:06 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 
 void	apply_execution(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 {
-	open_pipe(tab_pipe, exec->nb_fork);
+	if (cmd->token != UN_FORK)
+		open_pipe(tab_pipe, exec->nb_fork);
 	exec->tab_pid[exec->nb_fork] = fork();
 	if (exec->tab_pid[exec->nb_fork] == -1)
 	{
