@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/28 18:00:02 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/31 13:20:39 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int	main_exit(t_cmd *cmd, t_exec *exec)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
+	else
+		exit_code = g_sh_state.exit_code;
 	free_exec(exec);
 	free_cmd(cmd);
 	ft_printf("exit\n");

@@ -1,3 +1,2 @@
 \t et space in readline must not display any error messages
 si pas de args sur exit alors exit le  0
-leak sur cd
