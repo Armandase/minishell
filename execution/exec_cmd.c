@@ -93,10 +93,12 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 	if (cmd->cmd && cmd->token == CMD && cmd->token != BUILTINS
 		&& access(cmd->cmd[0], X_OK) != 0)
 	{
+		if (cmd->cmd[0][0] == '\0')
+			return ;
 		get_cmd_path(cmd->cmd, exec->envp);
 		if (cmd->cmd[0] == NULL)
 		{
-			ft_putstr_fd("truc: command not found\n", 2);
+			ft_putstr_fd("🤓: command not found\n", 2);
 			g_sh_state.exit_code = 127;
 			return ;
 		}

@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:54:53 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 09:54:56 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/31 15:13:54 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_cmd	*parsing(char *line, t_env_list *list_var)
 	t_cmd	*begin;
 	char	*current_line;
 
-	current_line = ft_strtrim(line, " ");
+	current_line = ft_strtrim(line, " \t");
 	if (ft_strlen(current_line) == 0)
 	{
 		free(current_line);

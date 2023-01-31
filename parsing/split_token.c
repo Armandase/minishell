@@ -61,12 +61,13 @@ void	get_dollar_value(char *s,
 		k++;
 	}
 	var[k - 1] = '\0';
-	if (!ft_strcmp(var, "?"))
+	if (var[0] == '?')
 		str = ft_itoa(g_sh_state.exit_code);
 	else
 		str = search_send_var(var, &list_var);
-	free(var);
 	take_dollar_offset(str, i, count, k);
+	*count += ft_strlen(var);
+	free(var);
 }
 
 static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
