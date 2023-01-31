@@ -42,7 +42,10 @@ void	exec_builtins(t_cmd *cmd, int *ret, int tab_pipe[2][2], t_exec *exec)
 	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "cd")))
 		*ret = main_cd(cmd->cmd, exec->list_var);
 	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "exit")))
-		main_exit(cmd, exec);
+	{
+		close_pipe(tab_pipe);
+		*ret = main_exit(cmd, exec);
+	}
 	close_pipe(tab_pipe);
 }
 
