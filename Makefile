@@ -9,6 +9,7 @@ SRCS		= main.c\
 			  parsing/parsing.c \
 			  parsing/parsing_utils.c parsing/split_token.c \
 			  parsing/str_get_token.c parsing/stack_func.c\
+			  parsing/quote_utils.c parsing/split_token_1.c\
 			  execution/exec_cmd.c execution/execution.c execution/find_path.c \
 			  execution/exec_utils.c execution/signals_handlers.c\
 			  execution/exit.c execution/heredoc.c\
