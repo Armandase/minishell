@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:53:19 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 16:53:21 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/31 11:54:21 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	get_line(t_cmd *cmd, char *str, char *buf, int fd_buf[2])
 	{
 		ft_printf("> ");
 		ft_putstr_fd(buf, fd_buf[1]);
+		free(buf);
+		buf = NULL;
 		buf = get_next_line(0);
 		if (buf == NULL)
 			ft_printf("\n");

@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:57 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/29 17:10:00 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/31 12:27:33 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	builtins_without_redirect(t_cmd *cmd, t_exec *exec, int tab_pipe[2][2])
 		g_sh_state.exit_code = main_export(cmd->cmd, exec->list_var);
 	else if (cmd->cmd && cmd->cmd[0] && (ft_strcmp(cmd->cmd[0], "unset") == 0))
 		g_sh_state.exit_code = main_unset(cmd->cmd, exec->list_var);
+	close_pipe(tab_pipe);
 	return (UN_FORK);
 }
 

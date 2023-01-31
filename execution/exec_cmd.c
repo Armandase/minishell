@@ -6,11 +6,12 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:09:58 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 15:46:29 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/31 12:27:06 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include <stdio.h>
 
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 {
@@ -104,7 +105,7 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 		get_cmd_path(cmd->cmd, exec->envp);
 		if (cmd->cmd[0] == NULL)
 		{
-			perror("Error");
+			ft_putstr_fd("Command not found.\n", 2);
 			search_replace_var("?", ft_itoa(127), exec->list_var);
 			return ;
 		}
