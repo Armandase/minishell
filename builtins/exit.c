@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 13:20:39 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/31 19:50:04 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	free_exec(t_exec *exec)
 		free(env_tmp->name);
 		free(env_tmp->value);
 		free(env_tmp);
+		env_tmp = NULL;
 	}
 	if (exec->tab_pid != NULL)
 		free(exec->tab_pid);

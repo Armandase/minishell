@@ -1,4 +1,0 @@
-\t et space in readline must not display any error messages
-si pas de args sur exit alors exit le  0
-echo "exit_code ->$? user ->$USER home -> $HOME"
-echo -0f

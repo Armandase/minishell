@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/30 10:40:35 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/31 19:55:11 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ static int	check_assign_symbol(char *line, char *name, t_env_list **list_var,
 	{
 		new_var->export_only = true;
 		if (search_var(name, list_var) == true)
+		{
+			free(new_var);
 			return (BREAK);
+		}
 	}
 	else
 		new_var->export_only = false;
@@ -49,7 +52,7 @@ static int	check_assign_symbol(char *line, char *name, t_env_list **list_var,
 	return (0);
 }
 
-static int	replace_value(char *name, char *value, t_env_list **list_var,
+static int	replace_value(char *name, t_env_list **list_var,
 		t_env_list *new_var)
 {
 	t_env_list	*tmp;
@@ -61,15 +64,7 @@ static int	replace_value(char *name, char *value, t_env_list **list_var,
 			return (BREAK);
 		tmp = tmp->next;
 	}
-	if (ft_strcmp(name, tmp->name) == false
-		&& search_var(name, list_var) == false)
-	{
-		free(tmp->value);
-		tmp->value = value;
-		free(name);
-	}
-	else
-		tmp->next = new_var;
+	tmp->next = new_var;
 	return (0);
 }
 
@@ -97,7 +92,7 @@ static int	add_env_var(char *line, t_env_list **list_var, char *name,
 			return (0);
 		new_var->value = value;
 		new_var->next = NULL;
-		if (replace_value(name, value, list_var, new_var) == BREAK)
+		if (replace_value(name, list_var, new_var) == BREAK)
 			return (0);
 	}
 	return (0);
@@ -121,8 +116,6 @@ int	main_export(char **args, t_env_list **list_var)
 		check = add_env_var(args[i], list_var, name, value);
 		if (check != 0)
 			return (check);
-		free(name);
-		free(value);
 		i++;
 	}
 	return (0);
