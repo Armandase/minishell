@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:09:58 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 12:27:06 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/31 13:15:50 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	apply_execution(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 	if (exec->tab_pid[exec->nb_fork] == -1)
 	{
 		perror("Error");
-		search_replace_var("?", ft_itoa(127), exec->list_var);
+		g_sh_state.exit_code = 127;
 	}
 	else if (exec->tab_pid[exec->nb_fork] == 0)
 		inside_fork(exec, cmd, tab_pipe);
@@ -106,7 +106,7 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 		if (cmd->cmd[0] == NULL)
 		{
 			ft_putstr_fd("Command not found.\n", 2);
-			search_replace_var("?", ft_itoa(127), exec->list_var);
+			g_sh_state.exit_code = 127;
 			return ;
 		}
 	}
