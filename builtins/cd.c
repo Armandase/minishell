@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:17:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/27 14:06:27 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/31 13:03:02 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,18 @@ int	main_cd(char **args, t_env_list **list_var)
 	if (old_pwd == NULL)
 		return (12);
 	old_pwd = getcwd(old_pwd, 4096);
-	if (chdir(args[1]) != 0)
+	if (args[1] && chdir(args[1]))
 	{
 		print_error(args[1]);
+		free(old_pwd);
 		return (1);
 	}
 	pwd = ft_calloc(4096, sizeof(char));
 	if (pwd == NULL)
+	{
+		free(old_pwd);
 		return (12);
+	}
 	getcwd(pwd, 4096);
 	search_replace_pwd(old_pwd, OLDPWD, list_var);
 	search_replace_pwd(pwd, PWD, list_var);
