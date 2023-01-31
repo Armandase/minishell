@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:09:58 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 13:15:50 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/01/31 13:38:55 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 		get_cmd_path(cmd->cmd, exec->envp);
 		if (cmd->cmd[0] == NULL)
 		{
-			ft_putstr_fd("Command not found.\n", 2);
+			ft_putstr_fd("truc: command not found\n", 2);
 			g_sh_state.exit_code = 127;
 			return ;
 		}
