@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/01 13:10:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 13:10:40 by ulayus           ###   ########.fr       */
+/*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
+/*   Updated: 2023/02/01 12:38:58 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # define PWD 0
 # define OLDPWD 1
 # define BREAK 2
-# define NAME 0
-# define VALUE 1
+# define ARGS_NB 3
+# define NO_DIR 4
 
 extern t_sh_state	g_sh_state;
 
@@ -42,6 +42,5 @@ char		*search_send_var(char *var, t_env_list **list_var);
 bool		search_var(char *var, t_env_list **list_var);
 void		search_replace_var(char *name, char *value, t_env_list **list_var);
 char		*ft_strjoin_space(char *s1, char const *s2);
-int			append_value(char *name, char *value, t_env_list **list_var);
 
 #endif

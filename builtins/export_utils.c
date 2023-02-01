@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:50:08 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 13:09:24 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/30 10:40:47 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,4 @@ bool	check_name(char *name)
 		i++;
 	}
 	return (true);
-}
-
-int	append_value(char *name, char *value, t_env_list **list_var)
-{
-	t_env_list	*tmp;
-	char		*joined_str;
-	int			i;
-
-	i = 0;
-	while (name[i])
-		i++;
-	if (name[i - 1] != '+')
-		return (0);
-	tmp = *list_var;
-	while (tmp->next)
-	{	
 }
