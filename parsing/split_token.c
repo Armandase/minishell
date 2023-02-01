@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:59:48 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/01 12:59:49 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/01 16:53:21 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ char	**split_token(t_token **token, t_env_list *list_var)
 	if (!token || !(*token) || !(*token)->line)
 		return (0);
 	s = ft_strdup((*token)->line);
+	free((*token)->line);
 	strs = malloc(sizeof(char *) * (count_word(s, ' ') + 1));
 	if (strs == NULL)
 		return (0);
@@ -116,11 +117,10 @@ char	**split_token(t_token **token, t_env_list *list_var)
 		strs[j] = malloc(count_char(s, ' ', i, list_var) + 1);
 		if (!strs[j])
 			return (0);
-		s = ft_strccpy(s, strs[j], &i, list_var);
+		ft_strccpy(s, strs[j], &i, list_var);
 		j++;
 	}
 	strs[j] = 0;
-	free((*token)->line);
 	(*token)->line = s;
 	return (strs);
 }
