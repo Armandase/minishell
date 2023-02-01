@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 17:25:52 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/01 12:38:58 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define PWD 0
 # define OLDPWD 1
 # define BREAK 2
+# define ARGS_NB 3
+# define NO_DIR 4
 
 extern t_sh_state	g_sh_state;
 
