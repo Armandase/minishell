@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:14 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/29 17:02:54 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/01 10:53:23 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	delete_var(t_env_list **list_var, char *name)
 			free(to_free->name);
 			free(to_free->value);
 			free(to_free);
+			to_free = NULL;
 		}
 		tmp = tmp->next;
 	}
