@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:39:22 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 11:13:17 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/29 16:45:01 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,10 @@ void	search_replace_var(char *name, char *value, t_env_list **list_var)
 		if (ft_strcmp(tmp->name, name) == false)
 		{
 			free(tmp->value);
-			tmp->value = NULL;
 			tmp->value = value;
-			tmp->export_only = false;
 			return ;
 		}
 		tmp = tmp->next;
 	}
+	free(value);
 }

@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 11:11:05 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/30 10:40:35 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ static int	check_assign_symbol(char *line, char *name, t_env_list **list_var,
 	{
 		new_var->export_only = true;
 		if (search_var(name, list_var) == true)
-		{
-			free(new_var);
 			return (BREAK);
-		}
 	}
 	else
 		new_var->export_only = false;
@@ -52,7 +49,7 @@ static int	check_assign_symbol(char *line, char *name, t_env_list **list_var,
 	return (0);
 }
 
-static int	replace_value(char *name, t_env_list **list_var,
+static int	replace_value(char *name, char *value, t_env_list **list_var,
 		t_env_list *new_var)
 {
 	t_env_list	*tmp;
@@ -61,16 +58,18 @@ static int	replace_value(char *name, t_env_list **list_var,
 	while (tmp->next)
 	{
 		if (ft_strcmp(name, tmp->name) == false)
-		{
-			free(name);
-			free(new_var->value);
-			free(new_var);
-			new_var = NULL;
 			return (BREAK);
-		}
 		tmp = tmp->next;
 	}
-	tmp->next = new_var;
+	if (ft_strcmp(name, tmp->name) == false
+		&& search_var(name, list_var) == false)
+	{
+		free(tmp->value);
+		tmp->value = value;
+		free(name);
+	}
+	else
+		tmp->next = new_var;
 	return (0);
 }
 
@@ -79,27 +78,28 @@ static int	add_env_var(char *line, t_env_list **list_var, char *name,
 {
 	t_env_list	*new_var;
 
-	if (ft_strcmp(line, "export") == false)
-		return (0);
-	name = export_name(line);
-	value = export_value(line);
-	if (check_format(line, name, value))
-		return (1);
-	if (search_var(name, list_var) == true && value && value[0])
+	while (line && ft_strcmp(line, "export"))
 	{
-		search_replace_var(name, value, list_var);
-		free(name);
-		return (0);
+		name = export_name(line);
+		value = export_value(line);
+		if (check_format(line, name, value))
+			return (1);
+		if (search_var(name, list_var) == true && value && *value)
+		{
+			search_replace_var(name, value, list_var);
+			free(name);
+			return (0);
+		}
+		new_var = ft_calloc(1, sizeof(t_env_list));
+		if (new_var == NULL)
+			return (12);
+		if (check_assign_symbol(line, name, list_var, new_var) == BREAK)
+			return (0);
+		new_var->value = value;
+		new_var->next = NULL;
+		if (replace_value(name, value, list_var, new_var) == BREAK)
+			return (0);
 	}
-	new_var = ft_calloc(1, sizeof(t_env_list));
-	if (new_var == NULL)
-		return (12);
-	if (check_assign_symbol(line, name, list_var, new_var) == BREAK)
-		return (0);
-	new_var->value = value;
-	new_var->next = NULL;
-	if (replace_value(name, list_var, new_var) == BREAK)
-		return (0);
 	return (0);
 }
 
@@ -121,6 +121,8 @@ int	main_export(char **args, t_env_list **list_var)
 		check = add_env_var(args[i], list_var, name, value);
 		if (check != 0)
 			return (check);
+		free(name);
+		free(value);
 		i++;
 	}
 	return (0);

@@ -1,0 +1,2 @@
+giga leak sur echo '/nfs/homes/adamiens/cursus/minishell' (avec double quote)
+echo "$PWD"
