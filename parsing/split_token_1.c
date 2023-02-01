@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 11:24:16 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 11:24:19 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/01 12:52:08 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,28 @@ static char	*join_line(char *tmp_str, int i, char *str, t_env_list *list_var)
 	return (str);
 }
 
-char	*cpy_envp_val(char *str, t_env_list *list_var, size_t *j)
+void	cpy_envp_val(char **s, t_env_list *list_var, size_t *j)
 {
 	char	*tmp_str;
 	size_t	i;
 	char	tmp;
 
 	i = *j;
-	tmp = str[i];
-	str[i] = '\0';
-	tmp_str = ft_strdup(str);
-	str[i] = tmp;
-	str += *j;
+	tmp = (*s)[i];
+	(*s)[i] = '\0';
+	tmp_str = ft_strdup((*s));
+	(*s)[i] = tmp;
+	(*s) += *j;
 	i = 0;
-	while (str[i] && str[i] != ' ' && str[i] != '\"'
-		&& str[i] != '\'' && str[i] != '?')
+	while ((*s)[i] && (*s)[i] != ' ' && (*s)[i] != '\"'
+		&& (*s)[i] != '\'' && (*s)[i] != '?')
 		i++;
-	str = join_line(tmp_str, i, str, list_var);
+	(*s) = join_line(tmp_str, i, (*s), list_var);
 	free(tmp_str);
-	return (str);
+}
+
+void	check_envp_val(char **s, size_t *j, t_env_list *list_var)
+{
+	if ((*s)[*j] == '$' && (*s)[*j + 1] && (*s)[*j + 1] != ' ')
+		cpy_envp_val(s, list_var, j);
 }

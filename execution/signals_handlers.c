@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 16:55:11 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/30 12:57:07 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	handle_sigint(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	g_sh_state.exit_code = 130;
 }
 
 void	handle_sigint_exec(int signum)
@@ -53,7 +52,6 @@ void	handle_sigint_exec(int signum)
 		ft_printf("\n");
 		rl_on_new_line();
 	}
-	g_sh_state.exit_code = 130;
 }
 
 void	handle_sigquit(int signum)

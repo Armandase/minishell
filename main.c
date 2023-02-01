@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:50:00 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 16:59:38 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/01/30 12:53:52 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	start_shell(char *line, t_cmd *cmd, t_env_list *list_var, char **envp)
 	if (ft_strlen(line) != 0)
 	{
 		cmd = parsing(line, list_var);
+		signal(SIGQUIT, handle_sigquit);
 		if (cmd != NULL)
 		{
 			signal(SIGINT, handle_sigint_exec);
-			signal(SIGQUIT, handle_sigquit);
 			execution(cmd, envp, &list_var);
 		}
 	}
