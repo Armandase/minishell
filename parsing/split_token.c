@@ -102,6 +102,7 @@ char	**split_token(t_token **token, t_env_list *list_var)
 	size_t	j;
 	char	**strs;
 	char	*s;
+	char	*end;
 
 	if (!token || !(*token) || !(*token)->line)
 		return (0);
@@ -112,15 +113,27 @@ char	**split_token(t_token **token, t_env_list *list_var)
 		return (0);
 	i = 0;
 	j = 0;
-	while (s[i] && (j < count_word(s, ' ') && count_word(s, ' ')))
+	while (i < ft_strlen (s) && s[i] && (j < count_word(s, ' ') && count_word(s, ' ')))
 	{
 		strs[j] = malloc(count_char(s, ' ', i, list_var) + 1);
 		if (!strs[j])
 			return (0);
-		ft_strccpy(s, strs[j], &i, list_var);
+		end = ft_strccpy(s, strs[j], &i, list_var);
+		if (s != end)
+		{
+			free(s);
+			s = ft_strdup(end);
+			free(end);
+			end = NULL;
+		}
 		j++;
 	}
 	strs[j] = 0;
-	(*token)->line = s;
+	(*token)->line = ft_strdup(s);
+	if (s)
+	{
+		free(s);
+		s = NULL;
+	}
 	return (strs);
 }
