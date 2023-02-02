@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:17:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 12:45:51 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 14:23:58 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,16 @@ int	main_cd(char **args, t_env_list **list_var)
 
 	if (print_error(args, ARGS_NB))
 		return (1);
-	if (args[1] && chdir(args[1]))
-	{
-		print_error(args, NO_DIR);
-		return (1);
-	}
 	old_pwd = ft_calloc(4096, sizeof(char));
 	if (old_pwd == NULL)
 		return (12);
 	old_pwd = getcwd(old_pwd, 4096);
+	if (args[1] && chdir(args[1]))
+	{
+		free(old_pwd);
+		print_error(args, NO_DIR);
+		return (1);
+	}
 	pwd = ft_calloc(4096, sizeof(char));
 	if (pwd == NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/02 13:11:05 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 16:55:46 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define BREAK 2
 # define ARGS_NB 3
 # define NO_DIR 4
+# define INVALID 1
 
 extern t_sh_state	g_sh_state;
 
