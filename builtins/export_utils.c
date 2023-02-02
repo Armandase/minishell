@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:50:08 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/02 13:22:12 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:32:07 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ static char	*export_name_append(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '+' && str[i + 1] == '=' && str[i + 2] != ' ')
+		if (str[i] == '+' && str[i + 1] && str[i + 1] == '='
+			&& str[i + 2] && str[i + 2] != ' ')
 			break ;
 		i++;
 	}
@@ -101,12 +102,11 @@ static char	*export_name_append(char *str)
 	i = 0;
 	while (str[i])
 	{
-		name[i] = str[i];
-		if (name[i] == '+')
+		if (str[i] == '+')
 			break ;
+		name[i] = str[i];
 		i++;
 	}
-	name[i] = '\0';
 	return (name);
 }
 

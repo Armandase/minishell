@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:39:22 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 11:13:17 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:23:54 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,19 @@ bool	search_var(char *var, t_env_list **list_var)
 char	*search_send_var(char *var, t_env_list **list_var)
 {
 	t_env_list	*tmp;
+	char		*str;
 	int			i;
 
+	str = NULL;
 	tmp = *list_var;
 	i = 0;
 	while (tmp)
 	{
 		if (ft_strcmp(var, tmp->name) == 0)
 		{
-			var = ft_strdup(tmp->value);
-			return (var);
+			if (tmp->value)
+				str = ft_strdup(tmp->value);
+			return (str);
 		}
 		tmp = tmp->next;
 		i++;
@@ -100,7 +103,8 @@ void	search_replace_var(char *name, char *value, t_env_list **list_var)
 		{
 			free(tmp->value);
 			tmp->value = NULL;
-			tmp->value = value;
+			if (value != NULL)
+				tmp->value = value;
 			tmp->export_only = false;
 			return ;
 		}

@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/02 13:11:36 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:33:19 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static int	check_assign_symbol(char *line, char *name, t_env_list **list_var,
 		new_var->export_only = true;
 		if (search_var(name, list_var) == true)
 		{
+			free(name);
 			free(new_var);
 			return (BREAK);
 		}
@@ -84,7 +85,7 @@ static int	add_env_var(char *line, t_env_list **list_var, char *name,
 	name = export_name(line);
 	value = export_value(line);
 	if (check_format(line, name, value))
-		return (1);
+		return (INVALID);
 	if (search_var(name, list_var) == true && value && value[0])
 	{
 		search_replace_var(name, value, list_var);
@@ -107,22 +108,23 @@ int	main_export(char **args, t_env_list **list_var)
 {
 	char	*name;
 	char	*value;
-	int		check;
+	int		exit_code;
 	int		i;
 
 	i = 0;
 	name = NULL;
 	value = NULL;
+	exit_code = 0;
 	if (ft_strlen_2d((const char **)args) == 1
 		&& !ft_strcmp(args[i], "export"))
 		print_args_ascii(*list_var, env_list_size(*list_var));
 	while (args[i])
 	{
 		if (append_value(args[i], list_var) == 0)
-			check = add_env_var(args[i], list_var, name, value);
-		if (check != 0)
-			return (check);
+			exit_code = add_env_var(args[i], list_var, name, value);
+		if (exit_code != 0 && exit_code != INVALID)
+			return (exit_code);
 		i++;
 	}
-	return (0);
+	return (exit_code);
 }
