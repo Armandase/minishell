@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 16:55:11 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:48:46 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ void	handle_sigquit(int signum)
 {
 	(void)signum;
 	ft_printf("Quit (core dumped)\n");
+	g_sh_state.exit_code = 131;
 }

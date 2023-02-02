@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:50:00 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 16:59:38 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:52:40 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	start_shell(char *line, t_cmd *cmd, t_env_list *list_var, char **envp)
 			signal(SIGINT, handle_sigint_exec);
 			signal(SIGQUIT, handle_sigquit);
 			execution(cmd, envp, &list_var);
+			g_sh_state.state = PROMPT;
 		}
 	}
 	if (line && *line)

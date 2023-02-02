@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:53:19 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 11:54:21 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 17:53:14 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	heredoc(t_cmd *cmd)
 	char	*str;
 	int		fd_buf[2];
 
+	g_sh_state.state = HERE_DOC;
+	signal(SIGQUIT, SIG_IGN);
 	if (pipe(fd_buf) == -1)
 		perror("Error");
 	ft_printf("> ");
@@ -68,7 +70,6 @@ int	heredoc(t_cmd *cmd)
 	if (buf == NULL)
 		ft_printf("\n");
 	str = cpy_without_nl(buf);
-	g_sh_state.state = HERE_DOC;
 	get_line(cmd, str, buf, fd_buf);
 	if (g_sh_state.check_signal == true)
 	{
