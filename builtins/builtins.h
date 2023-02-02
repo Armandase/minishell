@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/02 16:55:46 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 18:56:28 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@
 # include "../libft/libft.h"
 # include "../struct.h"
 # include <unistd.h>
-# define PWD 0
-# define OLDPWD 1
-# define BREAK 2
-# define ARGS_NB 3
-# define NO_DIR 4
 # define INVALID 1
+
+enum	e_cd_macros
+{
+	PWD,
+	OLDPWD,
+	BREAK,
+	ARGS_NB,
+	NO_DIR
+};
 
 extern t_sh_state	g_sh_state;
 
