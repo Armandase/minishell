@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:59:48 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/02 13:32:16 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 17:44:04 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
 			break ;
 		if (s[i] == '$')
 			get_dollar_value((char *)&s[i], &count, &i, list_var);
+		if (s[i] == '$')
+			get_dollar_value((char *)&s[i], &count, &i, list_var);
 		if (s[i] && s[i] == '\"')
 			count_to_next_quote(s, &i, &count, list_var);
-		if (i > ft_strlen(s) || !s[i])
-			break ;
-		if (s[i] == c)
+		if (i > ft_strlen(s) || !s[i] || s[i] == c)
 			break ;
 		count++;
 		i++;

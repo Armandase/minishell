@@ -1,2 +1,15 @@
-giga leak sur echo '/nfs/homes/adamiens/cursus/minishell' (avec double quote)
-echo "$PWD"
+pas cool :
+{
+  << ok cat << ls << cmoi -e | cat
+  ls | < i | < i ( au moin pas segfault)
+  c pipex : < in cmd | ls > out et << in cmd | ls > out
+  echo "'$PWD'""" segfault au bour de la 2eme fois 
+  exit a b quitte pas
+}
+
+export a b 1ccc a+=jkrhwjg leak et bug s'arrete qd c faux pareil pour Unset  
+probleme exit_code qd commande not found reste a 127
+cmd blocante into CTRL_C ou CTRL_Backslash ne met pas a 130 (ex : wc)
+unset PWD into cd 
+Signaux here_doc (les 3)
+<< ok cat -> leak et fonctionne pas

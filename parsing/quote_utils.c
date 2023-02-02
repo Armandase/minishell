@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:59:31 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 10:01:41 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:07:54 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	find_next_quote(char *str, char c)
 	{
 		i++;
 		if (str[i] && str[i] == c)
-			return (i - 1);
+			return (i);
 	}
 	return (-1);
 }
@@ -56,7 +56,9 @@ void	count_to_next_quote(char *s, size_t *i, size_t *count,
 {
 	int		tmp;
 	char	c;
+	int		j;
 
+	j = 0;
 	c = s[*i];
 	(*i)++;
 	tmp = find_next_quote(&s[*i], c);
@@ -66,8 +68,12 @@ void	count_to_next_quote(char *s, size_t *i, size_t *count,
 	}
 	else
 	{
-		if (c == '\"' && s[*i] == '$')
-			get_dollar_value((char *)&s[*i], count, i, list_var);
+		while (s[*i + j])
+		{
+			if (c == '\"' && s[*i + j] == '$')
+				get_dollar_value((char *)&s[*i + j], count, i, list_var);
+			j++;
+		}
 		*count += tmp;
 		*i += tmp;
 	}
@@ -87,6 +93,8 @@ int	simple_quote_check(char *s, char *str, size_t *j, size_t *i)
 			str[*i] = s[*j];
 			(*j)++;
 			(*i)++;
+			if (check_inside_quote_another_quote(s, j, '\''))
+				break ;
 			if (s[*j] == '\'')
 			{
 				(*j)++;

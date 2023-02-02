@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:56:21 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/02 13:32:07 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 17:26:20 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	get_dollar_value(char *s,
 	var = NULL;
 	if (!s[k] || s[k] == ' ' || s[k] == '\'' || s[k] == '\"')
 		return ;
-	while (s[k] && s[k] != ' ' && s[k] != '\'' && s[k] != '\"')
+	while (s[k] && s[k] != ' ' && s[k] != '\'' && s[k] != '\"' && s[k] != '$')
 		k++;
 	var = malloc(sizeof(char) * k);
 	k = 1;
-	while (s[k] && s[k] != ' ' && s[k] != '\'' && s[k] != '\"')
+	while (s[k] && s[k] != ' ' && s[k] != '\'' && s[k] != '\"' && s[k] != '$')
 	{
 		var[k - 1] = s[k];
 		k++;
