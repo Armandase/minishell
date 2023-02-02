@@ -6,18 +6,18 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:52:50 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/01 12:54:30 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 17:00:34 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	check_inside_quote_another_quote(char *s, size_t *j)
+int	check_inside_quote_another_quote(char *s, size_t *j, char c)
 {
-	if (s[*j] == '\"')
+	if (s[*j] == c)
 	{
 		(*j)++;
-		if (s[*j] == '\"')
+		if (s[*j] == c)
 			(*j)++;
 		return (1);
 	}
@@ -44,7 +44,7 @@ int	double_quote_check(char **s, size_t *j, t_env_list *list_var, char *str)
 			str[i] = (*s)[*j];
 			i++;
 			(*j)++;
-			if (check_inside_quote_another_quote(*s, j))
+			if (check_inside_quote_another_quote(*s, j, '\"'))
 				break ;
 			check_envp_val(s, j, list_var);
 		}
