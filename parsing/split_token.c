@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:59:48 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/01 16:53:21 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 13:32:16 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,26 @@ static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 	return (s);
 }
 
+void	copy_verif_str(char **s, char *str, size_t *i, t_env_list *list_var)
+{
+	char	*copy;
+
+	copy = ft_strccpy(*s, str, i, list_var);
+	if (*s != copy)
+	{
+		free(*s);
+		*s = ft_strdup(copy);
+		free(copy);
+		copy = NULL;
+	}
+}
+
 char	**split_token(t_token **token, t_env_list *list_var)
 {
 	size_t	i;
 	size_t	j;
 	char	**strs;
 	char	*s;
-	char	*end;
 
 	if (!token || !(*token) || !(*token)->line)
 		return (0);
@@ -113,27 +126,15 @@ char	**split_token(t_token **token, t_env_list *list_var)
 		return (0);
 	i = 0;
 	j = 0;
-	while (i < ft_strlen (s) && s[i] && (j < count_word(s, ' ') && count_word(s, ' ')))
+	while (i < ft_strlen (s) && (j <= count_word(s, ' ') && count_word(s, ' ')))
 	{
 		strs[j] = malloc(count_char(s, ' ', i, list_var) + 1);
 		if (!strs[j])
 			return (0);
-		end = ft_strccpy(s, strs[j], &i, list_var);
-		if (s != end)
-		{
-			free(s);
-			s = ft_strdup(end);
-			free(end);
-			end = NULL;
-		}
+		copy_verif_str(&s, strs[j], &i, list_var);
 		j++;
 	}
 	strs[j] = 0;
-	(*token)->line = ft_strdup(s);
-	if (s)
-	{
-		free(s);
-		s = NULL;
-	}
+	copy_and_free_line(token, s);
 	return (strs);
 }

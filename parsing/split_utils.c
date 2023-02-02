@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:56:21 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/01 12:57:15 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:32:07 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,14 @@ void	cpy_byte_at_index_to_str(char *str, char *s, size_t *i, size_t *j)
 	str[*i] = s[*j];
 	(*i)++;
 	(*j)++;
+}
+
+void	copy_and_free_line(t_token **token, char *s)
+{
+	(*token)->line = ft_strdup(s);
+	if (s)
+	{
+		free(s);
+		s = NULL;
+	}
 }

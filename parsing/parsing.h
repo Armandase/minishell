@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:00:30 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/01 12:57:57 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:32:43 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ void	iter_in_space(char *s, size_t *j);
 void	cpy_byte_at_index_to_str(char *str, char *s, size_t *i, size_t *j);
 void	get_dollar_value(char *s,
 			size_t *count, size_t *i, t_env_list *list_var);
+void	copy_and_free_line(t_token **token, char *s);
 
 #endif
