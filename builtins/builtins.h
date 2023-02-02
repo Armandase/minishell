@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 12:38:58 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 13:11:05 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ char		*search_send_var(char *var, t_env_list **list_var);
 bool		search_var(char *var, t_env_list **list_var);
 void		search_replace_var(char *name, char *value, t_env_list **list_var);
 char		*ft_strjoin_space(char *s1, char const *s2);
+int			append_value(char *str, t_env_list **list_var);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/01 11:11:05 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/02 13:11:36 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ int	main_export(char **args, t_env_list **list_var)
 		print_args_ascii(*list_var, env_list_size(*list_var));
 	while (args[i])
 	{
-		check = add_env_var(args[i], list_var, name, value);
+		if (append_value(args[i], list_var) == 0)
+			check = add_env_var(args[i], list_var, name, value);
 		if (check != 0)
 			return (check);
 		i++;
