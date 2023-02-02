@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/02 15:04:40 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:07:08 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	waiting_end(t_exec	*exec)
 	int	i;
 
 	i = 0;
-	exit_code = 0;
+	exit_code = -1;
 	while (i < exec->nb_fork)
 	{
 		waitpid(exec->tab_pid[i], &wstatus, 0);
@@ -29,7 +29,7 @@ void	waiting_end(t_exec	*exec)
 			exit_code = WTERMSIG(wstatus);
 		i++;
 	}
-	if (exit_code)
+	if (exit_code != -1)
 		g_sh_state.exit_code = exit_code;
 }
 

@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:53:35 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 16:53:38 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:09:47 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ void	exit_shell(t_env_list **list_var, char **envp)
 		}
 	}
 	ft_printf("exit\n");
-	exit(1);
+	exit(0);
 }
