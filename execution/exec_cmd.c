@@ -67,6 +67,8 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 
 	ret = 0;
 	dup2_manager(exec, tab_pipe, cmd);
+	while (cmd->token != CMD && cmd->token != BUILTINS)
+		cmd = cmd->next;
 	if (cmd->token == CMD)
 	{
 		close_pipe(tab_pipe);
