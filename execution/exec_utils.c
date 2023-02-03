@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:02:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/02 19:05:21 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/03 13:39:10 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,12 @@ void	redirection_offset(t_cmd **cmd)
 {
 	if (*cmd)
 		*cmd = (*cmd)->next;
+	if ((*cmd)->token == FILES)
+	{
+		*cmd = (*cmd)->next;
+		if (*cmd)
+			*cmd = (*cmd)->next;
+	}
 	while ((*cmd)->next)
 	{
 		if ((*cmd)->token == CMD || (*cmd)->token == 0)
