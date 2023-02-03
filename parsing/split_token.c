@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:59:48 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/03 14:26:39 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:46:16 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static size_t	count_word(char *s, char c)
 				return (count);
 			count++;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (count);
 }
