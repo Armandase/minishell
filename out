@@ -1,0 +1,12 @@
+A_FAIRE
+builtins
+execution
+libft
+main.c
+main.o
+Makefile
+minishell
+minishell.h
+out
+parsing
+struct.h

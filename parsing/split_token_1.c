@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 11:24:16 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/02 18:58:28 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:40:05 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ void	cpy_envp_val(char **s, t_env_list *list_var, size_t *j)
 	i = 0;
 	while ((*s)[i] && (*s)[i] != ' ' && (*s)[i] != '\"'
 		&& (*s)[i] != '\'' && (*s)[i] != '?')
+	{
 		i++;
+		if ((*s)[i] == '$')
+			break ;
+	}
 	(*s) = join_line(tmp_str, i, (*s), list_var);
 	free(tmp_str);
 }
