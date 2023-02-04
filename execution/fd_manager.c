@@ -52,6 +52,8 @@ int	open_input(t_exec *exec, t_cmd **cpy, int check)
 			dup2(exec->fd_in, 0);
 		else if (check == 1 && exec->fd_in > 0)
 			close(exec->fd_in);
+		if ((*cpy)->next && (*cpy)->next->token == 0)
+			close(exec->fd_in);
 	}
 	return (0);
 }

@@ -77,17 +77,20 @@ void	redirection_offset(t_cmd **cmd)
 {
 	if (*cmd)
 		*cmd = (*cmd)->next;
-	if ((*cmd)->token == FILES)
+	if ((*cmd)->token == FILES && (*cmd)->next)
 	{
 		*cmd = (*cmd)->next;
-		if (*cmd)
+		if ((*cmd)->next)
 			*cmd = (*cmd)->next;
 	}
-	while ((*cmd)->next)
+	if (*cmd)
 	{
-		if ((*cmd)->token == CMD || (*cmd)->token == 0)
-			break ;
-		*cmd = (*cmd)->next;
+		while ((*cmd)->next)
+		{
+			if ((*cmd)->token == CMD || (*cmd)->token == 0)
+				break ;
+			*cmd = (*cmd)->next;
+		}
 	}
 }
 

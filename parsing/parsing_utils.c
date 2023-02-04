@@ -85,7 +85,6 @@ char	**dup_strs_without_first(char **strs)
 		i++;
 	}
 	ret[i - 1] = NULL;
-	ft_free_strs(strs);
 	return (ret);
 }
 
@@ -106,6 +105,7 @@ void	copy_special_command(t_cmd **cmd, t_token *token, t_env_list *list_var)
 		(*cmd) = (*cmd)->next;
 		(*cmd)->token = CMD;
 	}
+	ft_free_strs(strs);
 }
 
 t_cmd	*get_cmd(char *line, t_env_list *list_var)
@@ -131,6 +131,8 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		cmd = list_new(split_token(&token, list_var), NULL);
 	}
 	create_node(&cmd, token, list_var);
+	if (cmd->token == FILES)
+		cmd->next = list_new(NULL, cmd);
 	while (cmd->prev != NULL)
 		cmd = cmd->prev;
 	return (cmd);

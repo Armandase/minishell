@@ -1,13 +1,9 @@
 pas cool :
 {
   << ok cat << ls << cmoi -e | cat
-  ls | < i | < i ( au moin pas segfault)
-  c pipex : < in cmd | ls > out et << in cmd | ls > out
-  echo "'$PWD'""" segfault au bour de la 2eme fois 
   exit a b quitte pas
 }
 
 cmd blocante into CTRL_C ou CTRL_Backslash ne met pas a 130 (ex : wc)
 unset PWD into cd 
 Signaux here_doc (les 3)
-<< ok cat -> leak et fonctionne pas

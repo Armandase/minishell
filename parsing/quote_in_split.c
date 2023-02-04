@@ -14,12 +14,11 @@
 
 int	check_inside_quote_another_quote(char *s, size_t *j, char c)
 {
-	if (s[*j] == c)
+	while (s[*j] && s[*j] == c)
 	{
 		(*j)++;
-		if (s[*j] == c)
-			(*j)++;
-		return (1);
+		if (!s[*j] || s[*j] != c)
+			return (1);
 	}
 	return (0);
 }

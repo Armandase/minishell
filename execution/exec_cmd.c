@@ -74,7 +74,7 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 
 	ret = 0;
 	dup2_manager(exec, tab_pipe, cmd);
-	while (cmd->token != CMD && cmd->token != BUILTINS)
+	while (cmd->next && cmd->token != CMD && cmd->token != BUILTINS)
 		cmd = cmd->next;
 	if (cmd->token == CMD)
 	{
@@ -83,6 +83,8 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 	}
 	else if (cmd->token == BUILTINS)
 		exec_builtins(cmd, &ret, tab_pipe, exec);
+	else
+		close_pipe(tab_pipe);
 	exec_free(exec, cmd, ret);
 }
 
@@ -113,7 +115,12 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 			|| ft_strcmp(cmd->cmd[0], "cd") == 0
 			|| ft_strcmp(cmd->cmd[0], "exit") == 0))
 		builtins_selection(cmd, exec, tab_pipe);
-
+	if (cmd->cmd &&ft_strlen(cmd->cmd[0]) == 0)
+	{
+		ft_putstr_fd("🤓: Wrong arguments\n", 2);
+		g_sh_state.exit_code = 127;
+		return ;
+	}
 	if (cmd->cmd && cmd->token == CMD && cmd->token != BUILTINS
 		&& access(cmd->cmd[0], X_OK) != 0)
 	{
