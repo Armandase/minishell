@@ -7,4 +7,4 @@ pas cool :
 cmd blocante into CTRL_C ou CTRL_Backslash ne met pas a 130 (ex : wc)
 unset PWD into cd 
 Signaux here_doc (les 3)
-leak que avec echo 0
+leak que avec echo $?
