@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:59:31 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/02 17:07:54 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/05 14:01:49 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,16 @@ void	count_to_next_quote(char *s, size_t *i, size_t *count,
 	(*i)++;
 	tmp = find_next_quote(&s[*i], c);
 	if (tmp == 0)
-	{
 		*i += tmp + 1;
-	}
 	else
 	{
 		while (s[*i + j])
 		{
 			if (c == '\"' && s[*i + j] == '$')
-				get_dollar_value((char *)&s[*i + j], count, i, list_var);
+				while (s[*i + j] == '$' && s[*i + j + 1]
+					&& s[*i + j + 1] != '\'' && s[*i + j + 1] != '\"'
+					&& s[*i + j + 1] != ' ')
+					get_dollar_value((char *)&s[*i + j], count, i, list_var);
 			j++;
 		}
 		*count += tmp;

@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:17:48 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/03 13:39:27 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:17:21 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 		cmd = cmd->prev;
 		while (cmd->prev && (cmd->token == FILES || cmd->token == IN || cmd->token == HEREDOC || cmd->token == OUT || cmd->token == APPEND))
 			cmd = cmd->prev;
+		open_file(exec, cmd, 0, tab_pipe);
+		while (cmd->next && cmd->token != CMD && cmd->token != BUILTINS)
+			cmd = cmd->next;
 	}
 	if (cmd->next && (cmd->token == FILES || cmd->token == CMD
 			|| cmd->token == 0 || cmd->token == BUILTINS))
