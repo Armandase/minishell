@@ -6,12 +6,11 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:17:48 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/05 11:17:21 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/05 14:45:01 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-#include <stdio.h>
 
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 {
