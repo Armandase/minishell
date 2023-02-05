@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:59:31 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/05 14:01:49 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/05 14:27:42 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	count_to_next_quote(char *s, size_t *i, size_t *count,
 					&& s[*i + j + 1] != ' ')
 					get_dollar_value((char *)&s[*i + j], count, i, list_var);
 			j++;
+			if (*i + j > ft_strlen(s))
+				return ;
 		}
 		*count += tmp;
 		*i += tmp;

@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:59:48 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/05 13:54:53 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/05 14:31:47 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static char	*ft_strccpy(char *s, char *str, size_t *j, t_env_list *list_var)
 			break ;
 		check_envp_val(&s, j, list_var);
 		k = double_quote_check(&s, j, list_var, &str[i]);
+		check_envp_val(&s, j, list_var);
 		if (quote_offset_and_check(k, j, &i, s))
 			break ;
 		cpy_byte_at_index_to_str(str, s, &i, j);
@@ -101,11 +102,13 @@ char	**split_token(t_token **token, t_env_list *list_var)
 	size_t	j;
 	char	**strs;
 	char	*s;
+	char	*tmp;
 
 	if (!token || !(*token) || !(*token)->line)
 		return (0);
 	s = ft_strdup((*token)->line);
 	free((*token)->line);
+	tmp = s;
 	strs = malloc(sizeof(char *) * (count_word(s, ' ') + 1));
 	if (strs == NULL)
 		return (0);
@@ -120,6 +123,6 @@ char	**split_token(t_token **token, t_env_list *list_var)
 		j++;
 	}
 	strs[j] = 0;
-	copy_and_free_line(token, s);
+	copy_and_free_line(token, s, tmp);
 	return (strs);
 }
