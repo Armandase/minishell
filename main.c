@@ -6,10 +6,12 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:50:00 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/02 17:52:40 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/05 18:52:39 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/get_next_line.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 t_sh_state	g_sh_state;
