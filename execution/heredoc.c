@@ -6,21 +6,11 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:53:19 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/05 19:07:47 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 10:34:13 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-static bool	check_sigint(void)
-{
-	char	str[1];
-
-	read(g_sh_state.signal[0], str, 1);
-	if (str[0] == '1')
-		return (true);
-	return (false);
-}
 
 char	*cpy_without_nl(char *buffer)
 {
@@ -60,7 +50,7 @@ void	get_line(t_cmd *cmd, char *str, char *buf, int fd_buf[2])
 		}
 		free(str);
 		str = cpy_without_nl(buf);
-		if (check_sigint() == true)
+		if (g_sh_state.check_signal == true)
 			break ;
 	}
 	free(str);
@@ -87,7 +77,7 @@ int	heredoc(t_cmd *cmd)
 	}
 	str = cpy_without_nl(buf);
 	get_line(cmd, str, buf, fd_buf);
-	if (check_sigint() == true)
+	if (g_sh_state.check_signal == true)
 	{
 		close(fd_buf[0]);
 		return (-2);

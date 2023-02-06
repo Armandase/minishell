@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:31:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 10:31:47 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 10:33:08 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	cmd = NULL;
 	list_var = create_env_list(envp);
-	create_check_pipe();
 	while (1)
 	{
 		signal(SIGINT, handle_sigint);
