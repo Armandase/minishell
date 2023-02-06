@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 10:08:45 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 11:06:48 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,19 @@ void	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
 	}
 }
 
+void	close_heredoc(void)
+{
+	int	i;
+
+	i = 0;
+	while (i < 16)
+	{
+		if (g_sh_state.pipe_heredoc[i] != 0 && g_sh_state.pipe_heredoc[i] != 1)
+			close(g_sh_state.pipe_heredoc[i]);
+		i++;
+	}
+}
+
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 {
 	t_exec	exec;
@@ -150,4 +163,5 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 		cmd = cmd->prev;
 	free_struct(cmd);
 	free(exec.tab_pid);
+	close_heredoc();
 }

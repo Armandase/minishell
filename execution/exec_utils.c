@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:02:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 10:36:08 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 10:56:30 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	heredoc_offset(t_cmd *cmd)
 		{
 			while (g_sh_state.pipe_heredoc[i] == 0)
 				i++;
+			close(g_sh_state.pipe_heredoc[i]);
 			g_sh_state.pipe_heredoc[i] = 0;
 		}
 		cpy = cpy->next;
@@ -100,11 +101,14 @@ void	redirection_offset(t_cmd **cmd)
 		*cmd = (*cmd)->next;
 	if ((*cmd)->token == FILES && (*cmd)->next)
 	{
+		if ((*cmd)->prev)
+			heredoc_offset((*cmd)->prev);
 		*cmd = (*cmd)->next;
 		if ((*cmd)->next)
 			*cmd = (*cmd)->next;
 	}
-	heredoc_offset(*cmd);
+	else
+		heredoc_offset((*cmd)->prev);
 	if (*cmd)
 	{
 		while ((*cmd)->next)
