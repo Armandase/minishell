@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:50:00 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/02 17:52:40 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/05 18:56:05 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	start_shell(char *line, t_cmd *cmd, t_env_list *list_var, char **envp)
 		if (cmd != NULL)
 		{
 			signal(SIGINT, handle_sigint_exec);
-			signal(SIGQUIT, handle_sigquit);
 			execution(cmd, envp, &list_var);
 			g_sh_state.state = PROMPT;
 		}
@@ -47,6 +46,7 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	cmd = NULL;
 	list_var = create_env_list(envp);
+	create_check_pipe();
 	while (1)
 	{
 		signal(SIGINT, handle_sigint);

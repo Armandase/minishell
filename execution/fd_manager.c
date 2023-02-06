@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:02:56 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/05 14:49:49 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/05 19:10:27 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	open_input(t_exec *exec, t_cmd **cpy, int check)
 		*cpy = (*cpy)->next;
 		if (!*cpy)
 			return (1);
+		*(g_sh_state.state) = HEREDOC;
 		exec->fd_in = heredoc(*cpy);
 		if (check != 1 && exec->fd_in > 0)
 			dup2(exec->fd_in, 0);
