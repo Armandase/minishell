@@ -9,3 +9,4 @@ cmd blocante into CTRL_C ou CTRL_Backslash ne met pas a 130 (ex : wc)
 unset PWD into cd 
 Signaux here_doc (les 3)
 export "a"=            fdhfgjhfgj
+echo "$? $USER"

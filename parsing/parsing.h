@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:00:30 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/05 18:34:50 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:38:21 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ typedef struct s_token{
 	int		id;
 }	t_token;
 
+typedef struct s_storage{
+	t_env_list	*list_var;
+	size_t		*j;
+}	t_storage;
+
 t_cmd	*parsing(char *line, t_env_list *list_var);
 char	*strtok_unquote(char *str, const char *delim);
 void	free_cmd(t_cmd *cmd);
@@ -45,10 +50,10 @@ int		simple_quote_check(char *s, char *str, size_t *j, size_t *i);
 void	get_dollar_value(char *s, size_t *count, size_t *i,
 			t_env_list *list_var);
 void	cpy_envp_val(char **s, t_env_list *list_var, size_t *j);
-void	check_envp_val(char **s, size_t *j, t_env_list *list_var);
+void	check_envp_val(char **s, t_storage tmp, char **begin);
 int		quote_offset_and_check(int k, size_t *j, size_t *i, char *s);
 int		double_quote_check(char **s,
-			size_t *j, t_env_list *list_var, char *str);
+			t_storage tmp, char *str, char **begin);
 void	iter_in_space(char *s, size_t *j);
 void	cpy_byte_at_index_to_str(char *str, char *s, size_t *i, size_t *j);
 void	get_dollar_value(char *s,

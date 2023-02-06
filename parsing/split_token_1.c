@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 11:24:16 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/05 19:02:16 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:34:30 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,13 @@ void	cpy_envp_val(char **s, t_env_list *list_var, size_t *j)
 	free(tmp_str);
 }
 
-void	check_envp_val(char **s, size_t *j, t_env_list *list_var)
+void	check_envp_val(char **s, t_storage tmp, char **begin)
 {
-	if ((*s)[*j] == '$' && (*s)[*j + 1] && (*s)[*j + 1] != ' ')
-		cpy_envp_val(s, list_var, j);
+	if ((*s)[*tmp.j] == '$' && (*s)[*tmp.j + 1] && (*s)[*tmp.j + 1] != ' ')
+		cpy_envp_val(s, tmp.list_var, tmp.j);
+	if (begin && *s != *begin)
+	{
+		free(*begin);
+		*begin = *s;
+	}
 }
