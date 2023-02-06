@@ -5,13 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/06 11:19:11 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 11:19:12 by ulayus           ###   ########.fr       */
+/*   Created: 2023/01/25 17:02:09 by adamiens          #+#    #+#             */
+/*   Updated: 2023/02/06 15:32:25 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
+<<<<<<< HEAD
 void	free_list_var(t_env_list **list_var, char **envp)
 {
 	t_env_list	*head;
@@ -74,6 +75,8 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 	exit(exit_code);
 }
 
+=======
+>>>>>>> a2ea0fa7a8073f3d0fd852cd292ccc395bee7ea1
 void	heredoc_offset(t_cmd *cmd)
 {
 	t_cmd	*cpy;
@@ -121,10 +124,19 @@ void	redirection_offset(t_cmd **cmd)
 	}
 }
 
-void	close_pipe(int tab_pipe[2][2])
+int	verif_args(t_cmd *cmd, int check)
 {
-	close(tab_pipe[1][1]);
-	close(tab_pipe[1][0]);
-	close(tab_pipe[0][1]);
-	close(tab_pipe[0][0]);
+	if (check == 1 && cmd->cmd && ft_strlen(cmd->cmd[0]) == 0)
+	{
+		ft_putstr_fd("🤓: Wrong arguments\n", 2);
+		g_sh_state.exit_code = 127;
+		return (1);
+	}
+	if (check == 2 && cmd->cmd[0] == NULL)
+	{
+		ft_putstr_fd("🤓: command not found\n", 2);
+		g_sh_state.exit_code = 127;
+		return (1);
+	}
+	return (0);
 }

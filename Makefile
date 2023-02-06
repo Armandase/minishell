@@ -15,6 +15,7 @@ SRCS		= main.c\
 			  execution/exec_utils.c execution/signals_handlers.c\
 			  execution/exit.c execution/heredoc.c\
 			  execution/builtins_execution.c execution/fd_manager.c\
+			  execution/heredoc_utils.c execution/open_close_utils.c \
 
 SRCS_B		= bonus/main.c\
 			  bonus/builtins/env.c bonus/builtins/pwd.c\

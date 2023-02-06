@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/06 11:19:21 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 11:19:22 by ulayus           ###   ########.fr       */
+/*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
+/*   Updated: 2023/02/06 15:32:08 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	tab_pid_len(t_cmd	*cmd)
 	return (ret);
 }
 
+<<<<<<< HEAD
 void	check_nb_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
 {
 	t_cmd	*cpy;
@@ -139,6 +140,8 @@ void	close_heredoc(void)
 	}
 }
 
+=======
+>>>>>>> a2ea0fa7a8073f3d0fd852cd292ccc395bee7ea1
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 {
 	t_exec	exec;
