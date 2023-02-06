@@ -6,36 +6,29 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:58:10 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 09:58:11 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 15:08:46 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/********************************************************/
-/*	Create a node for store a token value				*/
-/*******************************************************/
-
 #include "parsing.h"
-#include <stdlib.h>
 
-void	begin_offset(t_cmd **cmd, char *line)
+void	begin_offset(t_cmd **cmd, char **line)
 {
 	*cmd = list_new(NULL, NULL);
-	if (line[0] && line[0] == '<' && line[1] && line[1] == '<')
+	if (*line[0] && *line[0] == '<' && *line[1] && *line[1] == '<')
 		(*cmd)->token = HEREDOC;
-	else if (line[0] && line[0] == '>' && line[1] && line[1] == '>')
+	else if (*line[0] && *line[0] == '>' && *line[1] && *line[1] == '>')
 		(*cmd)->token = APPEND;
-	else if (line[0] && line[0] == '>')
+	else if (*line[0] && *line[0] == '>')
 		(*cmd)->token = OUT;
-	else if (line[0] && line[0] == '<')
+	else if (*line[0] && *line[0] == '<')
 		(*cmd)->token = IN;
+	if (*line[0] && *line[1] && ((*line[0] == '<' && *line[1] == '<')
+			|| (*line[0] == '>' && *line[1] == '>')))
+		(*line) += 2;
+	else if (*line[0] && (*line[0] == '>' || *line[0] == '<'))
+		(*line)++;
 }
-
-/********************************************************/
-/*À appliquer sur toutes les lignes:					*/
-/*	separe la ligne par delimiteurs (>, >>, |, <<, <)	*/
-/*	devient des tokens, stocker dans tab de cmd			*/
-/*	assigne le delim qui a cut le token a cmd id		*/
-/********************************************************/
 
 void	create_node(t_cmd **cmd, t_token *token, t_env_list *list_var)
 {
@@ -116,12 +109,7 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 	cmd = NULL;
 	if (line[0] && (line[0] == '<' || line[0] == '>'))
 	{
-		begin_offset(&cmd, line);
-		if (line[0] && line[1] && ((line[0] == '<' && line[1] == '<')
-				|| (line[0] == '>' && line[1] == '>')))
-			line += 2;
-		else if (line[0] && (line[0] == '>' || line[0] == '<'))
-			line++;
+		begin_offset(&cmd, &line);
 		token = str_get_token(line, ">|<");
 		copy_special_command(&cmd, token, list_var);
 	}
@@ -137,11 +125,6 @@ t_cmd	*get_cmd(char *line, t_env_list *list_var)
 		cmd = cmd->prev;
 	return (cmd);
 }
-
-/********************************************************/
-/*	Check if there are some delim						*/
-/*	at the beginning or the at end of the line			*/
-/********************************************************/
 
 int	skip_quote(char *str, int *i, char c)
 {
