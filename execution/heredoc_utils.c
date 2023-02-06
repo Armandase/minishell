@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 12:36:51 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 12:37:29 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:17:46 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	check_nb_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
 	}
 }
 
-void	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
+bool	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
 {
 	t_cmd	*cpy;
 	int		i;
@@ -43,22 +43,22 @@ void	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
 	cpy = cmd;
 	check_nb_heredoc(cmd, list_var, envp);
 	while (i < 16)
-	{
-		g_sh_state.pipe_heredoc[i] = 1;
-		i++;
-	}
+		g_sh_state.pipe_heredoc[i++] = 1;
 	i = 0;
 	while (cpy->next)
 	{
 		if (cpy->token == HEREDOC && cpy->next)
 		{
 			cpy = cpy->next;
+			g_sh_state.state = HEREDOC;
 			g_sh_state.pipe_heredoc[i] = heredoc(cpy);
-			i++;
+			if (g_sh_state.pipe_heredoc[i++] == -2)
+				return (false);
 		}
 		else
 			cpy = cpy->next;
 	}
+	return (true);
 }
 
 void	close_heredoc(void)
@@ -69,7 +69,11 @@ void	close_heredoc(void)
 	while (i < 16)
 	{
 		if (g_sh_state.pipe_heredoc[i] != 0 && g_sh_state.pipe_heredoc[i] != 1)
+		{
+			if (g_sh_state.pipe_heredoc[i] == -2)
+				break ;
 			close(g_sh_state.pipe_heredoc[i]);
+		}
 		i++;
 	}
 }

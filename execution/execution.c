@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 12:37:46 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:12:08 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,30 @@ int	tab_pid_len(t_cmd	*cmd)
 	return (ret);
 }
 
+void	free_execution(t_cmd *cmd, t_exec *exec, int tab_pipe[2][2], int flag)
+{
+	if (flag != NO_EXEC)
+	{
+		close_pipe(tab_pipe);
+		waiting_end(exec);
+		while (cmd->prev != NULL)
+			cmd = cmd->prev;
+		free(exec->tab_pid);
+	}
+	free_struct(cmd);
+	close_heredoc();
+}
+
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 {
 	t_exec	exec;
 	int		tab_pipe[2][2];
 
-	get_heredoc(cmd, list_var, envp);
+	if (get_heredoc(cmd, list_var, envp) == false)
+	{
+		free_execution(cmd, &exec, tab_pipe, NO_EXEC);
+		return ;
+	}
 	pipe(tab_pipe[0]);
 	pipe(tab_pipe[1]);
 	exec.nb_fork = 0;
@@ -95,11 +113,5 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 		exec_cmd(&exec, cmd, tab_pipe);
 		redirection_offset(&cmd);
 	}
-	close_pipe(tab_pipe);
-	waiting_end(&exec);
-	while (cmd->prev != NULL)
-		cmd = cmd->prev;
-	free_struct(cmd);
-	free(exec.tab_pid);
-	close_heredoc();
+	free_execution(cmd, &exec, tab_pipe, DEFAULT);
 }
