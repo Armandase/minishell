@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/03 13:17:26 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 10:39:53 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	waiting_end(t_exec	*exec)
 			exit_code = WTERMSIG(wstatus);
 		i++;
 	}
-	if (exit_code != -1)
+	if (exit_code != -1 && g_sh_state.exit_code != 130)
 		g_sh_state.exit_code = exit_code;
 }
 

@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:31:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 10:33:08 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 10:42:42 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	start_shell(char *line, t_cmd *cmd, t_env_list *list_var, char **envp)
 		if (cmd != NULL)
 		{
 			signal(SIGINT, handle_sigint_exec);
+			signal(SIGQUIT, handle_sigquit);
 			execution(cmd, envp, &list_var);
 			g_sh_state.state = PROMPT;
 		}

@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:02:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/03 13:39:10 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 10:38:04 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	free_stack(t_cmd *cmd)
 
 void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 {
-	g_sh_state.exit_code = exit_code;
+	if (g_sh_state.exit_code != 130)
+		g_sh_state.exit_code = exit_code;
 	if (exit_code)
 		perror("Error");
 	free_stack(cmd);

@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 10:35:05 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 10:48:39 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "execution.h"
@@ -53,4 +53,13 @@ void	handle_sigint_exec(int signum)
 		rl_on_new_line();
 	}
 	g_sh_state.exit_code = 130;
+}
+
+void	handle_sigquit(int signum)
+{
+	(void)signum;
+	if (g_sh_state.state != HEREDOC)
+		ft_printf("Quit (core dumped)\n");
+	g_sh_state.check_signal = true;
+	g_sh_state.exit_code = 131;
 }
