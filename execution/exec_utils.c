@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/06 10:49:20 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 10:49:21 by ulayus           ###   ########.fr       */
+/*   Created: 2023/02/06 11:19:11 by ulayus            #+#    #+#             */
+/*   Updated: 2023/02/06 11:19:12 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	heredoc_offset(t_cmd *cmd)
 		{
 			while (g_sh_state.pipe_heredoc[i] == 0)
 				i++;
+			close(g_sh_state.pipe_heredoc[i]);
 			g_sh_state.pipe_heredoc[i] = 0;
 		}
 		cpy = cpy->next;
@@ -101,11 +102,14 @@ void	redirection_offset(t_cmd **cmd)
 		*cmd = (*cmd)->next;
 	if ((*cmd)->token == FILES && (*cmd)->next)
 	{
+		if ((*cmd)->prev)
+			heredoc_offset((*cmd)->prev);
 		*cmd = (*cmd)->next;
 		if ((*cmd)->next)
 			*cmd = (*cmd)->next;
 	}
-	heredoc_offset(*cmd);
+	else
+		heredoc_offset((*cmd)->prev);
 	if (*cmd)
 	{
 		while ((*cmd)->next)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/06 11:19:21 by ulayus            #+#    #+#             */
+/*   Updated: 2023/02/06 11:19:22 by ulayus           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 void	waiting_end(t_exec	*exec)
@@ -114,6 +126,19 @@ void	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
 	}
 }
 
+void	close_heredoc(void)
+{
+	int	i;
+
+	i = 0;
+	while (i < 16)
+	{
+		if (g_sh_state.pipe_heredoc[i] != 0 && g_sh_state.pipe_heredoc[i] != 1)
+			close(g_sh_state.pipe_heredoc[i]);
+		i++;
+	}
+}
+
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 {
 	t_exec	exec;
@@ -139,4 +164,5 @@ void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 		cmd = cmd->prev;
 	free_struct(cmd);
 	free(exec.tab_pid);
+	close_heredoc();
 }
