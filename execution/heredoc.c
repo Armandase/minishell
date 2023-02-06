@@ -6,6 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:53:19 by adamiens          #+#    #+#             */
+/*   Updated: 2023/02/06 10:40:28 by adamiens         ###   ########.fr       */
 /*   Updated: 2023/02/06 10:34:13 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -70,7 +71,7 @@ int	heredoc(t_cmd *cmd)
 	buf = get_next_line(0);
 	if (buf == NULL)
 	{
-		ft_putstr_fd("warning: here-document stopped by end-of-file", 2);
+		ft_putstr_fd("warning: here-document stopped by end-of-file\n", 2);
 		ft_putstr_fd("\n", fd_buf[1]);
 		close (fd_buf[1]);
 		return (fd_buf[0]);

@@ -6,6 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:23 by adamiens          #+#    #+#             */
+/*   Updated: 2023/02/06 10:41:55 by adamiens         ###   ########.fr       */
 /*   Updated: 2023/02/05 18:56:31 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -40,5 +41,6 @@ void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code);
 void	redirection_offset(t_cmd **cmd);
 int		heredoc(t_cmd *cmd);
 void	open_file(t_exec *exec, t_cmd *cmd, int check, int pipe_tab[2][2]);
+void	free_list_var(t_env_list **list_var, char **envp);
 
 #endif

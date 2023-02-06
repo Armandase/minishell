@@ -6,6 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:02:56 by adamiens          #+#    #+#             */
+/*   Updated: 2023/02/06 10:40:04 by adamiens         ###   ########.fr       */
 /*   Updated: 2023/02/06 10:35:37 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -29,6 +30,24 @@ void	fail_on_open(t_exec *exec, t_cmd *cmd, int pipe_tab[2][2])
 	exec_free(exec, cmd, 1);
 }
 
+void	get_right_fd(t_exec	*exec)
+{
+	int	i;
+
+	i = 0;
+	while (i < 16)
+	{
+		if (g_sh_state.pipe_heredoc[i] != 0
+			&& g_sh_state.pipe_heredoc[i] != 1)
+		{
+			exec->fd_in = g_sh_state.pipe_heredoc[i];
+			g_sh_state.pipe_heredoc[i] = 0;
+			break ;
+		}
+		i++;
+	}
+}
+
 int	open_input(t_exec *exec, t_cmd **cpy, int check)
 {
 	if ((*cpy)->token == IN)
@@ -47,8 +66,7 @@ int	open_input(t_exec *exec, t_cmd **cpy, int check)
 		*cpy = (*cpy)->next;
 		if (!*cpy)
 			return (1);
-		g_sh_state.state = HEREDOC;
-		exec->fd_in = heredoc(*cpy);
+		get_right_fd(exec);
 		if (check != 1 && exec->fd_in > 0)
 			dup2(exec->fd_in, 0);
 		if ((check == 1 && exec->fd_in > 0)
