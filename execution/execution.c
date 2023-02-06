@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/06 10:49:33 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 10:49:34 by ulayus           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "execution.h"
 
 void	waiting_end(t_exec	*exec)
@@ -116,6 +104,7 @@ void	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
 	{
 		if (cpy->token == HEREDOC && cpy->next)
 		{
+			g_sh_state.state = HEREDOC;
 			cpy = cpy->next;
 			g_sh_state.pipe_heredoc[i] = heredoc(cpy);
 			i++;

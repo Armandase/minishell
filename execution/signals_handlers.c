@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 10:48:39 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 11:16:32 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "execution.h"
@@ -43,9 +43,17 @@ void	handle_sigint(int signum)
 
 void	handle_sigint_exec(int signum)
 {
+	int	fd;
+
 	(void)signum;
-	if (g_sh_state.state == HERE_DOC)
+	if (g_sh_state.state == HEREDOC)
+	{
+		fd = dup(0);
+		close(0);
+		dup2(fd, 0);
+		close(fd);
 		g_sh_state.check_signal = true;
+	}
 	else
 	{
 		rl_replace_line("", 0);
