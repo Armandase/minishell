@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:13:43 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/29 17:06:32 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 09:54:05 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_sh_state
 	int		state;
 	bool	check_signal;
 	int		exit_code;
+	int		pipe_heredoc[16];
 }			t_sh_state;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:09 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/03 13:17:26 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 10:08:45 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,69 @@ int	tab_pid_len(t_cmd	*cmd)
 	return (ret);
 }
 
+void	check_nb_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
+{
+	t_cmd	*cpy;
+	int		i;
+
+	i = 0;
+	cpy = cmd;
+	while (cpy->next)
+	{
+		if (cpy->token == HEREDOC)
+			i++;
+		cpy = cpy->next;
+	}
+	if (i > 16)
+	{
+		ft_putstr_fd("Maximum here-document count exceeded.\n", 2);
+		free_struct(cmd);
+		free_list_var(list_var, envp);
+		exit(2);
+	}
+}
+
+void	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp)
+{
+	t_cmd	*cpy;
+	int		i;
+
+	i = 0;
+	cpy = cmd;
+	check_nb_heredoc(cmd, list_var, envp);
+	while (i < 16)
+	{
+		g_sh_state.pipe_heredoc[i] = 1;
+		i++;
+	}
+	i = 0;
+	while (cpy->next)
+	{
+		if (cpy->token == HEREDOC && cpy->next)
+		{
+			cpy = cpy->next;
+			g_sh_state.pipe_heredoc[i] = heredoc(cpy);
+			i++;
+		}
+		else
+			cpy = cpy->next;
+	}
+}
+
 void	execution(t_cmd *cmd, char **envp, t_env_list **list_var)
 {
 	t_exec	exec;
 	int		tab_pipe[2][2];
 
+	get_heredoc(cmd, list_var, envp);
 	pipe(tab_pipe[0]);
 	pipe(tab_pipe[1]);
 	exec.nb_fork = 0;
-	exec.tab_pid = ft_calloc(sizeof(int), tab_pid_len(cmd));
 	exec.envp = envp;
 	exec.list_var = list_var;
 	exec.fd_out = -2;
 	exec.fd_in = -2;
+	exec.tab_pid = ft_calloc(sizeof(int), tab_pid_len(cmd));
 	while (cmd->next != NULL)
 	{
 		exec_cmd(&exec, cmd, tab_pipe);
