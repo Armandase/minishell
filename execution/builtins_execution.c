@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:57 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/31 15:50:49 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:51:20 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,26 @@ void	builtins_selection(t_cmd *cmd, t_exec *exec, int tab_pipe[2][2])
 		else
 			cmd->token = builtins_without_redirect(cmd, exec, tab_pipe);
 	}
+}
+
+void	exec_builtins(t_cmd *cmd, int *ret, int tab_pipe[2][2], t_exec *exec)
+{
+	if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "echo")))
+		*ret = main_echo(cmd->cmd);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "pwd")))
+		*ret = main_pwd();
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "export")))
+		*ret = main_export(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "unset")))
+		*ret = main_unset(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "env")))
+		*ret = main_env(cmd->cmd, *exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "cd")))
+		*ret = main_cd(cmd->cmd, exec->list_var);
+	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "exit")))
+	{
+		close_pipe(tab_pipe);
+		*ret = main_exit(cmd, exec);
+	}
+	close_pipe(tab_pipe);
 }

@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:23 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 10:41:55 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:52:56 by adamiens         ###   ########.fr       */
 /*   Updated: 2023/02/05 18:56:31 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -37,10 +37,17 @@ void	handle_sigquit(int signum);
 void	create_check_pipe(void);
 void	open_pipe(int tab_pipe[2][2], int i);
 void	close_pipe(int tab_pipe[2][2]);
+void	fail_on_open(t_exec *exec, t_cmd *cmd, int pipe_tab[2][2]);
 void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code);
 void	redirection_offset(t_cmd **cmd);
 int		heredoc(t_cmd *cmd);
 void	open_file(t_exec *exec, t_cmd *cmd, int check, int pipe_tab[2][2]);
 void	free_list_var(t_env_list **list_var, char **envp);
+void	free_stack(t_cmd *cmd);
+void	get_heredoc(t_cmd *cmd, t_env_list **list_var, char **envp);
+void	free_struct(t_cmd *cmd);
+void	close_heredoc(void);
+void	exec_builtins(t_cmd *cmd, int *ret, int tab_pipe[2][2], t_exec *exec);
+int		verif_args(t_cmd *cmd, int check);
 
 #endif

@@ -6,23 +6,34 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:17:48 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/05 19:02:38 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 13:56:24 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
+void	special_dup2(t_exec *exec, t_cmd **cmd, int tab_pipe[2][2])
+{
+	if ((*cmd)->prev
+		&& ((*cmd)->prev->token == FILES || (*cmd)->prev->token == IN
+			|| (*cmd)->prev->token == HEREDOC || (*cmd)->prev->token == OUT
+			|| (*cmd)->prev->token == APPEND))
+	{
+		(*cmd) = (*cmd)->prev;
+		while ((*cmd)->prev && ((*cmd)->token == FILES || (*cmd)->token == IN
+				|| (*cmd)->token == HEREDOC || (*cmd)->token == OUT
+				|| (*cmd)->token == APPEND))
+			(*cmd) = (*cmd)->prev;
+		open_file(exec, (*cmd), 0, tab_pipe);
+		while ((*cmd)->next
+			&& (*cmd)->token != CMD && (*cmd)->token != BUILTINS)
+			(*cmd) = (*cmd)->next;
+	}
+}
+
 void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 {
-	if (cmd->prev && (cmd->prev->token == FILES || cmd->prev->token == IN || cmd->prev->token == HEREDOC || cmd->prev->token == OUT || cmd->prev->token == APPEND))
-	{
-		cmd = cmd->prev;
-		while (cmd->prev && (cmd->token == FILES || cmd->token == IN || cmd->token == HEREDOC || cmd->token == OUT || cmd->token == APPEND))
-			cmd = cmd->prev;
-		open_file(exec, cmd, 0, tab_pipe);
-		while (cmd->next && cmd->token != CMD && cmd->token != BUILTINS)
-			cmd = cmd->next;
-	}
+	special_dup2(exec, &cmd, tab_pipe);
 	if (cmd->next && (cmd->token == FILES || cmd->token == CMD
 			|| cmd->token == 0 || cmd->token == BUILTINS))
 		cmd = cmd->next;
@@ -46,28 +57,6 @@ void	dup2_manager(t_exec *exec, int tab_pipe[2][2], t_cmd *cmd)
 	}
 	if (cmd && cmd->token == PIPE)
 		dup2(tab_pipe[exec->nb_fork % 2][1], 1);
-}
-
-void	exec_builtins(t_cmd *cmd, int *ret, int tab_pipe[2][2], t_exec *exec)
-{
-	if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "echo")))
-		*ret = main_echo(cmd->cmd);
-	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "pwd")))
-		*ret = main_pwd();
-	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "export")))
-		*ret = main_export(cmd->cmd, exec->list_var);
-	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "unset")))
-		*ret = main_unset(cmd->cmd, exec->list_var);
-	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "env")))
-		*ret = main_env(cmd->cmd, *exec->list_var);
-	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "cd")))
-		*ret = main_cd(cmd->cmd, exec->list_var);
-	else if (cmd->cmd && cmd->cmd[0] && !(ft_strcmp(cmd->cmd[0], "exit")))
-	{
-		close_pipe(tab_pipe);
-		*ret = main_exit(cmd, exec);
-	}
-	close_pipe(tab_pipe);
 }
 
 void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
@@ -117,24 +106,16 @@ void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 			|| ft_strcmp(cmd->cmd[0], "cd") == 0
 			|| ft_strcmp(cmd->cmd[0], "exit") == 0))
 		builtins_selection(cmd, exec, tab_pipe);
-	if (cmd->cmd &&ft_strlen(cmd->cmd[0]) == 0)
-	{
-		ft_putstr_fd("🤓: Wrong arguments\n", 2);
-		g_sh_state.exit_code = 127;
+	if (verif_args(cmd, 1))
 		return ;
-	}
 	if (cmd->cmd && cmd->token == CMD && cmd->token != BUILTINS
 		&& access(cmd->cmd[0], X_OK) != 0)
 	{
 		if (cmd->cmd[0][0] == '\0')
 			return ;
 		get_cmd_path(cmd->cmd, exec->envp);
-		if (cmd->cmd[0] == NULL)
-		{
-			ft_putstr_fd("🤓: command not found\n", 2);
-			g_sh_state.exit_code = 127;
+		if (verif_args(cmd, 2))
 			return ;
-		}
 	}
 	apply_execution(exec, cmd, tab_pipe);
 	exec->nb_fork++;
