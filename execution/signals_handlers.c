@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 11:16:32 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 15:46:27 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "execution.h"
@@ -43,15 +43,10 @@ void	handle_sigint(int signum)
 
 void	handle_sigint_exec(int signum)
 {
-	int	fd;
-
 	(void)signum;
 	if (g_sh_state.state == HEREDOC)
 	{
-		fd = dup(0);
 		close(0);
-		dup2(fd, 0);
-		close(fd);
 		g_sh_state.check_signal = true;
 	}
 	else
@@ -66,8 +61,12 @@ void	handle_sigint_exec(int signum)
 void	handle_sigquit(int signum)
 {
 	(void)signum;
-	if (g_sh_state.state != HEREDOC)
+	if (g_sh_state.state == HEREDOC)
+	{
+		close(0);
+		g_sh_state.check_signal = true;
+	}
+	else
 		ft_printf("Quit (core dumped)\n");
-	g_sh_state.check_signal = true;
 	g_sh_state.exit_code = 131;
 }
