@@ -6,7 +6,11 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:53:19 by adamiens          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/02/06 10:04:51 by adamiens         ###   ########.fr       */
+=======
+/*   Updated: 2023/02/06 10:34:13 by ulayus           ###   ########.fr       */
+>>>>>>> 8fb5a898797932dc24965bc6dd54b96be7c3e035
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +68,6 @@ int	heredoc(t_cmd *cmd)
 	char	*str;
 	int		fd_buf[2];
 
-	g_sh_state.state = HERE_DOC;
-	signal(SIGQUIT, SIG_IGN);
 	if (pipe(fd_buf) == -1)
 		perror("Error");
 	ft_printf("> ");

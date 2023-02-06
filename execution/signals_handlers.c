@@ -6,10 +6,9 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:58:22 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/02 17:48:46 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/06 10:35:05 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "execution.h"
 
 char	*create_prompt(void)
@@ -54,11 +53,4 @@ void	handle_sigint_exec(int signum)
 		rl_on_new_line();
 	}
 	g_sh_state.exit_code = 130;
-}
-
-void	handle_sigquit(int signum)
-{
-	(void)signum;
-	ft_printf("Quit (core dumped)\n");
-	g_sh_state.exit_code = 131;
 }

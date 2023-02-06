@@ -6,7 +6,11 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:23 by adamiens          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/02/06 09:34:07 by adamiens         ###   ########.fr       */
+=======
+/*   Updated: 2023/02/05 18:56:31 by ulayus           ###   ########.fr       */
+>>>>>>> 8fb5a898797932dc24965bc6dd54b96be7c3e035
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +37,7 @@ char	*create_prompt(void);
 void	handle_sigint(int signum);
 void	handle_sigint_exec(int signum);
 void	handle_sigquit(int signum);
+void	create_check_pipe(void);
 void	open_pipe(int tab_pipe[2][2], int i);
 void	close_pipe(int tab_pipe[2][2]);
 void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code);
