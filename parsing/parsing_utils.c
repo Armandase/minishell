@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:58:10 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 15:08:46 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:15:21 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 void	begin_offset(t_cmd **cmd, char **line)
 {
 	*cmd = list_new(NULL, NULL);
-	if (*line[0] && *line[0] == '<' && *line[1] && *line[1] == '<')
+	if ((*line)[0] && (*line)[0] == '<' && (*line)[1] && (*line)[1] == '<')
 		(*cmd)->token = HEREDOC;
-	else if (*line[0] && *line[0] == '>' && *line[1] && *line[1] == '>')
+	else if ((*line)[0] && (*line)[0] == '>' && (*line)[1] && (*line)[1] == '>')
 		(*cmd)->token = APPEND;
-	else if (*line[0] && *line[0] == '>')
+	else if ((*line)[0] && (*line)[0] == '>')
 		(*cmd)->token = OUT;
-	else if (*line[0] && *line[0] == '<')
+	else if ((*line)[0] && (*line)[0] == '<')
 		(*cmd)->token = IN;
-	if (*line[0] && *line[1] && ((*line[0] == '<' && *line[1] == '<')
-			|| (*line[0] == '>' && *line[1] == '>')))
+	if ((*line)[0] && (*line)[1] && (((*line)[0] == '<' && (*line)[1] == '<')
+			|| ((*line)[0] == '>' && (*line)[1] == '>')))
 		(*line) += 2;
-	else if (*line[0] && (*line[0] == '>' || *line[0] == '<'))
+	else if ((*line)[0] && ((*line)[0] == '>' || (*line)[0] == '<'))
 		(*line)++;
 }
 
