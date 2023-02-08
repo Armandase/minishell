@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:02:56 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 12:34:21 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/08 17:00:57 by adamiens         ###   ########.fr       */
 /*   Updated: 2023/02/06 10:35:37 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -93,13 +93,15 @@ void	verif_and_close_fd(t_exec *exec, t_cmd *cpy, int *fail)
 {
 	if (exec->fd_in == -1 || exec->fd_out == -1)
 		*fail = 1;
-	else if (fail == 0 && exec->fd_in != -2
+	if (*fail == 0 && exec->fd_in != -2
 		&& (cpy->next->token == IN
 			|| cpy->next->token == HEREDOC
 			|| (cpy->prev && cpy->prev->token == IN)))
 		close(exec->fd_in);
-	else if (cpy->next && fail == 0 && exec->fd_out != -2
-		&& (cpy->next->token == OUT || cpy->next->token == APPEND))
+	if (cpy->next && *fail == 0 && exec->fd_out != -2
+		&& (cpy->next->token == OUT
+			|| cpy->next->token == APPEND
+			|| cpy->next->token == PIPE))
 		close(exec->fd_out);
 }
 
