@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:17:48 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/11 13:24:43 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 14:52:43 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	inside_fork(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 
 	ret = 0;
 	dup2_manager(exec, tab_pipe, cmd);
-	while (cmd->next && cmd->token != CMD && cmd->token != BUILTINS)
+	while (cmd->next && cmd->token != CMD
+		&& cmd->token != BUILTINS && cmd->token != PIPE)
 		cmd = cmd->next;
 	if (cmd->token == CMD)
 	{
@@ -95,7 +96,8 @@ void	apply_execution(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 
 void	exec_cmd(t_exec *exec, t_cmd *cmd, int tab_pipe[2][2])
 {
-	while (cmd->next && cmd->token != CMD && cmd->token != BUILTINS)
+	while (cmd->next && cmd->token != CMD
+		&& cmd->token != BUILTINS && cmd->token != PIPE)
 		cmd = cmd->next;
 	if (cmd->cmd != NULL && cmd->token == CMD
 		&& (ft_strcmp(cmd->cmd[0], "echo") == 0

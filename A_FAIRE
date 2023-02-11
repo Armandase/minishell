@@ -1,6 +1,4 @@
-unset PWD && OLDPWD into cd 
 verif strtrim
 << "<<" | cat => boucle infinie
-exit code cd dskljhgj ==> 0 alors que ca doit etre 1
 exit code sur commande bloquante
 
