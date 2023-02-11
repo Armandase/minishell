@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:17:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/02 14:23:58 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/11 13:43:04 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,28 @@
 void	search_replace_pwd(char *pwd, int flag, t_env_list **list_var)
 {
 	t_env_list	*tmp;
+	bool		 replaced;
 
+	replaced = false;
 	tmp = *list_var;
 	while (tmp->next)
 	{
-		if (flag == PWD)
+		if (flag == PWD && ft_strcmp("PWD", tmp->name) == false)
 		{
-			if (ft_strcmp("PWD", tmp->name) == false)
-			{
-				free(tmp->value);
-				tmp->value = pwd;
-			}
+			free(tmp->value);
+			tmp->value = pwd;
+			replaced = true;
 		}
-		else if (flag == OLDPWD)
+		else if (flag == OLDPWD && ft_strcmp("OLDPWD", tmp->name) == false)
 		{
-			if (ft_strcmp("OLDPWD", tmp->name) == false)
-			{
-				free(tmp->value);
-				tmp->value = pwd;
-			}
+			free(tmp->value);
+			tmp->value = pwd;
+			replaced = true;
 		}
 		tmp = tmp->next;
 	}
+	if (replaced == false)
+		free(pwd);
 }
 
 char	*get_current_pwd(t_env_list **list_var)
