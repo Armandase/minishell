@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:31:44 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 10:42:42 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/11 15:08:49 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
+		g_sh_state.check_signal = false;
 		g_sh_state.state = PROMPT;
 		prompt = create_prompt();
 		line = readline(prompt);

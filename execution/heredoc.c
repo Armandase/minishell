@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 16:12:59 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 16:18:23 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/11 15:07:22 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static int	restore_stdin(int fd, int fd_buf[2])
 	close(fd_buf[0]);
 	close(fd);
 	ft_printf("\n");
-	g_sh_state.check_signal = false;
 	return (-2);
 }
 
