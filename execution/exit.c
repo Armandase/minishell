@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:53:35 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 13:50:30 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 13:57:37 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,12 @@ void	free_stack(t_cmd *cmd)
 
 void	exec_free(t_exec *exec, t_cmd *cmd, int exit_code)
 {
-	g_sh_state.exit_code = exit_code;
-	if (exit_code)
+	if (exit_code && g_sh_state.exit_code == 0)
 		perror("Error");
+	if (cmd->prev && cmd->prev->token == UN_FORK)
+		exit_code = g_sh_state.exit_code;
+	else
+		g_sh_state.exit_code = exit_code;
 	free_stack(cmd);
 	if (exec && exec->tab_pid)
 		free(exec->tab_pid);

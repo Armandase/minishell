@@ -1,12 +1,6 @@
-pas cool :
-{
-	<< ok cat << ls << cmoi -e | cat
-		fonctionne mais pas -e sur le cat
-	exit a b quitte pas
-}
+unset PWD && OLDPWD into cd 
+verif strtrim
+<< "<<" | cat => boucle infinie
+exit code cd dskljhgj ==> 0 alors que ca doit etre 1
+exit code sur commande bloquante
 
-cmd blocante into CTRL_C ou CTRL_Backslash ne met pas a 130 (ex : wc)
-unset PWD into cd 
-Signaux here_doc (les 3)
-export "a"=            fdhfgjhfgj
-echo "$? $USER"

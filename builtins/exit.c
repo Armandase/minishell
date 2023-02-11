@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 19:50:04 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/11 13:17:14 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ int	main_exit(t_cmd *cmd, t_exec *exec)
 	const char	**value = (const char **)cmd->cmd;
 
 	exit_code = 0;
-	if (ft_strlen_2d(value) == 2)
+	if (ft_strlen_2d(value) == 1)
+		exit_code = g_sh_state.exit_code;
+	else if (ft_strlen_2d(value) == 2)
 	{
 		exit_code = ft_atoll(value[1]);
 		if (check_format(value[1]) == false)
@@ -83,8 +85,6 @@ int	main_exit(t_cmd *cmd, t_exec *exec)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	else
-		exit_code = g_sh_state.exit_code;
 	free_exec(exec);
 	free_cmd(cmd);
 	ft_printf("exit\n");
