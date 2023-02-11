@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/11 13:17:14 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 14:58:05 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,45 @@ static bool	check_format(const char *value)
 	return (true);
 }
 
+static int	check_multiple_args(const char **values, long long *exit_code)
+{
+	int	i;
+
+	i = 0;
+	while (values[i])
+	{
+		if (check_format(values[i]) == false)
+		{
+			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+			*exit_code = 2;
+			return (BREAK);
+		}
+		i++;
+	}
+	ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+	return (1);
+}
+
 int	main_exit(t_cmd *cmd, t_exec *exec)
 {
 	long long	exit_code;
-	const char	**value = (const char **)cmd->cmd;
+	const char	**values = (const char **)cmd->cmd;
 
 	exit_code = 0;
-	if (ft_strlen_2d(value) == 1)
+	if (ft_strlen_2d(values) == 1)
 		exit_code = g_sh_state.exit_code;
-	else if (ft_strlen_2d(value) == 2)
+	else if (ft_strlen_2d(values) == 2)
 	{
-		exit_code = ft_atoll(value[1]);
-		if (check_format(value[1]) == false)
+		exit_code = ft_atoll(values[1]);
+		if (check_format(values[1]) == false)
 		{
 			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 			exit_code = 2;
 		}
 	}
-	else if (ft_strlen_2d(value) > 2)
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (1);
-	}
+	else if (ft_strlen_2d(values) > 2)
+		if (check_multiple_args(values, &exit_code) != BREAK)
+			return (1);
 	free_exec(exec);
 	free_cmd(cmd);
 	ft_printf("exit\n");
