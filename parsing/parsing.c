@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:54:53 by ulayus            #+#    #+#             */
-/*   Updated: 2023/01/31 15:13:54 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/11 14:44:25 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ t_cmd	*parsing(char *line, t_env_list *list_var)
 	if (check_char(current_line))
 	{
 		ft_putstr_fd("syntax error near unexpected token\n", 2);
+		free(current_line);
 		return (NULL);
 	}
 	begin = get_cmd(current_line, list_var);
