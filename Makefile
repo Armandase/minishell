@@ -1,13 +1,12 @@
 NAME		= minishell
-BONUS		= minishell_bonus
 
 SRCS		= main.c\
 			  builtins/env.c builtins/pwd.c builtins/export.c builtins/var_env.c\
 			  builtins/unset.c builtins/utils.c builtins/print_args.c builtins/cd.c\
 			  builtins/echo.c builtins/exit.c builtins/export_utils.c\
 			  builtins/var_utils.c\
-			  parsing/parsing.c \
-			  parsing/parsing_utils.c parsing/split_token.c \
+			  parsing/parsing.c parsing/parsing_utils.c\
+			  parsing/parsing_special_utils.c parsing/split_token.c \
 			  parsing/str_get_token.c parsing/stack_func.c\
 			  parsing/quote_utils.c parsing/split_token_1.c\
 			  parsing/split_utils.c parsing/quote_in_split.c \
@@ -16,21 +15,6 @@ SRCS		= main.c\
 			  execution/exit.c execution/heredoc.c\
 			  execution/builtins_execution.c execution/fd_manager.c\
 			  execution/heredoc_utils.c execution/open_close_utils.c \
-
-SRCS_B		= bonus/main.c\
-			  bonus/builtins/env.c bonus/builtins/pwd.c\
-			  bonus/builtins/export.c bonus/builtins/var_env.c\
-			  bonus/builtins/unset.c bonus/builtins/utils.c\
-			  bonus/builtins/print_args.c bonus/builtins/cd.c\
-			  bonus/builtins/echo.c bonus/builtins/exit.c bonus/builtins/export_utils.c\
-			  bonus/builtins/var_utils.c\
-			  bonus/parsing/parsing.c\
-			  bonus/parsing/parsing_utils.c bonus/parsing/split_token.c \
-			  bonus/parsing/str_get_token.c bonus/parsing/stack_func.c\
-			  bonus/execution/exec_cmd.c bonus/execution/execution.c bonus/execution/find_path.c\
-			  bonus/execution/exec_utils.c bonus/execution/signals_handlers.c\
-			  bonus/execution/exit.c bonus/execution/heredoc.c\
-			  bonus/execution/builtins_execution.c bonus/execution/fd_manager.c\
 
 CC			= @clang
 LIBS        = -Llibft -lft -lreadline

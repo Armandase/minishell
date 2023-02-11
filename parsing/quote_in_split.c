@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:52:50 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 16:40:33 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 10:25:21 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	double_quote_check(char **s, t_storage tmp, char *str, char **begin)
 	int	i;
 
 	i = 0;
+	check_envp_val(s, tmp, begin);
 	if ((*s)[*tmp.j] == '\"')
 	{
 		(*tmp.j)++;

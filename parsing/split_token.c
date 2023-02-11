@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:59:48 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/06 16:32:52 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 10:33:09 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ static size_t	count_char(char *s, char c, size_t i, t_env_list *list_var)
 	return (count);
 }
 
+void	init_t_storage(t_storage *tmp,
+		t_env_list *list_var, size_t *j, size_t *i)
+{
+	*i = 0;
+	tmp->list_var = list_var;
+	tmp->j = j;
+}
+
 static char	*ft_strccpy(char *s, size_t *j, char *str, t_env_list *list_var)
 {
 	size_t		i;
@@ -74,11 +82,9 @@ static char	*ft_strccpy(char *s, size_t *j, char *str, t_env_list *list_var)
 	char		*begin;
 	t_storage	tmp;
 
-	i = 0;
 	iter_in_space(s, j);
 	begin = s;
-	tmp.list_var = list_var;
-	tmp.j = j;
+	init_t_storage(&tmp, list_var, j, &i);
 	while (s[*j])
 	{
 		k = 0;
@@ -87,9 +93,6 @@ static char	*ft_strccpy(char *s, size_t *j, char *str, t_env_list *list_var)
 		check_envp_val(&s, tmp, &begin);
 		if (simple_quote_check(s, str, j, &i))
 			break ;
-		if (!s[*j] || s[*j] == ' ')
-			break ;
-		check_envp_val(&s, tmp, &begin);
 		k = double_quote_check(&s, tmp, &str[i], &begin);
 		check_envp_val(&s, tmp, &begin);
 		if (quote_offset_and_check(k, j, &i, s))

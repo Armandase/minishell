@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:59:31 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 12:24:00 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 10:28:21 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,7 @@ int	simple_quote_check(char *s, char *str, size_t *j, size_t *i)
 			}
 		}
 	}
+	if (!s[*j] || s[*j] == ' ')
+		return (1);
 	return (0);
 }
