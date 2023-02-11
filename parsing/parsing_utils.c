@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:58:10 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 15:08:46 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 10:19:42 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 void	begin_offset(t_cmd **cmd, char **line)
 {
 	*cmd = list_new(NULL, NULL);
-	if (*line[0] && *line[0] == '<' && *line[1] && *line[1] == '<')
+	if ((*line)[0] && (*line)[0] == '<' && (*line)[1] && (*line)[1] == '<')
 		(*cmd)->token = HEREDOC;
-	else if (*line[0] && *line[0] == '>' && *line[1] && *line[1] == '>')
+	else if ((*line)[0] && (*line)[0] == '>' && (*line)[1] && (*line)[1] == '>')
 		(*cmd)->token = APPEND;
-	else if (*line[0] && *line[0] == '>')
+	else if ((*line)[0] && (*line)[0] == '>')
 		(*cmd)->token = OUT;
-	else if (*line[0] && *line[0] == '<')
+	else if ((*line)[0] && (*line)[0] == '<')
 		(*cmd)->token = IN;
-	if (*line[0] && *line[1] && ((*line[0] == '<' && *line[1] == '<')
-			|| (*line[0] == '>' && *line[1] == '>')))
+	if ((*line)[0] && (*line)[1] && (((*line)[0] == '<' && (*line)[1] == '<')
+			|| ((*line)[0] == '>' && (*line)[1] == '>')))
 		(*line) += 2;
-	else if (*line[0] && (*line[0] == '>' || *line[0] == '<'))
+	else if ((*line)[0] && ((*line)[0] == '>' || (*line)[0] == '<'))
 		(*line)++;
 }
 
@@ -50,55 +50,6 @@ void	create_node(t_cmd **cmd, t_token *token, t_env_list *list_var)
 		(*cmd)->token = token->id;
 	}
 	free(token);
-}
-
-char	**single_str_to_strs(char *str)
-{
-	char	**ret;
-
-	ret = malloc(sizeof(char *) * 2);
-	ret[0] = ft_strdup(str);
-	ret[1] = NULL;
-	return (ret);
-}
-
-char	**dup_strs_without_first(char **strs)
-{
-	int		i;
-	char	**ret;
-
-	i = 0;
-	while (strs[i])
-		i++;
-	ret = malloc(sizeof(char *) * i);
-	i = 1;
-	while (strs[i])
-	{
-		ret[i - 1] = ft_strdup(strs[i]);
-		i++;
-	}
-	ret[i - 1] = NULL;
-	return (ret);
-}
-
-void	copy_special_command(t_cmd **cmd, t_token *token, t_env_list *list_var)
-{
-	char	**strs;
-	int		i;
-
-	strs = split_token(&token, list_var);
-	i = 0;
-	(*cmd)->next = list_new(single_str_to_strs(strs[i]), (*cmd));
-	(*cmd) = (*cmd)->next;
-	(*cmd)->token = FILES;
-	i++;
-	if (strs[i])
-	{
-		(*cmd)->next = list_new(dup_strs_without_first(strs), *cmd);
-		(*cmd) = (*cmd)->next;
-		(*cmd)->token = CMD;
-	}
-	ft_free_strs(strs);
 }
 
 t_cmd	*get_cmd(char *line, t_env_list *list_var)

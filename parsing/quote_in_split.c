@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:52:50 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/05 18:34:31 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 10:25:21 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,30 @@ int	check_inside_quote_another_quote(char *s, size_t *j, char c)
 	return (0);
 }
 
-int	double_quote_check(char **s, size_t *j, t_env_list *list_var, char *str)
+int	double_quote_check(char **s, t_storage tmp, char *str, char **begin)
 {
 	int	i;
 
 	i = 0;
-	if ((*s)[*j] == '\"')
+	check_envp_val(s, tmp, begin);
+	if ((*s)[*tmp.j] == '\"')
 	{
-		(*j)++;
-		if (!(*s)[*j])
+		(*tmp.j)++;
+		if (!(*s)[*tmp.j])
 			return (-1);
-		if ((*s)[*j] == '$' && (*s)[*j + 1] && (*s)[*j + 1] != ' '
-			&& (*s)[*j + 1] != '\"')
-			cpy_envp_val(s, list_var, j);
-		while ((*s)[*j] && (*s)[*j] == '\"')
-			(*j)++;
-		while ((*s)[*j])
+		if ((*s)[*tmp.j] == '$' && (*s)[*tmp.j + 1] && (*s)[*tmp.j + 1] != ' '
+			&& (*s)[*tmp.j + 1] != '\"')
+			cpy_envp_val(s, tmp.list_var, tmp.j);
+		while ((*s)[*tmp.j] && (*s)[*tmp.j] == '\"')
+			(*tmp.j)++;
+		while ((*s)[*tmp.j])
 		{
-			str[i] = (*s)[*j];
+			str[i] = (*s)[*tmp.j];
 			i++;
-			(*j)++;
-			if (check_inside_quote_another_quote(*s, j, '\"'))
+			(*tmp.j)++;
+			if (check_inside_quote_another_quote(*s, tmp.j, '\"'))
 				break ;
-			check_envp_val(s, j, list_var);
+			check_envp_val(s, tmp, begin);
 		}
 	}
 	return (i);
