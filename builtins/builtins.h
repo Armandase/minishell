@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:18:07 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/11 14:57:37 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/11 15:20:26 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "../libft/libft.h"
 # include "../struct.h"
-# include <unistd.h>
 # define INVALID 1
 
 enum	e_cd_macros

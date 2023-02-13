@@ -6,12 +6,11 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 17:01:46 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/25 17:01:51 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/11 15:24:19 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-#include "../libft/libft.h"
 
 char	*ft_find_path(char **envp)
 {

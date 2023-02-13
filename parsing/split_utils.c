@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:56:21 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/05 18:16:53 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/13 09:51:41 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void	take_dollar_offset(char *str, size_t *i, size_t *count, int k)
 	free(str);
 }
 
+void	dollars_alone_in_the_dark(size_t *count, size_t	*i)
+{
+	*count += 1;
+	*i += 1;
+}
+
 void	get_dollar_value(char *s,
 	size_t *count, size_t *i, t_env_list *list_var)
 {
@@ -32,7 +38,7 @@ void	get_dollar_value(char *s,
 	char	*str;
 
 	k = 1;
-	var = NULL;
+	str = NULL;
 	if (!s[k] || s[k] == ' ' || s[k] == '\'' || s[k] == '\"')
 		return ;
 	while (s[k] && s[k] != ' ' && s[k] != '\'' && s[k] != '\"' && s[k] != '$')
@@ -47,6 +53,8 @@ void	get_dollar_value(char *s,
 	var[k - 1] = '\0';
 	if (var[0] == '?')
 		str = ft_itoa(g_sh_state.exit_code);
+	else if (!ft_strlen(var))
+		dollars_alone_in_the_dark(count, i);
 	else
 		str = search_send_var(var, &list_var);
 	take_dollar_offset(str, i, count, k);
@@ -62,9 +70,12 @@ void	iter_in_space(char *s, size_t *j)
 
 void	cpy_byte_at_index_to_str(char *str, char *s, size_t *i, size_t *j)
 {
-	str[*i] = s[*j];
-	(*i)++;
-	(*j)++;
+	if (s[*j] != '\'' && s[*j] != '\"')
+	{
+		str[*i] = s[*j];
+		(*i)++;
+		(*j)++;
+	}
 }
 
 void	copy_and_free_line(t_token **token, char *s)

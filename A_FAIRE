@@ -1,3 +1,0 @@
-verif strtrim
-<< "<<" | cat => boucle infinie
-exit code sur commande bloquante

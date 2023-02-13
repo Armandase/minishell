@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:52:50 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/11 10:25:21 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:15:03 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,21 @@
 
 int	check_inside_quote_another_quote(char *s, size_t *j, char c)
 {
-	while (s[*j] && s[*j] == c)
+	if ((s[*j] && s[*j] == c && s[(*j) + 1] == c))
+	{
+		while (s[*j] && s[*j] == c && s[(*j) + 1] == c)
+			(*j) += 2;
+		return (1);
+	}
+	return (0);
+}
+
+int	check_end_copy_in_quote(char from_str, char to_compare, size_t *j)
+{
+	if (from_str == to_compare)
 	{
 		(*j)++;
-		if (!s[*j] || s[*j] != c)
-			return (1);
+		return (1);
 	}
 	return (0);
 }
@@ -31,12 +41,12 @@ int	double_quote_check(char **s, t_storage tmp, char *str, char **begin)
 	check_envp_val(s, tmp, begin);
 	if ((*s)[*tmp.j] == '\"')
 	{
-		(*tmp.j)++;
-		if (!(*s)[*tmp.j])
+		if (check_inside_quote_another_quote(*s, tmp.j, '\"'))
+			return (0);
+		if (!(*s)[*tmp.j] || (*s)[*tmp.j] == ' ')
 			return (-1);
-		if ((*s)[*tmp.j] == '$' && (*s)[*tmp.j + 1] && (*s)[*tmp.j + 1] != ' '
-			&& (*s)[*tmp.j + 1] != '\"')
-			cpy_envp_val(s, tmp.list_var, tmp.j);
+		(*tmp.j)++;
+		check_envp_val(s, tmp, begin);
 		while ((*s)[*tmp.j] && (*s)[*tmp.j] == '\"')
 			(*tmp.j)++;
 		while ((*s)[*tmp.j])
@@ -44,7 +54,7 @@ int	double_quote_check(char **s, t_storage tmp, char *str, char **begin)
 			str[i] = (*s)[*tmp.j];
 			i++;
 			(*tmp.j)++;
-			if (check_inside_quote_another_quote(*s, tmp.j, '\"'))
+			if (check_end_copy_in_quote((*s)[*tmp.j], '\"', tmp.j))
 				break ;
 			check_envp_val(s, tmp, begin);
 		}

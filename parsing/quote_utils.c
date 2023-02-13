@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 09:59:31 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/11 10:28:21 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/13 09:32:26 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,18 +85,16 @@ int	simple_quote_check(char *s, char *str, size_t *j, size_t *i)
 {
 	if (s[*j] == '\'')
 	{
-		(*j)++;
-		if (!s[*j])
+		if (check_inside_quote_another_quote(s, j, '\''))
+			return (0);
+		if (!s[*j] || s[*j] == ' ')
 			return (1);
-		while (s[*j] && s[*j] == '\'')
-			(*j)++;
+		(*j)++;
 		while (s[*j])
 		{
 			str[*i] = s[*j];
 			(*j)++;
 			(*i)++;
-			if (check_inside_quote_another_quote(s, j, '\''))
-				break ;
 			if (s[*j] == '\'')
 			{
 				(*j)++;
