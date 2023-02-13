@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:20:09 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/11 14:58:05 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/13 13:12:48 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	free_cmd(t_cmd *cmd)
 	}
 }
 
-static bool	check_format(const char *value)
+static bool	check_format_code(const char *value)
 {
 	char	*nb_s;
 
@@ -70,7 +70,7 @@ static int	check_multiple_args(const char **values, long long *exit_code)
 	i = 0;
 	while (values[i])
 	{
-		if (check_format(values[i]) == false)
+		if (check_format_code(values[i]) == false)
 		{
 			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 			*exit_code = 2;
@@ -93,7 +93,7 @@ int	main_exit(t_cmd *cmd, t_exec *exec)
 	else if (ft_strlen_2d(values) == 2)
 	{
 		exit_code = ft_atoll(values[1]);
-		if (check_format(values[1]) == false)
+		if (check_format_code(values[1]) == false)
 		{
 			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 			exit_code = 2;

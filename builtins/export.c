@@ -6,13 +6,13 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:14:37 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/06 16:32:39 by ulayus           ###   ########.fr       */
+/*   Updated: 2023/02/13 13:31:11 by ulayus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static int	check_format(char *line, char *name, char *value)
+int	check_format(char *line, char *name, char *value, int flag)
 {
 	if (name[0] == '\0')
 	{
@@ -21,7 +21,7 @@ static int	check_format(char *line, char *name, char *value)
 		free(value);
 		return (1);
 	}
-	if (ft_isdigit(name[0]) || check_name(name) == false)
+	if (ft_isdigit(name[0]) || check_name(name, flag) == false)
 	{
 		ft_putstr_fd("bash: export: `", 2);
 		write(2, line, ft_strlen(line));
@@ -91,7 +91,7 @@ static int	add_env_var(char *line, t_env_list **list_var, char *name,
 		return (0);
 	name = export_name(line);
 	value = export_value(line);
-	if (check_format(line, name, value))
+	if (check_format(line, name, value, DEF))
 		return (INVALID);
 	if (search_var(name, list_var) == true && value && value[0])
 	{
@@ -127,7 +127,7 @@ int	main_export(char **args, t_env_list **list_var)
 		print_args_ascii(*list_var, env_list_size(*list_var));
 	while (args[i])
 	{
-		if (append_value(args[i], list_var) == 0)
+		if (append_value(&args[i], list_var) == 0)
 			exit_code = add_env_var(args[i], list_var, name, value);
 		if (exit_code != 0 && exit_code != INVALID)
 			return (exit_code);
