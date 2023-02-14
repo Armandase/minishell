@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 10:19:48 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/11 10:19:49 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/14 12:49:44 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ char	**single_str_to_strs(char *str)
 	ret[0] = ft_strdup(str);
 	ret[1] = NULL;
 	return (ret);
+}
+
+void	iter_in_space(char *s, size_t *j)
+{
+	while (s[*j] && s[*j] == ' ')
+		(*j)++;
 }
 
 char	**dup_strs_without_first(char **strs)

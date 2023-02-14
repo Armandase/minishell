@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:56:21 by adamiens          #+#    #+#             */
-/*   Updated: 2023/02/13 09:51:41 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/14 12:49:46 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,10 @@ void	get_dollar_value(char *s,
 	char	*var;
 	char	*str;
 
-	k = 1;
 	str = NULL;
-	if (!s[k] || s[k] == ' ' || s[k] == '\'' || s[k] == '\"')
+	if (!s[1] || s[1] == ' ' || s[1] == '\'' || s[1] == '\"')
 		return ;
-	while (s[k] && s[k] != ' ' && s[k] != '\'' && s[k] != '\"' && s[k] != '$')
-		k++;
-	var = malloc(sizeof(char) * k);
+	var = malloc(sizeof(char) * envp_var_len(s));
 	k = 1;
 	while (s[k] && s[k] != ' ' && s[k] != '\'' && s[k] != '\"' && s[k] != '$')
 	{
@@ -60,12 +57,6 @@ void	get_dollar_value(char *s,
 	take_dollar_offset(str, i, count, k);
 	*count += ft_strlen(var);
 	free(var);
-}
-
-void	iter_in_space(char *s, size_t *j)
-{
-	while (s[*j] && s[*j] == ' ')
-		(*j)++;
 }
 
 void	cpy_byte_at_index_to_str(char *str, char *s, size_t *i, size_t *j)

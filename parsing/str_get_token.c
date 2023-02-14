@@ -6,7 +6,7 @@
 /*   By: adamiens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:23:33 by adamiens          #+#    #+#             */
-/*   Updated: 2023/01/26 16:23:41 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/14 12:51:15 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,6 @@ static int	check_delim(char c, const char *delim)
 	return (0);
 }
 
-/****************************************/
-/*Strtok be like sauf que :				*/
-/*	separe en fonction des delimiteurs	*/
-/*	sauf si entre quotes				*/
-/*	return str coupé par le delimiteur	*/
-/*	et le delimiteur qui l'a cut		*/
-/****************************************/
 t_token	*str_get_token(char *str, const char *delim)
 {
 	int			len;

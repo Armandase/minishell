@@ -6,7 +6,7 @@
 /*   By: ulayus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 11:24:16 by ulayus            #+#    #+#             */
-/*   Updated: 2023/02/13 15:52:44 by adamiens         ###   ########.fr       */
+/*   Updated: 2023/02/14 12:43:28 by adamiens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ static char	*strjoin_exit_code(int exit_code, char *line)
 	joined_line = ft_strjoin(str_code, line);
 	free(str_code);
 	return (joined_line);
+}
+
+int	envp_var_len(char *s)
+{
+	int	i;
+
+	i = 1;
+	while (s[i] && s[i] != ' ' && s[i] != '\'' && s[i] != '\"' && s[i] != '$')
+		i++;
+	return (i);
 }
 
 static char	*join_line(char *tmp_str, int i, char *str, t_env_list *list_var)
