@@ -18,7 +18,7 @@ SRCS		= main.c\
 
 CC			= @clang
 LIBS        = -Llibft -lft -lreadline
-CFLAGS		= -Wall -Werror -Wextra -g -gdwarf-4
+CFLAGS		= -Wall -Werror -Wextra
 OBJS		= ${SRCS:.c=.o}
 
 all: ${NAME}
@@ -40,8 +40,5 @@ fclean : clean
 	@printf '\e[5m🚨 \e[0m\x1b[38;2;200;0;20mBinary removed\x1b[0m\e[5m 🚨\n\e[0m'
 
 re: fclean all
-
-vg:
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=.vsupp ./minishell
 
 .PHONY: all clean fclean re
